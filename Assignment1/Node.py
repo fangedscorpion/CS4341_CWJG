@@ -1,8 +1,6 @@
 class Node:
 	"""This is the class the represents the node of a path. This is like a path segment essentially"""
-	currentCell #This is the cell that is associated with the Node
-	actionList #This is a list of Actions that was taken to get to the current cell from the previous Node
-
+	
 	def __init__(self, cell, actionList):
 		self.currentCell = cell
 		self.actionList = actionList
@@ -18,7 +16,7 @@ class Node:
 
 
 
-if "__name__" == "__main__":
-	self.currentCell = Cell()
-	self.actionList = list(TurnAction())
-	print self
+if __name__ == "__main__":
+	a_node = Node("cell", ["turn"])
+	print a_node.getActionList(), a_node.getCurrentCell()
+	print "['turn']", "cell"
