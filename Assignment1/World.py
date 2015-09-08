@@ -40,6 +40,12 @@ class World(object):
         # return world
         return world
 
+    # returns a Cell at a given coord
+    # INPUT -> (Coord) coordinate
+    # OUTPUT -> (Cell) a cell
+    def getCell(self, a_coord):
+    	return self.world[a_coord.getY()][a_coord.getX()]
+
     # parses through world looking for the starting cell
     # if no starting cell is found, returns -1
     # INPUT -> none
@@ -68,6 +74,8 @@ class World(object):
 
     # returns a list of the 4 neighbors surrounding a given coordinate
     # [N, E, S, W]
+    # INPUT -> (Coord) coordinate
+    # OUTPUT -> (list of Cells) 4 neighbors
     def getNeighbors(self, a_coord):
         neighbors = [self.world[a_coord.getY() - 1][a_coord.getX()], self.world[a_coord.getY()]
                      [a_coord.getX() + 1], self.world[a_coord.getY() + 1][a_coord.getX()], self.world[a_coord.getY()][a_coord.getX() - 1]]
@@ -75,6 +83,8 @@ class World(object):
 
     # returns a list of all 8 neighbors surrounding a given coordinate
     # [N, NE, E, SE, S, SW, W, NW]
+    # INPUT -> (Coord) coordinate
+    # OUTPUT -> (list of Cells) 8 neighbors
     def get8Neighbors(self, a_coord):
         neighbors = [self.world[a_coord.getY() - 1][a_coord.getX()], self.world[a_coord.getY() - 1][a_coord.getX() + 1], self.world[a_coord.getY()][a_coord.getX() + 1], self.world[a_coord.getY() + 1][a_coord.getX() + 1],
                      self.world[a_coord.getY() + 1][a_coord.getX()], self.world[a_coord.getY() + 1][a_coord.getX() - 1], self.world[a_coord.getY()][a_coord.getX() - 1], self.world[a_coord.getY() - 1][a_coord.getX() - 1]]
@@ -82,4 +92,4 @@ class World(object):
 
 if __name__ == "__main__":
     aworld = World(open("test_board.txt", "r"))
-    print aworld.get8Neighbors(Coord(1, 1))
+    print aworld.getCell(Coord(1, 1))
