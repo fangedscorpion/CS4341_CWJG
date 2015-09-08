@@ -44,9 +44,20 @@ class Heuristic(object):
     # INPUT -> (Cell) the cell being evaluated
     # OUTPUT -> (int) heuristic calculaton
     def heur4(self, a_cell):
-        # return max(a_cell.horz, a_cell.vert)
+        # return a_cell.horz + a_cell.vert)
         return 1 + 3
+
+    # This function returns the heuristic evaluation for heuristic 5
+    # For this function, if the cell is not in the same row or column as the goal, it returns heur4 + 1 (a cost of turning)
+    # Otherwise, it returns heur4
+    # INPUT -> (Cell) the cell being evaluated
+    # OUTPUT -> (int) heuristic calculaton
+    def heur5(self, a_cell):
+        # if (a_cell.horz != 0) and (a_cell.vert != 0):
+        #     return heur4(a_cell) + 1
+        # else:
+        #     return heur4(a_cell)
 
 if __name__ == "__main__":
     a_h = Heuristic(4, Coord(1, 2))
-    print a_h.heur4("test cell")
+    print a_h.heur5("test cell")
