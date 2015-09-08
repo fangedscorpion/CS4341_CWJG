@@ -58,6 +58,13 @@ class Heuristic(object):
         # else:
         #     return heur4(a_cell)
 
+    # This function returns the heuristic evaluation for heuristic 6
+    # This function returns a non-admissable heuristic, heur5 * 3
+    # INPUT -> (Cell) the cell being evaluated
+    # OUTPUT -> (int) heuristic calculaton
+    def heur6(self, a_cell):
+        return a_cell.heur5(a_cell) * 3
+
 if __name__ == "__main__":
     a_h = Heuristic(4, Coord(1, 2))
     print a_h.heur5("test cell")
