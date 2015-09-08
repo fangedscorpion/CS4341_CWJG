@@ -29,6 +29,14 @@ class Heuristic(object):
 		# return min(a_cell.horz, a_cell.vert)
 		return min(1,3)
 
+	# This function returns the heuristic evaluation for heuristic 3
+	# This function chooses the maximum between a cell's horz. and vert. distances to the goal
+	# INPUT -> (Cell) the cell being evaluated
+	# OUTPUT -> (int) heuristic calculaton
+	def heur3(self, a_cell):
+		# return max(a_cell.horz, a_cell.vert)
+		return max(1,3)
+
 if __name__ == "__main__":
 	a_h = Heuristic(4, Coord(1,2))
-	print a_h.heur2("test cell")
+	print a_h.heur3("test cell")
