@@ -13,7 +13,7 @@ class World(object):
         self.file = file
         self.world = self.MakeWorld(self.file)
         self.start = self.getStart()
-        # self.goal = self.getGoal()
+        self.goal = self.getGoal()
 
     # parses the input file and creates the world
     # INPUT -> (file) input world
@@ -51,6 +51,19 @@ class World(object):
     				return self.world[j][k]
     	return -1
 
+    # parses through world looking for the goal cell
+    # if no starting cell is found, returns -1
+    # INPUT -> none
+    # OUTPUT -> (cell) starting cell, OR (int) -1
+    def getGoal(self):
+    	for j in range(0, len(self.world)):
+    		for k in range(0, len(self.world[j])):
+    			# if self.world[j][k].isGoal():
+    			# ^ switch boolean line when Cell is defined
+    			if self.world[j][k] == "G":
+    				return self.world[j][k]
+    	return -1
+
 if __name__ == "__main__":
     aworld = World(open("test_board.txt", "r"))
-    print aworld.start
+    print aworld.goal
