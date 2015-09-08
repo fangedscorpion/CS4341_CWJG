@@ -1,6 +1,5 @@
 """ A coordinate class """
 
-
 class Coord(object):
 
     def __init__(self, x, y):
@@ -27,6 +26,12 @@ class Coord(object):
     def getY(self):
         return self.y
 
+    # print function for a Coord object
+    # INPUT -> none
+    # OUTPUT -> none
+    def _print(self):
+    	print("(" + str(self.x) + "," + str(self.y) + ")")
+
 if __name__ == "__main__":
     A = Coord(1, 2)
     B = Coord(2, 1)
@@ -38,3 +43,5 @@ if __name__ == "__main__":
 
     print A.getX(), "1"
     print A.getY(), "2"
+
+    A._print()
