@@ -11,24 +11,34 @@ class World(object):
 
     def __init__(self, file):
         self.file = file
-        self.world = MakeWorld(self.file)
-        self.start = getStart()
-        self.goal = getGoal()
+        self.world = self.MakeWorld(self.file)
+        # self.start = getStart()
+        # self.goal = getGoal()
 
     # parses the input file and creates the world
     # INPUT -> (file) input world
     # OUTPUT -> (list of list of Cells) formatted world
-    def MakeWorld(self, file)
+    def MakeWorld(self, file):
+    	# get all lines from input file
         lines = file.readlines()
 
+        # split all idv input lines into lists
         for j in range(0, len(lines)):
-            fixed.append(lines[j].split)
+            lines[j] = lines[j].split()
 
-        for k in range(0, len(fixed)):
-            for l in range(0, len(fixed[k])):
-                # world[l][k] = Cell(fixed[k][l])
-                # this line is for debugging, replace with line above when Cell
-                # is defined
-                world[l][k] = fixed[k][l]
+        # create list same size of the input grid
+        world = [[0 for x in range(len(lines[0]))] for x in range(len(lines))] 
 
+        # assign values from lines into world list
+        for k in range(0, len(lines)):
+            for l in range(0, len(lines[k])):
+            	# replace 'lines[k][l]' with instanciation of Cell when Cell is defined
+                world[k][l] = lines[k][l]
+
+        # return world
         return world
+
+if __name__ == "__main__":
+    aworld = World(open("test_board.txt", "r"))
+    for i in range(0, len(aworld.world)):
+    	print aworld.world[i]
