@@ -1,9 +1,12 @@
 """ Class for Heuristic functions """
+from Coord import Coord
 
 class Heuristic(object):
 	# function is an integer representing the specific huersitic function
-	def __init__(self, function):
+	# gCoord is the coordinate of the goal
+	def __init__(self, function, gCoord):
 		self.function = function
+		self.gCoord = gCoord
 
 	# This function returns the integer representing the specific heuristic function
 	# INPUT -> none
@@ -18,6 +21,14 @@ class Heuristic(object):
 	def heur1(self, a_cell):
 		return 0
 
+	# This function returns the heuristic evaluation for heuristic 2
+	# This function chooses the minimum between a cell's horz. and vert. distances to the goal
+	# INPUT -> (Cell) the cell being evaluated
+	# OUTPUT -> (int) heuristic calculaton
+	def heur2(self, a_cell):
+		# return min(a_cell.horz, a_cell.vert)
+		return min(1,3)
+
 if __name__ == "__main__":
-	a_h = Heuristic(4)
-	print a_h.heur1("test cell")
+	a_h = Heuristic(4, Coord(1,2))
+	print a_h.heur2("test cell")
