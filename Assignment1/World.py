@@ -66,13 +66,20 @@ class World(object):
                     return self.world[j][k]
         return -1
 
-    # returns a list of the 4 neighbors surrounding a given cell
+    # returns a list of the 4 neighbors surrounding a given coordinate
     # [N, E, S, W]
     def getNeighbors(self, a_coord):
         neighbors = [self.world[a_coord.getY() - 1][a_coord.getX()], self.world[a_coord.getY()]
                      [a_coord.getX() + 1], self.world[a_coord.getY() + 1][a_coord.getX()], self.world[a_coord.getY()][a_coord.getX() - 1]]
         return neighbors
 
+    # returns a list of all 8 neighbors surrounding a given coordinate
+    # [N, NE, E, SE, S, SW, W, NW]
+    def get8Neighbors(self, a_coord):
+        neighbors = [self.world[a_coord.getY() - 1][a_coord.getX()], self.world[a_coord.getY() - 1][a_coord.getX() + 1], self.world[a_coord.getY()][a_coord.getX() + 1], self.world[a_coord.getY() + 1][a_coord.getX() + 1],
+                     self.world[a_coord.getY() + 1][a_coord.getX()], self.world[a_coord.getY() + 1][a_coord.getX() - 1], self.world[a_coord.getY()][a_coord.getX() - 1], self.world[a_coord.getY() - 1][a_coord.getX() - 1]]
+        return neighbors
+
 if __name__ == "__main__":
     aworld = World(open("test_board.txt", "r"))
-    print aworld.getNeighbors(Coord(1, 1))
+    print aworld.get8Neighbors(Coord(1, 1))
