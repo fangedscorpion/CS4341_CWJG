@@ -8,9 +8,6 @@ class Node:
 	def getActionList(self):
 		return self.actionList
 
-	def getParent(self):
-		return self.parent
-
 	def getCurrentCell(self):
 		return self.currentCell
 

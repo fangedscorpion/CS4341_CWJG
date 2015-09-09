@@ -22,7 +22,7 @@ class Coord(object):
 
     # returns the y coordinate
     # INPUT -> none
-    # OUTPUT -> (int) x coordinate
+    # OUTPUT -> (int) y coordinate
     def getY(self):
         return self.y
 
@@ -31,6 +31,9 @@ class Coord(object):
     # OUTPUT -> none
     def _print(self):
     	print("(" + str(self.x) + "," + str(self.y) + ")")
+
+    def __repr__(self):
+        return ("(" + str(self.x) + "," + str(self.y) + ")")
 
 if __name__ == "__main__":
     A = Coord(1, 2)
