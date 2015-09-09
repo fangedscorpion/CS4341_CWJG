@@ -16,6 +16,25 @@ class Heuristic(object):
     def getFunction(self):
         return self.function
 
+    # This function gets the heuristic specified in self.function
+    # INPUT -> (Cell) a cell to calculate by
+    # OUTPUT -> (int) heuristic
+    def getHeur(self, a_cell):
+        if (self.function == 1):
+            return self.heur1(a_cell)
+        elif (self.function == 2):
+            return self.heur2(a_cell)
+        elif (self.function == 3):
+            return self.heur3(a_cell)
+        elif (self.function == 4):
+            return self.heur4(a_cell)
+        elif (self.function == 5):
+            return self.heur5(a_cell)
+        elif (self.function == 6):
+            return self.heur6(a_cell)
+        else:
+            return 0
+
     # This function returns the heuristic evaluation for heuristic 1
     # heuristic 1 is always 0
     # INPUT -> (Cell) the cell being evaluated
@@ -73,3 +92,17 @@ if __name__ == "__main__":
     print "Actual: ",a_h.heur3(cell), "Test: ", 2
     print "Actual: ",a_h.heur2(cell), "Test: ", 1
     print "Actual: ",a_h.heur1(cell), "Test: ", 0
+    print
+
+    a_h1 = Heuristic(1, testCoord)
+    a_h2 = Heuristic(2, testCoord)
+    a_h3 = Heuristic(3, testCoord)
+    a_h4 = Heuristic(4, testCoord)
+    a_h5 = Heuristic(5, testCoord)
+    a_h6 = Heuristic(6, testCoord)
+    print "Actual: ",a_h1.getHeur(cell), "Test: ", 0
+    print "Actual: ",a_h2.getHeur(cell), "Test: ", 1
+    print "Actual: ",a_h3.getHeur(cell), "Test: ", 2
+    print "Actual: ",a_h4.getHeur(cell), "Test: ", 3
+    print "Actual: ",a_h5.getHeur(cell), "Test: ", 4
+    print "Actual: ",a_h6.getHeur(cell), "Test: ", 12
