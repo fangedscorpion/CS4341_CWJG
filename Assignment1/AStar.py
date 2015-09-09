@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+def AStar(world, start, goal): #start and goal are nodes
+    print "Running A*"
+
+    visited = [] #nodes
+    frontier = [] #nodes
+    pathList = [] #nodes
+
+    frontier.append(start)
+
+    while frontier is not empty 
+        current = findLowestCost(frontier)
+        if(current is goal)
+            return reconstructPath() #this will be a thing
+
+        frontier.remove(current)
+        visited.append(current)
+
+        for each neighbor in current.neighbors
+            if neighbor is in visited 
+                continue
+
+            # action cost needs to be a function that calculates the cost of moving from 
+            # a cell to the specified neighbor cell based on the orientation and movement costs
+            tentativeEstCost = current.costSoFar + actionCost(current,neighbor) + neighbor.heuristic
+
+            if (neighbor not in frontier) or (tentativeEstCost < estCost)
+                neighbor.parent = current
+                neighbor.costSoFar = current.costSoFar + actionCost(current, neighbor)
+                neighbor.estCost = tentativeEstCost
+                if neighbor not in frontier
+                    frontier.append(neighbor)
+    print "A* failed"
+
+
+                
