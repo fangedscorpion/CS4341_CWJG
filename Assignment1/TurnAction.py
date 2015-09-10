@@ -1,13 +1,15 @@
+from Action import Action
+
 class TurnAction(Action):
 
     """This is a more sophisticated turn Action"""
 
-    def __init__(self):
-        Action.init(self, "Turn", -1)
-        print("Debug")
-
-    def calculateTurnCost(self, currentCellVal):
-        print("Define how to calculate the turn cost")
+    def __init__(self, cellComplexity):
+        Action.__init__(self, "Turn", (cellComplexity / 3))
 
 if __name__ == "__main__":
-    print("Something debuggy here")
+    a_turn = TurnAction(3)
+    print a_turn
+    print "Name: Turn. Cost: 1"
+    print
+    print a_turn.getTimeCost(), 1
