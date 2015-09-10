@@ -22,13 +22,13 @@ class World(object):
 
     # INPUT: (int) cols and (int) desired x
     # OUTPUT: (boolean) if the X pos is valid
-    def IsXValid(cols, xpos):
-        return (xpos > 0 and xpos < cols)
+    def IsXValid(self, xpos):
+        return (xpos >= 0 and xpos < self.cols)
 
     # INPUT: (int) rows and (int) desired y
     # OUTPUT: (boolean) if the Y pos is valid
-    def IsYValid(cols, ypos):
-        return (ypos > 0 and ypos < rows)
+    def IsYValid(self, ypos):
+        return (ypos >= 0 and ypos < self.rows)
 
     # INPUT: (Cell) current Cell (Cell) cell to compare direction (int) direction N,E,S,W (0,1,2,3)
     # OUTPUT: (boolean) if the cell is in the same direction
@@ -155,6 +155,15 @@ class World(object):
                     return self.world[j][k]
         return -1
 
+    # INPUT: (Cell) current cell
+    # OUTPUT: -
+    # Modifies the 8 cells around the given cell to have the new demo val
+    def GetWrecked(self, acell):
+        yohoodies = self.get8Neighbors(acell.getCoord())
+
+        for bro in range(0, len(yohoodies)):
+            if(yohoodies[bro].IsValid() and not yohoodies[bro].getIsStart() and not yohoodies[bro].getIsGoal()):
+                yohoodies[bro].setComplexity(3)
 
     # returns a list of the 4 neighbors surrounding a given coordinate
     # [N, E, S, W]
@@ -242,29 +251,42 @@ if __name__ == "__main__":
     ######
 
     # Test get8Neighbors
-    testCoord = Coord(0,0)
+    # testCoord = Coord(0,0)
 
-    print testCoord
-    neibs = aworld.get8Neighbors(testCoord)
-    print neibs, "\n"
+    # print testCoord
+    # neibs = aworld.get8Neighbors(testCoord)
+    # print neibs, "\n"
 
-    testCoord = Coord(0,1)
-    print testCoord
-    neibs = aworld.get8Neighbors(testCoord)
-    print neibs, "\n"
+    # testCoord = Coord(0,1)
+    # print testCoord
+    # neibs = aworld.get8Neighbors(testCoord)
+    # print neibs, "\n"
 
-    testCoord = Coord(1,1)
-    print testCoord
-    neibs = aworld.get8Neighbors(testCoord)
-    print neibs, "\n"
+    # testCoord = Coord(1,1)
+    # print testCoord
+    # neibs = aworld.get8Neighbors(testCoord)
+    # print neibs, "\n"
 
-    testCoord = Coord(3, 2)
-    print testCoord
-    neibs = aworld.get8Neighbors(testCoord)
-    print neibs, "\n"
+    # testCoord = Coord(3, 2)
+    # print testCoord
+    # neibs = aworld.get8Neighbors(testCoord)
+    # print neibs, "\n"
     ######
+    for k in range(0, aworld.rows):
+        for l in range(0, aworld.cols):
+            #print aworld.getCell(Coord(l, k))
+            cell = aworld.getCell(Coord(l,k))
+            if(aworld.getCell(Coord(l,k)).getIsGoal()):
+                print "G", "\t",
+            elif(aworld.getCell(Coord(l,k)).getIsStart()):
+                print "S", "\t",
+            else:
+                print aworld.getCell(Coord(l,k)).getComplexity(),"\t",
+        print "\n"    
 
-
+    aworld.GetWrecked(aworld.getCell(Coord(1,1)))
+    print
+    print
 
     for k in range(0, aworld.rows):
         for l in range(0, aworld.cols):
