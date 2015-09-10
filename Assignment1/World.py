@@ -18,7 +18,69 @@ class World(object):
     # INPUT: (World) 
     # OUTPUT: (int, int) tuple of row, col bounds of World Cell Lists
     def GetBounds(self):
-        return (self.rows, self.cols)        
+        return (self.rows, self.cols)   
+
+    # INPUT: (int) cols and (int) desired x
+    # OUTPUT: (boolean) if the X pos is valid
+    def IsXValid(cols, xpos):
+        return (xpos > 0 and xpos < cols)
+
+    # INPUT: (int) rows and (int) desired y
+    # OUTPUT: (boolean) if the Y pos is valid
+    def IsYValid(cols, ypos):
+        return (ypos > 0 and ypos < rows)
+
+    # INPUT: (Cell) current Cell (Cell) cell to compare direction (int) direction N,E,S,W (0,1,2,3)
+    # OUTPUT: (boolean) if the cell is in the same direction
+    def IsSameDirection(self, currentcell, acell, direction):
+        coordcur = acell.getCoord()
+        coordcurX = coordcur.getX()
+        coordcurY = coordcur.getY()
+
+        coord = acell.getCoord()
+        coordX = coord.getX()
+        coordY = coord.getY()
+
+        if(direction == 0):
+            #North
+            return ((coordX == coordcurX) and (coordY <= coordcurY))
+        elif(direction == 1):
+            #East
+            return ((coordX >= coordcurX) and (coordY == coordcurY))
+        elif(direction == 2):
+            #South
+            return ((coordX == coordcurX) and (coordY >= coordcurY))
+        elif(direction == 3):
+            #West
+            return ((coordX <= coordcurX) and (coordY == coordcurY))
+        else:
+            #Error
+            return False
+
+    # INPUT: (Cell) current pos, and (int) direction
+    # OUTPUT: (boolean) representing if can bash in the given direction
+    def CanBash(self, acell, direction):
+        coord = acell.getCoord()
+        coordX = coord.getX()
+        coordY = coord.getY()
+
+        if(direction == 0):
+            #North
+            return (self.IsYValid(coordY - 1))
+        elif(direction == 1):
+            #East
+            return (self.IsXValid(coordX + 1))
+        elif(direction == 2):
+            #South
+            return (self.IsYValid(coordY + 1))
+        elif(direction == 3):
+            #West
+            return (self.IsXValid(coordX - 1))
+        else:
+            #Error
+            return False
+
+
 
     # parses the input file and creates the world
     # INPUT -> (file) input world
@@ -93,27 +155,28 @@ class World(object):
                     return self.world[j][k]
         return -1
 
+
     # returns a list of the 4 neighbors surrounding a given coordinate
     # [N, E, S, W]
     # INPUT -> (Coord) coordinate
     # OUTPUT -> (list of Cells) 4 neighbors
     def getNeighbors(self, a_coord):
-        if(a_coord.getY() - 1 < 0):
+        if(not self.IsYValid(a_coord.getY() - 1)):
             neighborN = Cell(Coord(-1, -1), -1) # Null cell
         else:
             neighborN = self.world[a_coord.getY() - 1][a_coord.getX()]
         
-        if(a_coord.getX() + 1 == self.cols):
+        if(not self.IsXValid(a_coord.getX() + 1)):
             neighborE = Cell(Coord(-1, -1), -1) # Null cell
         else:
             neighborE = self.world[a_coord.getY()][a_coord.getX() + 1]
        
-        if(a_coord.getX() - 1 < 0):
+        if(not self.IsXValid(a_coord.getX() - 1)):
             neighborW = Cell(Coord(-1, -1), -1) # Null cell
         else:
             neighborW = self.world[a_coord.getY()][a_coord.getX() - 1]
         
-        if(a_coord.getY() + 1 == self.rows):
+        if(not self.IsYValid(a_coord.getY() + 1)):
             neighborS = Cell(Coord(-1, -1), -1) # Null cell
         else:
             neighborS = self.world[a_coord.getY() + 1][a_coord.getX()]
