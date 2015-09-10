@@ -1,15 +1,23 @@
 from Action import Action
-from Bash import Bash
 
 
 class Node:
 
     """This is the class the represents the node of a path. This is like a path segment essentially"""
 
-    def __init__(self, cell, actionList):
+    def __init__(self, cell, actionList, cost):
         self.currentCell = cell
         self.actionList = actionList
-        self.costSoFar = self.sumCost()
+        self.cost = cost + self.sumActionList(self.actionList)
+
+    # this function sums and returns the total time cost of the list
+    # INPUT -> (list of Actions)
+    # OUTPUT -> (int) sum
+    def sumActionList(self, a_list):
+        sum = 0
+        for alpha in a_list:
+            sum += alpha.getTimeCost()
+        return sum
 
     def getActionList(self):
         return self.actionList
@@ -17,14 +25,37 @@ class Node:
     def getCurrentCell(self):
         return self.currentCell
 
-    # this function totals the cost taken to get to this node
+    # this function returns the cost so far to the node
     # INPUT -> none
-    # OUTPUT -> (int) total cost
-    def sumCost(self):
-        sum = 0
+    # OUTPUT -> (int)
+    def getCost(self):
+        return self.cost
+
+    # this function adds a given action to the actionList
+    # the function also adds the new action's cost to the node's cost
+    # INPUT -> (Action)
+    # OUTPUT -> none
+    def addAction(self, newAction):
+        self.actionList.append(newAction)
+        self.cost += newAction.getTimeCost()
+
+    # this function removes the most recently added action from the actionList
+    # the function then returns the removed action
+    # INPUT -> none
+    # OUTPUT -> (Action)
+    def removeAction(self):
+        alpha = self.actionList.pop(len(self.actionList) - 1)
+        self.cost -= alpha.getTimeCost()
+        return alpha
+
+    # This function checks to see if a bash was used in this Node
+    # INPUT -> none
+    # OUTPUT -> (boolean)
+    def didIBash(self):
         for ac in self.actionList:
-            sum += ac.getTimeCost()
-        return sum
+            if (ac.getActionName().lower() == "bash"):
+                return True
+        return False
 
     # this function returns the cost of the most recent action taken to get to this cell
     # INPUT -> none
@@ -45,13 +76,28 @@ class Node:
         return self.actionList[len(self.actionList) - 1].getActionName().lower() == "bash"
 
 if __name__ == "__main__":
-    # a_node = Node("cell", ["turn"])
-    # print a_node.getActionList(), a_node.getCurrentCell()
-    # print "['turn']", "cell"
-    # print
+    from Bash import Bash
+    from FwdAction import FwdAction
+    from TurnAction import TurnAction
 
-    # aa = Bash()
-    # ab = Action("fwd", 6)
+    a_node = Node("cell", [FwdAction(4)], 6)
+    print a_node.getCost(), 10
+    print a_node.getActionList()
+    print "**"
 
-    # b_node = Node("a_cell", [aa, ab])
-    # assert b_node.justBashed() == False
+    a_node.addAction(TurnAction(6))
+    print a_node.getActionList()
+    print a_node.getCost(), 12
+    print a_node.didIBash(), False
+    print "**"
+
+    a_node.addAction(Bash())
+    print a_node.getActionList()
+    print a_node.getCost(), 15
+    print a_node.didIBash(), True
+    print "**"
+
+    a_node.removeAction()
+    print a_node.getActionList()
+    print a_node.getCost(), 12
+    print a_node.didIBash(), False
