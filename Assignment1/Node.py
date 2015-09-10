@@ -11,7 +11,7 @@ class Node:
 	def getCurrentCell(self):
 		return self.currentCell
 
-
+# cost so far
 
 if __name__ == "__main__":
 	a_node = Node("cell", ["turn"])
