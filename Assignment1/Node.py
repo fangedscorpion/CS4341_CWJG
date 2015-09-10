@@ -1,4 +1,5 @@
 from Action import Action
+from Bash import Bash
 
 
 class Node:
@@ -37,16 +38,20 @@ class Node:
     def getActionList(self):
         return self.actionList
 
+    # this function returns a boolean if the most recent move was a bash
+    # INPUT -> none
+    # OUTPUT -> (boolean)
+    def justBashed(self):
+        return self.actionList[len(self.actionList) - 1].getActionName().lower() == "bash"
+
 if __name__ == "__main__":
     # a_node = Node("cell", ["turn"])
     # print a_node.getActionList(), a_node.getCurrentCell()
     # print "['turn']", "cell"
     # print
 
-    aa = Action("bash", 3)
-    ab = Action("fwd", 6)
+    # aa = Bash()
+    # ab = Action("fwd", 6)
 
-    b_node = Node("a_cell", [aa, ab])
-    print b_node.recentCost(), 6
-    print b_node.sumCost(), 9
-    print b_node.getActionList(), "[Action object, Action object]"
+    # b_node = Node("a_cell", [aa, ab])
+    # assert b_node.justBashed() == False
