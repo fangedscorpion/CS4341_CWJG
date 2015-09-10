@@ -35,7 +35,7 @@ class Node:
     # INPUT -> none
     # OUTPUT -> (list) self.actionList
     def getActionList(self):
-    	return self.actionList
+        return self.actionList
 
 if __name__ == "__main__":
     # a_node = Node("cell", ["turn"])
