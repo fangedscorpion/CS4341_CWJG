@@ -5,9 +5,10 @@ class Node:
 
     """This is the class the represents the node of a path. This is like a path segment essentially"""
 
-    def __init__(self, cell, actionList, cost):
+    def __init__(self, cell, parentNode, actionList, cost):
         self.currentCell = cell
         self.actionList = actionList
+        self.parentNode = parentNode
         self.cost = cost + self.sumActionList(self.actionList)
 
     # this function sums and returns the total time cost of the list
@@ -18,6 +19,18 @@ class Node:
         for alpha in a_list:
             sum += alpha.getTimeCost()
         return sum
+
+    # This function returns the parent node
+    # INPUT -> none
+    # OUTPUT -> (Node) self.parentNode
+    def getParent(self):
+        return self.parentNode
+
+    # This function changes the parent node
+    # INPUT -> (Node) parent
+    # OUTPUT -> none
+    def setParent(self, parent):
+        self.parentNode = parent
 
     def getActionList(self):
         return self.actionList
@@ -80,7 +93,7 @@ if __name__ == "__main__":
     from FwdAction import FwdAction
     from TurnAction import TurnAction
 
-    a_node = Node("cell", [FwdAction(4)], 6)
+    a_node = Node("cell", "parentA", [FwdAction(4)], 6)
     print a_node.getCost(), 10
     print a_node.getActionList()
     print "**"
@@ -101,3 +114,7 @@ if __name__ == "__main__":
     print a_node.getActionList()
     print a_node.getCost(), 12
     print a_node.didIBash(), False
+
+    assert a_node.getParent() == "parentA"
+    a_node.setParent("parentB")
+    assert a_node.getParent() == "parentB"
