@@ -2,6 +2,7 @@
 """ Representation of all cells in the World """
 from Coord import Coord
 from Cell import Cell
+from Heuristic import Heuristic
 
 
 class World(object):
@@ -11,17 +12,28 @@ class World(object):
     # self.goal stores the goal cell to avoid using the function getGoal()
     # repeatidly
 
-    def __init__(self, file):
+    def __init__(self, file, func):
         self.file = file
         (self.world, self.goal, self.start, self.rows,
          self.cols) = self.MakeWorld(self.file)
         self.world = self.UpdateGoalDists(
             self.world, self.rows, self.cols, self.goal)
+        self.world = self.UpdateHeuristic(self.world, func)
 
     # INPUT: (World)
     # OUTPUT: (int, int) tuple of row, col bounds of World Cell Lists
     def GetBounds(self):
         return (self.rows, self.cols)
+
+    # this function updates the heuristic value for each cell in the world
+    # INPUT: (World), (int) heuristic number
+    # OUTPUT: (list of list of Cells)
+    def UpdateHeuristic(self, a_world, func_num):
+        aH = Heuristic(func_num, self.getGoal().getCoord())
+        for j in range(0, len(a_world)):
+            for k in range(0, len(a_world[j])):
+                a_world[j][k].setH(aH.getHeur(a_world[j][k]))
+        return a_world
 
     # INPUT: (int) cols and (int) desired x
     # OUTPUT: (boolean) if the X pos is valid
@@ -258,11 +270,14 @@ class World(object):
         return neighbors
 
 if __name__ == "__main__":
-    aworld = World(open("test_board.txt", "r"))
+    aworld = World(open("test_board.txt", "r"), 2)
 
-    bn = aworld.getBashNeighbors(Coord(1, 1))
-    for b in bn:
-        print b
+    print aworld.getCell(Coord(2,2)).getH(), 1
+    print aworld.getGoal().getCoord()
+
+    # bn = aworld.getBashNeighbors(Coord(1, 1))
+    # for b in bn:
+    #     print b
 
     # Test neighbors
     # testCoord = Coord(0,0)
