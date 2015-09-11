@@ -37,18 +37,6 @@ def AStar(world, start, goal): #start and goal are cells
                     frontier.append(neighbor)
     print "A* failed"
 
-def shouldBashHa(current, neighbor):
-    localDir = findDirection(currentCell, moveCell)
-    if canBash() and (neighbor.getCurrentCell().getComplexity() > 3)
-        tentCostBash = actionCost(current.getCurrentCell(), neighbor.getCurrentCell(), True) + neighbor.neighbors[localDir].heuristic
-        tentCostDrive = actionCost(current.getCurrentCell(), neighbor.getCurrentCell(), False) + neighbor.heuristic
-        if tentCostBash < tentCostDrive
-            return True
-    else
-        return False
-
-
-
 
 
 def actionCost(currentCell, moveCell, isBash):
