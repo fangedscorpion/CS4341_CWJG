@@ -23,25 +23,27 @@ def AStar2(world):  # start and goal are cells
     while len(frontier) is not 0:
         # HOPEFULLY ths sorts the list so that the least g+h is first
         frontier.sort(key=lambda node: node.total())
-        for node in frontier:
-            print node
+        # for node in frontier:
+            # print node
         # after frontier is sorted the node with the lowest g+h becomes current
+
+        current = frontier[0]
+        # remove the node being looked at from the frontier
+        del frontier[0]
+        visited.append(current)  # add it to the visited list
+
         print "------------------------------"
         print "len of frontier"
         print len(frontier)
         print "len of visited"
         print len(visited)
-        current = frontier[0]
+        
         print "current Coords"
         print current.getCell().getCoord()
         if(current.getCell().getIsGoal()):  # if its the goal, we are done
             visited.append(current)
             print "Goal Found!"
             return visited
-
-        # remove the node being looked at from the frontier
-        del frontier[0]
-        visited.append(current)  # add it to the visited list
 
         # print anydup(visited)
         # raw_input()
@@ -190,8 +192,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    # testWorld = World(open("test_board.txt", "r"), 1)
-    testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
+    testWorld = World(open("test_board.txt", "r"), 4)
+    # testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
     print "World Constructed"
 
     visited = AStar2(testWorld)
