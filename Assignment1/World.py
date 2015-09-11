@@ -138,7 +138,7 @@ class World(object):
             for k in range(0, len(self.world[j])):
                 # if self.world[j][k].isStart():
                 # ^ switch boolean line when Cell is defined
-                if self.world[j][k] == "S":
+                if self.world[j][k].getIsStart():
                     return self.world[j][k]
         return -1
 
@@ -151,7 +151,7 @@ class World(object):
             for k in range(0, len(self.world[j])):
                 # if self.world[j][k].isGoal():
                 # ^ switch boolean line when Cell is defined
-                if self.world[j][k] == "G":
+                if self.world[j][k].getIsGoal:
                     return self.world[j][k]
         return -1
 
