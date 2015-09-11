@@ -33,3 +33,9 @@ if __name__ == "__main__":
 		print "\nPATH COORDS: "
 		for node in path:
 		    print node.getCell().getCoord()
+
+		print "\nPATH ACTIONS: "
+		for node in path:
+			acts = node.getActionList()
+			for act in acts:
+				print act

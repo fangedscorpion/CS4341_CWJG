@@ -5,10 +5,11 @@ class Node:
 
     """This is the class the represents the node of a path. This is like a path segment essentially"""
 
-    def __init__(self, cell, parentNode, actionList, cost):
+    def __init__(self, cell, parentNode, actionList, cost, robotDir):
         self.currentCell = cell
         self.actionList = actionList
         self.parentNode = parentNode
+        self.robotDirection = robotDir
         self.cost = cost + self.sumActionList(self.actionList)
 
     # this function sums and returns the total time cost of the list
@@ -20,6 +21,9 @@ class Node:
             sum += alpha.getTimeCost()
         return sum
 
+    def getRobotDir(self):
+        return self.robotDirection
+        
     # This function returns the parent node
     # INPUT -> none
     # OUTPUT -> (Node) self.parentNode

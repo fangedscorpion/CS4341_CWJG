@@ -1,5 +1,3 @@
-global robotDir
-robotDir = 0
 from World import *
 from Node import *
 from Cell import *
@@ -10,7 +8,6 @@ from Coord import *
 
 def AStar2(world):  # start and goal are cells
     print "running AStar2"
-    global robotDir
 
     start = world.getStart()
     goal = world.getGoal()
@@ -19,7 +16,7 @@ def AStar2(world):  # start and goal are cells
     frontier = []  # nodes
     visited = []  # nodes
 
-    firstNode = Node(start, Cell(Coord(-1, -1), -1), [], 0)
+    firstNode = Node(start, Cell(Coord(-1, -1), -1), [], 0, 0) # Last 0 is robot dir!
 
     frontier.append(firstNode)
 
@@ -49,8 +46,9 @@ def AStar2(world):  # start and goal are cells
         # print anydup(visited)
         # raw_input()
 
+        print "Building neighbors..."
         neighborCells = world.getNeighbors(current.getCell().getCoord())
-        neighborNodes = cellsToNodes(current, neighborCells, robotDir, False)
+        neighborNodes = cellsToNodes(current, neighborCells, current.getRobotDir(), False)
 
 
         for neighborNode in neighborNodes:
@@ -72,8 +70,9 @@ def AStar2(world):  # start and goal are cells
         print len(neighborNodes)
         frontier += neighborNodes
 
+        print "Building bash list..."
         bashCells = world.getBashNeighbors(current.getCell().getCoord())
-        bashNodes = cellsToNodes(current, bashCells, robotDir, True)
+        bashNodes = cellsToNodes(current, bashCells, current.getRobotDir(), True)
 
         for bashNode in bashNodes:
             if not bashNode in visited:
@@ -100,39 +99,48 @@ def AStar2(world):  # start and goal are cells
 # and returns the action list for moving from the first cell
 # to the next cell
 def getAction(curDir, cellDir, curCom, cellCom, bashHuh):
-    robotDirTmp = 0
+    robotDirTmp = curDir
     delta = curDir - cellDir
     if not bashHuh:
         if delta is 0:  # no turn
-            return [FwdAction(cellCom)]
+            return ([FwdAction(cellCom)], robotDirTmp)
         elif delta == -1 or delta == 3:  # right turn
             robotDirTmp += 1
-            print delta
-            print robotDirTmp
             if robotDirTmp == 4:
                 robotDirTmp = 0
-            return [TurnAction(curCom, "r"), FwdAction(cellCom)]
+            return ([TurnAction(curCom, "r"), FwdAction(cellCom)], robotDirTmp)
         elif delta == 1 or delta == -3:  # left turn
             robotDirTmp -= 1
             if robotDirTmp == -1:
                 robotDirTmp = 3
-            return [TurnAction(curCom, "l"), FwdAction(cellCom)]
+            return ([TurnAction(curCom, "l"), FwdAction(cellCom)], robotDirTmp)
         elif delta == 2 or delta == -2:  # 180
             robotDirTmp += 2
             if robotDirTmp == 4:
                 robotDirTmp = 0
             if robotDirTmp == 5:
                 robotDirTmp = 1
-            return [TurnAction(curCom, "r"), TurnAction(curCom, "r"), FwdAction(cellCom)]
+            return ([TurnAction(curCom, "r"), TurnAction(curCom, "r"), FwdAction(cellCom)], robotDirTmp)
     if bashHuh:
         if delta is 0:  # no turn
-            return [Bash(), FwdAction(cellCom)]
+            return ([Bash(), FwdAction(cellCom)], robotDirTmp)
         elif delta is -1 or 3:  # right turn
-            return [TurnAction(curCom, "r"), Bash(), FwdAction(cellCom)]
+            robotDirTmp += 1
+            if robotDirTmp == 4:
+                robotDirTmp = 0
+            return ([TurnAction(curCom, "r"), Bash(), FwdAction(cellCom)], robotDirTmp)
         elif delta is 1 or -3:  # left turn
-            return [TurnAction(curCom, "l"), Bash(), FwdAction(cellCom)]
+            robotDirTmp -= 1
+            if robotDirTmp == -1:
+                robotDirTmp = 3
+            return ([TurnAction(curCom, "l"), Bash(), FwdAction(cellCom)], robotDirTmp)
         elif delta is 2 or -2:  # 180
-            return [TurnAction(curCom, "r"), TurnAction(curCom, "r"), Bash(), FwdAction(cellCom)]
+            robotDirTmp += 2
+            if robotDirTmp == 4:
+                robotDirTmp = 0
+            if robotDirTmp == 5:
+                robotDirTmp = 1
+            return ([TurnAction(curCom, "r"), TurnAction(curCom, "r"), Bash(), FwdAction(cellCom)], robotDirTmp)
 
 
 # takes in the current node, the list of cells neighboring the
@@ -147,10 +155,10 @@ def cellsToNodes(currCell, listOfCells, robotDir, bashHuh):
         curCom = currCell.getCell().getComplexity()
         cellCom = listOfCells[j].getComplexity()
         print "Rob axn: ", robotDir, " curDir: ", j
-        currCellAction = getAction(robotDir, j, curCom, cellCom, bashHuh)
+        (currCellAction, robotDirTmp) = getAction(robotDir, j, curCom, cellCom, bashHuh)
         # make a node based on the
         newNode = Node(
-            listOfCells[j], currCell, currCellAction, currCell.getCost())
+            listOfCells[j], currCell, currCellAction, currCell.getCost(), robotDirTmp)
         newNodes.append(newNode)
     return newNodes
 
