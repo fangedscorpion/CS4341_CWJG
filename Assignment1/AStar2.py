@@ -4,16 +4,17 @@ def AStar2(world):  # start and goal are cells
 
     robotDir = 0
     start = world.getStart()
+    print "a* bitch -> ", start
     goal = world.getGoal()
 
     frontier = []  # nodes
     visited = []  # nodes
 
-    firstNode = Node(start, Null, [], 0)
+    firstNode = Node(start, Cell(Coord(-1, -1), -1), [], 0)
 
     frontier.append(firstNode)
 
-    while frontier is not empty:
+    while frontier is not []:
         # HOPEFULLY ths sorts the list so that the least g+h is first
         frontier.sort(key=lambda node: node.total())
         # after frontier is sorted the node with the lowest g+h becomes current
@@ -101,10 +102,10 @@ def cellsToNodes(currrent, listOfCells, robotDir, bashHuh):
 if __name__ == "__main__":
 
     from World import *
-    from node import *
-    from cell import *
+    from Node import *
+    from Cell import *
 
-    testWorld = World("test_board.txt", "r")
+    testWorld = World(open("test_board.txt", "r"))
     print "World Constructed"
 
-    aStar2(testWorld)
+    AStar2(testWorld)
