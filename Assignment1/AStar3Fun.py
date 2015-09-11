@@ -60,9 +60,9 @@ def AStar2(world):  # start and goal are cells
 
         for moveNode in moveNodes: #for each possible move from the current cell
             for visitNode in visited: #see if that move would put us in a cell thats already been visited
-                if moveNode.getCell().getCoord() != visitNode.getCell().getCoord(): #if we've not visited this cell before
+                if moveNode.getCell().getCoord() is not visitNode.getCell().getCoord(): #if we've not visited this cell before
                     for frontNode in frontier: #ee if the move would put us in a cell that is already in the frontier
-                        if moveNode.getCell().getCoord() == frontNode.getCell().getCoord(): # if it is
+                        if moveNode.getCell().getCoord() is frontNode.getCell().getCoord(): # if it is
                             if moveNode.getCost() < frontNode.getCost(): # check if the new move is cheaper than the old move
                                 frontier.remove(frontNode) # if it is, remove the old move from frontier
                                 break
@@ -182,7 +182,7 @@ if __name__ == "__main__":
                 return True
         return False
 
-    testWorld = World(open("test_board.txt", "r"), 4)
+    testWorld = World(open("test_board.txt", "r"), 1s)
     # testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
     print "World Constructed"
 
