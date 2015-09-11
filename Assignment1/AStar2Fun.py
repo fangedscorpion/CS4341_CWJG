@@ -1,9 +1,16 @@
 global robotDir
 robotDir = 0
+from World import *
+from Node import *
+from Cell import *
+from FwdAction import *
+from TurnAction import *
+from Bash import *
+from Coord import *
 
 def AStar2(world):  # start and goal are cells
     print "running AStar2"
-
+    global robotDir
 
     start = world.getStart()
     goal = world.getGoal()
@@ -19,6 +26,8 @@ def AStar2(world):  # start and goal are cells
     while len(frontier) is not 0:
         # HOPEFULLY ths sorts the list so that the least g+h is first
         frontier.sort(key=lambda node: node.total())
+        for node in frontier:
+            print node
         # after frontier is sorted the node with the lowest g+h becomes current
         print "------------------------------"
         print "len of frontier"
@@ -28,7 +37,7 @@ def AStar2(world):  # start and goal are cells
         current = frontier[0]
         print "current Coords"
         print current.getCell().getCoord()
-        if(current.getCell() is goal):  # if its the goal, we are done
+        if(current.getCell().getIsGoal()):  # if its the goal, we are done
             visited.append(current)
             print "Goal Found!"
             return visited
@@ -47,14 +56,16 @@ def AStar2(world):  # start and goal are cells
         for neighborNode in neighborNodes:
             if not neighborNode in visited: # I think This is where we are accidentally adding tons of things to visited
                 for frontNode in frontier:
-                    if neighborNode.getCell().getCoord() is frontNode.getCell().getCoord():
+                    if neighborNode.getCell().getCoord() == frontNode.getCell().getCoord():
                         if neighborNode.getCost() < frontNode.getCost():
                             frontier.remove(frontNode)
                             break
                         else:
+                            print "Removing: " + str(neighborNode)
                             neighborNodes.remove(neighborNode)
                             break
             else:
+                #print "Removing: " + str(neighborNode)
                 neighborNodes.remove(neighborNode)
 
         print "len of neighborNodes"
@@ -67,7 +78,7 @@ def AStar2(world):  # start and goal are cells
         for bashNode in bashNodes:
             if not bashNode in visited:
                 for frontNode in frontier:
-                    if bashNode.getCell().getCoord() is frontNode.getCell().getCoord():
+                    if bashNode.getCell().getCoord() == frontNode.getCell().getCoord():
                         if bashNode.getCost() < frontNode.getCost():
                             frontier.remove(frontNode)
                         else:
@@ -89,27 +100,29 @@ def AStar2(world):  # start and goal are cells
 # and returns the action list for moving from the first cell
 # to the next cell
 def getAction(curDir, cellDir, curCom, cellCom, bashHuh):
-    global robotDir
+    robotDirTmp = 0
     delta = curDir - cellDir
     if not bashHuh:
         if delta is 0:  # no turn
             return [FwdAction(cellCom)]
-        elif delta is -1 or 3:  # right turn
-            robotDir += 1
-            if robotDir == 4:
-                robotDir = 0
+        elif delta == -1 or delta == 3:  # right turn
+            robotDirTmp += 1
+            print delta
+            print robotDirTmp
+            if robotDirTmp == 4:
+                robotDirTmp = 0
             return [TurnAction(curCom, "r"), FwdAction(cellCom)]
-        elif delta is 1 or -3:  # left turn
-            robotDir -= 1
-            if robotDir == -1:
-                robotDir = 3
+        elif delta == 1 or delta == -3:  # left turn
+            robotDirTmp -= 1
+            if robotDirTmp == -1:
+                robotDirTmp = 3
             return [TurnAction(curCom, "l"), FwdAction(cellCom)]
-        elif delta is 2 or -2:  # 180
-            robotDir += 2
-            if robotDir == 4:
-                robotDir = 0
-            if robotDir == 5:
-                robotDir = 1
+        elif delta == 2 or delta == -2:  # 180
+            robotDirTmp += 2
+            if robotDirTmp == 4:
+                robotDirTmp = 0
+            if robotDirTmp == 5:
+                robotDirTmp = 1
             return [TurnAction(curCom, "r"), TurnAction(curCom, "r"), FwdAction(cellCom)]
     if bashHuh:
         if delta is 0:  # no turn
@@ -133,6 +146,7 @@ def cellsToNodes(currCell, listOfCells, robotDir, bashHuh):
 
         curCom = currCell.getCell().getComplexity()
         cellCom = listOfCells[j].getComplexity()
+        print "Rob axn: ", robotDir, " curDir: ", j
         currCellAction = getAction(robotDir, j, curCom, cellCom, bashHuh)
         # make a node based on the
         newNode = Node(

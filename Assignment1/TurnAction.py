@@ -1,12 +1,12 @@
 from Action import Action
-
+from math import ceil
 
 class TurnAction(Action):
 
     """This is a more sophisticated turn Action"""
 
     def __init__(self, cellComplexity, strDir):
-        Action.__init__(self, "Turn " + strDir, (cellComplexity / 3))
+        Action.__init__(self, "Turn " + strDir, int(ceil(cellComplexity / 3.0)))
         self.strDir = strDir
 
     # INPUT: TurnAction

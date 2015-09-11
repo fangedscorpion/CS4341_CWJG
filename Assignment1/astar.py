@@ -20,3 +20,16 @@ if __name__ == "__main__":
 
 		the_world = World(open(filename, "r"), heuristic)
 		visited = AStar2(the_world)
+
+		for visitNode in visited:
+			print "*" * 20
+			print visitNode
+
+		path = [visited[len(visited) - 1]]
+		while not pathHasStart(path):
+		    path.append(path[len(path) - 1].getParent())
+
+		path.reverse()
+		print "\nPATH COORDS: "
+		for node in path:
+		    print node.getCell().getCoord()

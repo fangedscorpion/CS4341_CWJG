@@ -100,13 +100,23 @@ class Node:
     def total(self):
         return self.getCost() + self.getH()
 
+    #Printing nodes
+    def __repr__(self):
+        strRet =  "{Cell: " + str(self.currentCell)
+        for i in range(len(self.actionList)):
+            strRet = strRet + "\n  ACT: " + str(self.actionList[i])
+        #strRet = strRet + "\n  PAR: " + str(self.parentNode) +
+        strRet = strRet + "\nCOST: " + str(self.cost) + "}"
+        return strRet
+
     # overriding the equals (==) operator
     def __eq__(self, other):
         return (self.getCell().getCoord().getX() == other.getCell().getCoord().getX()) and (self.getCell().getCoord().getY() == other.getCell().getCoord().getY())
 
     # overriding the not equals (!=) operator
     def __ne__(self, other):
-        return not self == other
+        #return not self == other
+        return (self.getCell().getCoord().getX() != other.getCell().getCoord().getX()) or (self.getCell().getCoord().getY() != other.getCell().getCoord().getY())
 
 if __name__ == "__main__":
     from Bash import Bash
