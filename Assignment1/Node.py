@@ -94,6 +94,12 @@ class Node:
     def getH(self):
         return self.getCell().getH()
 
+    # this function returns the total evaluation for the node, travel cost + heuristic
+    # INPUT -> none
+    # OUTPUT -> (int) cost
+    def total(self):
+        return self.getCost() + self.getH()
+
 if __name__ == "__main__":
     from Bash import Bash
     from FwdAction import FwdAction
@@ -103,13 +109,14 @@ if __name__ == "__main__":
     from Heuristic import Heuristic
 
     aC = Cell(Coord(1, 1), 4)
-    aH = Heuristic(1, Coord(2,2))
+    aH = Heuristic(2, Coord(2,2))
     aC.setHorizVertDists(3, 4)
     aC.setH(aH.getHeur(aC))
     a_node = Node(aC, "parentA", [FwdAction(4)], 6)
     print a_node.getCost(), 10
     print a_node.getActionList()
-    print a_node.getH(), 0
+    print a_node.getH(), 3
+    print a_node.total(), 13
     print "**"
 
     a_node.addAction(TurnAction(6))
