@@ -40,7 +40,7 @@ def AStar2(world):  # start and goal are cells
             return visited
 
         # remove the node being looked at from the frontier
-        frontier.remove(current)
+        del frontier[0]
         visited.append(current)  # add it to the visited list
 
         # print anydup(visited)
@@ -51,26 +51,38 @@ def AStar2(world):  # start and goal are cells
         neighborNodes = cellsToNodes(current, neighborCells, current.getRobotDir(), False)
         bashCells = world.getBashNeighbors(current.getCell().getCoord())
         bashNodes = cellsToNodes(current, bashCells, current.getRobotDir(), True)
-        moveNodes = neighborNodes + bashNodes
+        moveNodes = list(neighborNodes + bashNodes)
 
+        print len(moveNodes)
 
-        for neighborNode in moveNodes:
-            for visitNode in visited:
+        neibsRm = []
+        frontRm = []
+        for i in range(len(moveNodes)):
+            neighborNode = moveNodes[i]
+            for j in range(len(visited)):
+                visitNode = visited[j]
                 if neighborNode.getCell().getCoord() != visitNode.getCell().getCoord(): # I think This is where we are accidentally adding tons of things to visited
-                    for frontNode in frontier:
+                    for f in range(len(frontier)):
+                        frontNode = frontier[f]
                         if neighborNode.getCell().getCoord() == frontNode.getCell().getCoord():
-                            if neighborNode.getCost() < frontNode.getCost():
-                                frontier.remove(frontNode)
-                                break
+                            if neighborNode.total() < frontNode.total():
+                                frontRm.append(f)
                             else:
-                                # print "Removing: " + str(neighborNode)
-                                if neighborNode in moveNodes:
-                                    moveNodes.remove(neighborNode)
-                                break
+                                neibsRm.append(i)
                 else:
-                    #print "Removing: " + str(neighborNode)
-                    if neighborNode in moveNodes:
-                        moveNodes.remove(neighborNode)
+                    neibsRm.append(i)
+
+        removedFront = 0
+        for rm in list(set(frontRm)):
+            print "FrontRM:",rm - removedFront
+            del frontier[rm - removedFront]
+            removedFront += 1
+
+        removedNeibs = 0
+        for rm in list(set(neibsRm)):
+            print "MovesRM:",rm - removedNeibs
+            del moveNodes[rm - removedNeibs]
+            removedNeibs += 1
 
         print "len of moveNodes"
         print len(moveNodes)
