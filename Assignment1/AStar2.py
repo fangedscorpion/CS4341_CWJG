@@ -5,6 +5,7 @@ def AStar2(world):  # start and goal are cells
     robotDir = 0
     start = world.getStart()
     goal = world.getGoal()
+    print goal.getCoord()
 
     frontier = []  # nodes
     visited = []  # nodes
@@ -18,8 +19,8 @@ def AStar2(world):  # start and goal are cells
         frontier.sort(key=lambda node: node.total())
         # after frontier is sorted the node with the lowest g+h becomes current
         print "------------------------------"
-        print "len of frontier" 
-        print len(frontier)
+        # print "len of frontier"
+        # print len(frontier)
         current = frontier[0]
         if(current.getCell() is goal):  # if its the goal, we are done
             visited.append(current)
@@ -33,8 +34,8 @@ def AStar2(world):  # start and goal are cells
         neighborCells = world.getNeighbors(current.getCell().getCoord())
         neighborNodes = cellsToNodes(current, neighborCells, robotDir, False)
 
-        print "len of neighborNodes" 
-        print len(neighborNodes)
+        # print "len of neighborNodes"
+        # print len(neighborNodes)
         for neighborNode in neighborNodes:
             if not neighborNode in visited:
                 for frontNode in frontier:
@@ -47,7 +48,6 @@ def AStar2(world):  # start and goal are cells
             else:
                 neighborNodes.remove(neighborNode)
 
- 
         frontier += neighborNodes
 
         for neighborNode in neighborNodes:
@@ -71,7 +71,6 @@ def AStar2(world):  # start and goal are cells
         frontier += bashNodes
 
     print "Goal not found!"
-
 
 
 # takes in the current direction, the direction of the
@@ -113,7 +112,8 @@ def cellsToNodes(currCell, listOfCells, robotDir, bashHuh):
         cellCom = listOfCells[j].getComplexity()
         currCellAction = getAction(robotDir, j, curCom, cellCom, bashHuh)
         # make a node based on the
-        newNode = Node(listOfCells[j], currCell, currCellAction, currCell.getCost())
+        newNode = Node(
+            listOfCells[j], currCell, currCellAction, currCell.getCost())
         newNodes.append(newNode)
     return newNodes
 
@@ -127,7 +127,23 @@ if __name__ == "__main__":
     from Bash import *
     from Coord import *
 
-    testWorld = World(open("test_board.txt", "r"))
+    def pathHasStart(path):
+        for node in path:
+            if node.getCell().getIsStart():
+                return True
+        return False
+
+    testWorld = World(open("Our_Worlds\world1_1.txt", "r"))
     print "World Constructed"
 
-    AStar2(testWorld)
+    visited = AStar2(testWorld)
+    print visited[len(visited)-1].getCell().getComplexity()
+    path = [visited[len(visited) - 1]]
+    while not pathHasStart(path):
+        path.append(path[len(path) - 1].getParent())
+        print "working..."
+    print "done"
+
+    path.reverse()
+    for node in path:
+        print node.getCell().getCoord()
