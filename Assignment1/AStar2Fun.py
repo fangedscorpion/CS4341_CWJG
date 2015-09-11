@@ -49,46 +49,32 @@ def AStar2(world):  # start and goal are cells
         print "Building neighbors..."
         neighborCells = world.getNeighbors(current.getCell().getCoord())
         neighborNodes = cellsToNodes(current, neighborCells, current.getRobotDir(), False)
-
-
-        for neighborNode in neighborNodes:
-            if not neighborNode in visited: # I think This is where we are accidentally adding tons of things to visited
-                for frontNode in frontier:
-                    if neighborNode.getCell().getCoord() == frontNode.getCell().getCoord():
-                        if neighborNode.getCost() < frontNode.getCost():
-                            frontier.remove(frontNode)
-                            break
-                        else:
-                            print "Removing: " + str(neighborNode)
-                            neighborNodes.remove(neighborNode)
-                            break
-            else:
-                #print "Removing: " + str(neighborNode)
-                neighborNodes.remove(neighborNode)
-
-        print "len of neighborNodes"
-        print len(neighborNodes)
-        frontier += neighborNodes
-
-        print "Building bash list..."
         bashCells = world.getBashNeighbors(current.getCell().getCoord())
         bashNodes = cellsToNodes(current, bashCells, current.getRobotDir(), True)
+        moveNodes = neighborNodes + bashNodes
 
-        for bashNode in bashNodes:
-            if not bashNode in visited:
-                for frontNode in frontier:
-                    if bashNode.getCell().getCoord() == frontNode.getCell().getCoord():
-                        if bashNode.getCost() < frontNode.getCost():
-                            frontier.remove(frontNode)
-                        else:
-                            bashNodes.remove(bashNode)
-                            break
-            else:
-                bashNodes.remove(bashNode)
 
-        print "len of bashNodes"
-        print len(bashNodes)
-        frontier += bashNodes
+        for neighborNode in moveNodes:
+            for visitNode in visited:
+                if neighborNode.getCell().getCoord() != visitNode.getCell().getCoord(): # I think This is where we are accidentally adding tons of things to visited
+                    for frontNode in frontier:
+                        if neighborNode.getCell().getCoord() == frontNode.getCell().getCoord():
+                            if neighborNode.getCost() < frontNode.getCost():
+                                frontier.remove(frontNode)
+                                break
+                            else:
+                                # print "Removing: " + str(neighborNode)
+                                if neighborNode in moveNodes:
+                                    moveNodes.remove(neighborNode)
+                                break
+                else:
+                    #print "Removing: " + str(neighborNode)
+                    if neighborNode in moveNodes:
+                        moveNodes.remove(neighborNode)
+
+        print "len of moveNodes"
+        print len(moveNodes)
+        frontier += moveNodes
 
 
     print "Goal not found!"
@@ -154,7 +140,7 @@ def cellsToNodes(currCell, listOfCells, robotDir, bashHuh):
 
         curCom = currCell.getCell().getComplexity()
         cellCom = listOfCells[j].getComplexity()
-        print "Rob axn: ", robotDir, " curDir: ", j
+        # print "Rob axn: ", robotDir, " curDir: ", j
         (currCellAction, robotDirTmp) = getAction(robotDir, j, curCom, cellCom, bashHuh)
         # make a node based on the
         newNode = Node(
@@ -192,8 +178,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    testWorld = World(open("test_board.txt", "r"), 1)
-    # testWorld = World(open("Our_Worlds/world1_1.txt", "r"), 1)
+    # testWorld = World(open("test_board.txt", "r"), 1)
+    testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
     print "World Constructed"
 
     visited = AStar2(testWorld)
