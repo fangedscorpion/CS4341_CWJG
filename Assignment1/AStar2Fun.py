@@ -26,6 +26,8 @@ def AStar2(world):  # start and goal are cells
         print "len of visited"
         print len(visited)
         current = frontier[0]
+        print "current Coords"
+        print current.getCell().getCoord()
         if(current.getCell() is goal):  # if its the goal, we are done
             visited.append(current)
             print "Goal Found!"
@@ -168,8 +170,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    # testWorld = World(open("test_board.txt", "r"))
-    testWorld = World(open("Our_Worlds/world1_1.txt", "r"))
+    testWorld = World(open("test_board.txt", "r"))
+    # testWorld = World(open("Our_Worlds/world1_1.txt", "r"))
     print "World Constructed"
 
     visited = AStar2(testWorld)
