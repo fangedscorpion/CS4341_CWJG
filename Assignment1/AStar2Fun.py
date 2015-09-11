@@ -1,8 +1,10 @@
+global robotDir
+robotDir = 0
 
 def AStar2(world):  # start and goal are cells
     print "running AStar2"
 
-    robotDir = 0
+
     start = world.getStart()
     goal = world.getGoal()
     print goal.getCoord()
@@ -19,8 +21,10 @@ def AStar2(world):  # start and goal are cells
         frontier.sort(key=lambda node: node.total())
         # after frontier is sorted the node with the lowest g+h becomes current
         print "------------------------------"
-        # print "len of frontier"
-        # print len(frontier)
+        print "len of frontier"
+        print len(frontier)
+        print "len of visited"
+        print len(visited)
         current = frontier[0]
         if(current.getCell() is goal):  # if its the goal, we are done
             visited.append(current)
@@ -29,58 +33,35 @@ def AStar2(world):  # start and goal are cells
 
         # remove the node being looked at from the frontier
         frontier.remove(current)
-        
-
         visited.append(current)  # add it to the visited list
-        print anydup(visited)
+
+        # print anydup(visited)
         # raw_input()
 
         neighborCells = world.getNeighbors(current.getCell().getCoord())
         neighborNodes = cellsToNodes(current, neighborCells, robotDir, False)
-#uncommenting this
-        print "len of neighborNodes"
-        print len(neighborNodes)
+
+
         for neighborNode in neighborNodes:
-            if not neighborNode in visited:
+            if not neighborNode in visited: # I think This is where we are accidentally adding tons of things to visited
                 for frontNode in frontier:
-                    if neighborNode in frontier:
+                    if neighborNode.getCell().getCoord() is frontNode.getCell().getCoord():
                         if neighborNode.getCost() < frontNode.getCost():
                             frontier.remove(frontNode)
+                            break
                         else:
                             neighborNodes.remove(neighborNode)
                             break
             else:
                 neighborNodes.remove(neighborNode)
 
+        print "len of neighborNodes"
+        print len(neighborNodes)
         frontier += neighborNodes
 
-        for neighborNode in neighborNodes:
-            frontier.append(neighborNode)
-#uncommented to here
-#commenting below
-        # for j in range(0, len(neighborNodes)):
-        #     # if neighborNodes[j] in visited:
-        #     if inList(visited, neighborNodes[j]):
-        #         pass
-        #     else:
-        #         # if neighborNodes[j] in frontier:
-        #         if inList(frontier, neighborNodes[j]):
-        #             for k in range(0, len(frontier)):
-        #                 if (neighborNodes[j]) == frontier[k]:
-        #                     if neighborNodes[j].total() < frontier[k].total:
-        #                         frontier[k] = neighborNodes[j]
-        #                         print "added:", neighborNodes[j].getCell().getCoord()
-        #         else:
-        #             frontier.append(neighborNodes[j])
-        #             print "added:", neighborNodes[j].getCell().getCoord()
-
-        # print "errrthing"
-        # for an in visited:
-        #     print an.getCell().getCoord()
-#commented up to here
         bashCells = world.getBashNeighbors(current.getCell().getCoord())
         bashNodes = cellsToNodes(current, bashCells, robotDir, True)
-#uncommenting below
+
         for bashNode in bashNodes:
             if not bashNode in visited:
                 for frontNode in frontier:
@@ -93,23 +74,10 @@ def AStar2(world):  # start and goal are cells
             else:
                 bashNodes.remove(bashNode)
 
+        print "len of bashNodes"
+        print len(bashNodes)
         frontier += bashNodes
-#to here
-        for j in range(0, len(bashNodes)):
-            # if bashNodes[j] in visited:
-            if inList(visited, bashNodes[j]):
-                pass
-            else:
-                # if bashNodes[j] in frontier:
-                if inList(frontier, bashNodes[j]):
-                    for k in range(0, len(frontier)):
-                        if (bashNodes[j]) == frontier[k]:
-                            if bashNodes[j].total() < frontier[k].total:
-                                frontier[k] = bashNodes[j]
-                                print "added:", bashNodes[j].getCell().getCoord()
-                else:
-                    frontier.append(bashNodes[j])
-                    print "added:", bashNodes[j].getCell().getCoord()
+
 
     print "Goal not found!"
 
@@ -119,15 +87,27 @@ def AStar2(world):  # start and goal are cells
 # and returns the action list for moving from the first cell
 # to the next cell
 def getAction(curDir, cellDir, curCom, cellCom, bashHuh):
+    global robotDir
     delta = curDir - cellDir
     if not bashHuh:
         if delta is 0:  # no turn
             return [FwdAction(cellCom)]
         elif delta is -1 or 3:  # right turn
+            robotDir += 1
+            if robotDir == 4:
+                robotDir = 0
             return [TurnAction(curCom, "r"), FwdAction(cellCom)]
         elif delta is 1 or -3:  # left turn
+            robotDir -= 1
+            if robotDir == -1:
+                robotDir = 3
             return [TurnAction(curCom, "l"), FwdAction(cellCom)]
         elif delta is 2 or -2:  # 180
+            robotDir += 2
+            if robotDir == 4:
+                robotDir = 0
+            if robotDir == 5:
+                robotDir = 1
             return [TurnAction(curCom, "r"), TurnAction(curCom, "r"), FwdAction(cellCom)]
     if bashHuh:
         if delta is 0:  # no turn
@@ -188,7 +168,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    testWorld = World(open("test_board.txt", "r"))
+    # testWorld = World(open("test_board.txt", "r"))
+    testWorld = World(open("Our_Worlds/world1_1.txt", "r"))
     print "World Constructed"
 
     visited = AStar2(testWorld)
