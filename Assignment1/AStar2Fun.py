@@ -170,8 +170,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    testWorld = World(open("test_board.txt", "r"))
-    # testWorld = World(open("Our_Worlds/world1_1.txt", "r"))
+    testWorld = World(open("test_board.txt", "r"), 1)
+    # testWorld = World(open("Our_Worlds/world1_1.txt", "r"), 1)
     print "World Constructed"
 
     visited = AStar2(testWorld)
