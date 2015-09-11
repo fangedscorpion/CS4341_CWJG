@@ -23,15 +23,21 @@ def AStar2(world):  # start and goal are cells
     while len(frontier) is not 0:
         # HOPEFULLY ths sorts the list so that the least g+h is first
         frontier.sort(key=lambda node: node.total())
-        for node in frontier:
-            print node
+        # for node in frontier:
+            # print node
         # after frontier is sorted the node with the lowest g+h becomes current
+
+        current = frontier[0]
+        # remove the node being looked at from the frontier
+        frontier.remove(current)
+        visited.append(current)  # add it to the visited list
+
         print "------------------------------"
         print "len of frontier"
         print len(frontier)
         print "len of visited"
         print len(visited)
-        current = frontier[0]
+        
         print "current Coords"
         print current.getCell().getCoord()
         if(current.getCell().getIsGoal()):  # if its the goal, we are done
@@ -39,9 +45,7 @@ def AStar2(world):  # start and goal are cells
             print "Goal Found!"
             return visited
 
-        # remove the node being looked at from the frontier
-        frontier.remove(current)
-        visited.append(current)  # add it to the visited list
+
 
         # print anydup(visited)
         # raw_input()
@@ -54,23 +58,23 @@ def AStar2(world):  # start and goal are cells
         moveNodes = neighborNodes + bashNodes
 
 
-        for neighborNode in moveNodes:
-            for visitNode in visited:
-                if neighborNode.getCell().getCoord() != visitNode.getCell().getCoord(): # I think This is where we are accidentally adding tons of things to visited
-                    for frontNode in frontier:
-                        if neighborNode.getCell().getCoord() == frontNode.getCell().getCoord():
-                            if neighborNode.getCost() < frontNode.getCost():
-                                frontier.remove(frontNode)
+        for moveNode in moveNodes: #for each possible move from the current cell
+            for visitNode in visited: #see if that move would put us in a cell thats already been visited
+                if moveNode.getCell().getCoord() != visitNode.getCell().getCoord(): #if we've not visited this cell before
+                    for frontNode in frontier: #ee if the move would put us in a cell that is already in the frontier
+                        if moveNode.getCell().getCoord() == frontNode.getCell().getCoord(): # if it is
+                            if moveNode.getCost() < frontNode.getCost(): # check if the new move is cheaper than the old move
+                                frontier.remove(frontNode) # if it is, remove the old move from frontier
                                 break
-                            else:
-                                # print "Removing: " + str(neighborNode)
-                                if neighborNode in moveNodes:
-                                    moveNodes.remove(neighborNode)
+                            else: # otherwise, remove the new node from the list of nodes that will be added to frontier
+                                # print "Removing: " + str(moveNode)
+                                if moveNode in moveNodes:
+                                    moveNodes.remove(moveNode)
                                 break
-                else:
-                    #print "Removing: " + str(neighborNode)
-                    if neighborNode in moveNodes:
-                        moveNodes.remove(neighborNode)
+                else: # if the node we are looking at would put us in a cell thats already been visited
+                    #print "Removing: " + str(moveNode)
+                    if moveNode in moveNodes:
+                        moveNodes.remove(moveNode) # remove the new node  from the list of nodes to be added to the frontier
 
         print "len of moveNodes"
         print len(moveNodes)
@@ -178,8 +182,8 @@ if __name__ == "__main__":
                 return True
         return False
 
-    # testWorld = World(open("test_board.txt", "r"), 1)
-    testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
+    testWorld = World(open("test_board.txt", "r"), 4)
+    # testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
     print "World Constructed"
 
     visited = AStar2(testWorld)
