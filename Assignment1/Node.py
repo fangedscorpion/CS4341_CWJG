@@ -133,6 +133,11 @@ if __name__ == "__main__":
     print a_node != b_node, True
     print "**"
 
+    print "***"
+    a_list = [a_node, b_node]
+    print c_node in a_list
+    print "***"
+
     a_node.addAction(TurnAction(6, "r"))
     print a_node.getActionList()
     print a_node.getCost(), 12
