@@ -35,7 +35,7 @@ class Node:
     def getActionList(self):
         return self.actionList
 
-    def getCurrentCell(self):
+    def getCell(self):
         return self.currentCell
 
     # this function returns the cost so far to the node
@@ -88,17 +88,57 @@ class Node:
     def justBashed(self):
         return self.actionList[len(self.actionList) - 1].getActionName().lower() == "bash"
 
+    # this function returns the heuristic of the cell in this node
+    # INPUT -> none
+    # OUTPUT -> (int) heuristic
+    def getH(self):
+        return self.getCell().getH()
+
+    # this function returns the total evaluation for the node, travel cost + heuristic
+    # INPUT -> none
+    # OUTPUT -> (int) cost
+    def total(self):
+        return self.getCost() + self.getH()
+
+    # overriding the equals (==) operator
+    def __eq__(self, other):
+        return (self.getCell().getCoord().getX() == other.getCell().getCoord().getX()) and (self.getCell().getCoord().getY() == other.getCell().getCoord().getY())
+
+    # overriding the not equals (!=) operator
+    def __ne__(self, other):
+        return not self == other
+
 if __name__ == "__main__":
     from Bash import Bash
     from FwdAction import FwdAction
     from TurnAction import TurnAction
+    from Cell import Cell
+    from Coord import Coord
+    from Heuristic import Heuristic
 
-    a_node = Node("cell", "parentA", [FwdAction(4)], 6)
+    aC = Cell(Coord(1, 1), 4)
+    bC = Cell(Coord(2, 2), 3)
+    aH = Heuristic(2, Coord(2, 2))
+    aC.setHorizVertDists(3, 4)
+    aC.setH(aH.getHeur(aC))
+    a_node = Node(aC, "parentA", [FwdAction(4)], 6)
+    b_node = Node(bC, "parentB", [FwdAction(4)], 5)
+    c_node = Node(aC, "parentC", [FwdAction(7)], 3)
     print a_node.getCost(), 10
     print a_node.getActionList()
+    print a_node.getH(), 3
+    print a_node.total(), 13
+    print a_node == b_node, False
+    print a_node == c_node, True
+    print a_node != b_node, True
     print "**"
 
-    a_node.addAction(TurnAction(6))
+    print "***"
+    a_list = [a_node, b_node]
+    print c_node in a_list
+    print "***"
+
+    a_node.addAction(TurnAction(6, "r"))
     print a_node.getActionList()
     print a_node.getCost(), 12
     print a_node.didIBash(), False

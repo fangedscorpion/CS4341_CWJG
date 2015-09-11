@@ -10,6 +10,7 @@ class Cell:
         self.vertDist = -1
         self.horizDist = -1
         self.isValid = False
+        self.heur = -1
 
         if(str(complexity).lower() == 'g'):
             self.isGoal = True
@@ -29,6 +30,18 @@ class Cell:
                 self.isValid = True
             else:
                 self.isValid = False
+
+    # this function returns the heuristic value for this cell
+    # IN: -
+    # OUT: (int) heuristic
+    def getH(self):
+        return self.heur
+
+    # this function sets the heuristic for this cell
+    # IN: (int) heuristic
+    # OUT: -
+    def setH(self, val):
+        self.heur = val
 
     # IN: -
     # OUT: returns Boolean if is the goal
@@ -84,16 +97,20 @@ class Cell:
             return "NULL"
 
 if __name__ == "__main__":
+    from Heuristic import Heuristic
     coord = Coord(1, 1)
+    gcoord = Coord(2, 2)
     complexity = 7
     horizDist = -1
     vertDist = -1
-
+    aH = Heuristic(1, gcoord)
     testCell = Cell(coord, complexity)
     testCell.setHorizVertDists(horizDist, vertDist)
+    testCell.setH(aH.getHeur(testCell))
 
     print testCell
     assert testCell.IsValid() == True
+    print testCell.getH(), 0
     testCell2 = Cell(coord, -1)
-    print testCell2
+    print testCell2, "NULL"
     assert testCell2.IsValid() == False

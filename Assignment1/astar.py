@@ -1,6 +1,6 @@
 import sys
 from World import World
-from AStar2 import AStar2
+from AStar2Fun import AStar2
 
 # this function tests if a given path of Nodes has a start Node
 # INPUT -> (list of Nodes) path
