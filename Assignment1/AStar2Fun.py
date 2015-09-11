@@ -41,7 +41,6 @@ def AStar2(world):  # start and goal are cells
         print "current Coords"
         print current.getCell().getCoord()
         if(current.getCell().getIsGoal()):  # if its the goal, we are done
-            visited.append(current)
             print "Goal Found!"
             return visited
 

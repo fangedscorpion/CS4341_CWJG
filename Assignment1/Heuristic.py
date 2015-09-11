@@ -20,6 +20,7 @@ class Heuristic(object):
     # INPUT -> (Cell) a cell to calculate by
     # OUTPUT -> (int) heuristic
     def getHeur(self, a_cell):
+        print self.function
         if (self.function == 1):
             return self.heur1(a_cell)
         elif (self.function == 2):
@@ -33,6 +34,7 @@ class Heuristic(object):
         elif (self.function == 6):
             return self.heur6(a_cell)
         else:
+            print "FUTZED"
             return 0
 
     # This function returns the heuristic evaluation for heuristic 1

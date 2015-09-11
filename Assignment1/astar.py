@@ -47,7 +47,7 @@ if __name__ == "__main__":
         print "Structure is: python astar.py filename.txt <heuristic function integer>"
     else:
         filename = sys.argv[1]
-        heuristic = sys.argv[2]
+        heuristic = int(sys.argv[2])
 
         the_world = World(open(filename, "r"), heuristic)
         visited = AStar2(the_world)
@@ -62,10 +62,10 @@ if __name__ == "__main__":
 
         path.reverse()
         print "-----"
-        # The score
-        print "The score of expansion:",
-        print getScore(visited)
-        print
+        # # The score
+        # print "The score of expansion:",
+        # print getScore(visited)
+        # print
 
         print "The score of path:",
         print getScore(path)

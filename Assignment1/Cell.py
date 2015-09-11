@@ -92,7 +92,7 @@ class Cell:
             return ("CL:" + str(self.coord) +
                     "CM:" + str(self.complexity) +
                     "V,H:" + str(self.vertDist) +
-                    "," + str(self.horizDist))
+                    "," + str(self.horizDist) + "H:" + str(self.getH()))
         else:
             return "NULL"
 
