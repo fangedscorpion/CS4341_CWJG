@@ -74,7 +74,8 @@ class Heuristic(object):
         #     return self.heur4(a_cell) + 1
         # else:
         #     return self.heur4(a_cell)
-        return sqrt(pow(a_cell.getVertDist(), 2) + pow(a_cell.getHorizDist(), 2))
+        # return sqrt(pow(a_cell.getVertDist(), 2) + pow(a_cell.getHorizDist(), 2))
+        return 2*self.heur4(a_cell)
 
     # This function returns the heuristic evaluation for heuristic 6
     # This function returns a non-admissable heuristic, heur5 * 3
