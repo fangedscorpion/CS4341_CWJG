@@ -1,6 +1,7 @@
 """ Class for Heuristic functions """
 from Coord import Coord
 from Cell import Cell
+from math import sqrt
 
 class Heuristic(object):
     # function is an integer representing the specific huersitic function
@@ -20,7 +21,6 @@ class Heuristic(object):
     # INPUT -> (Cell) a cell to calculate by
     # OUTPUT -> (int) heuristic
     def getHeur(self, a_cell):
-        print self.function
         if (self.function == 1):
             return self.heur1(a_cell)
         elif (self.function == 2):
@@ -34,7 +34,6 @@ class Heuristic(object):
         elif (self.function == 6):
             return self.heur6(a_cell)
         else:
-            print "FUTZED"
             return 0
 
     # This function returns the heuristic evaluation for heuristic 1
@@ -71,10 +70,11 @@ class Heuristic(object):
     # INPUT -> (Cell) the cell being evaluated
     # OUTPUT -> (int) heuristic calculaton
     def heur5(self, a_cell):
-        if (a_cell.getHorizDist() != 0) and (a_cell.getVertDist() != 0):
-            return self.heur4(a_cell) + 1
-        else:
-            return self.heur4(a_cell)
+        # if (a_cell.getHorizDist() != 0) and (a_cell.getVertDist() != 0):
+        #     return self.heur4(a_cell) + 1
+        # else:
+        #     return self.heur4(a_cell)
+        return sqrt(pow(a_cell.getVertDist(), 2) + pow(a_cell.getHorizDist(), 2))
 
     # This function returns the heuristic evaluation for heuristic 6
     # This function returns a non-admissable heuristic, heur5 * 3

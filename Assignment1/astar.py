@@ -43,6 +43,8 @@ def getActions(pth):
 
 
 if __name__ == "__main__":
+    debug_mode = 1
+
     if len(sys.argv) != 3:
         print "Structure is: python astar.py filename.txt <heuristic function integer>"
     else:
@@ -50,18 +52,18 @@ if __name__ == "__main__":
         heuristic = int(sys.argv[2])
 
         the_world = World(open(filename, "r"), heuristic)
-        visited = AStar2(the_world)
+        (visited, numMoves) = AStar2(the_world, debug_mode)
 
-        for visitNode in visited:
-            print "*" * 20
-            print visitNode
+        if(debug_mode == 1):
+            for visitNode in visited:
+                print "*" * 20
+                print visitNode
 
         path = [visited[len(visited) - 1]]
         while not pathHasStart(path):
             path.append(path[len(path) - 1].getParent())
 
         path.reverse()
-        print "-----"
         # # The score
         # print "The score of expansion:",
         # print getScore(visited)
@@ -70,6 +72,9 @@ if __name__ == "__main__":
         print "The score of path:",
         print getScore(path)
         print
+
+        #branching factor
+        print "Branching factor: ",str(numMoves),"/",str(len(visited)),"=",str(numMoves / float(len(visited)))
 
         # Number of actions
         print "The number of actions required to reach the goal:",

@@ -1,6 +1,5 @@
 from Action import Action
 
-
 class Node:
 
     """This is the class the represents the node of a path. This is like a path segment essentially"""
@@ -23,7 +22,7 @@ class Node:
 
     def getRobotDir(self):
         return self.robotDirection
-        
+
     # This function returns the parent node
     # INPUT -> none
     # OUTPUT -> (Node) self.parentNode
@@ -107,8 +106,8 @@ class Node:
     #Printing nodes
     def __repr__(self):
         strRet =  "{Cell: " + str(self.currentCell)
-        for i in range(len(self.actionList)):
-            strRet = strRet + "\n  ACT: " + str(self.actionList[i])
+        # for i in range(len(self.actionList)):
+        #     strRet = strRet + "\n  ACT: " + str(self.actionList[i])
         #strRet = strRet + "\n  PAR: " + str(self.parentNode) +
         strRet = strRet + "\nCOST: " + str(self.cost) + "}"
         return strRet
@@ -135,9 +134,9 @@ if __name__ == "__main__":
     aH = Heuristic(2, Coord(2, 2))
     aC.setHorizVertDists(3, 4)
     aC.setH(aH.getHeur(aC))
-    a_node = Node(aC, "parentA", [FwdAction(4)], 6)
-    b_node = Node(bC, "parentB", [FwdAction(4)], 5)
-    c_node = Node(aC, "parentC", [FwdAction(7)], 3)
+    a_node = Node(aC, "parentA", [FwdAction(4)], 6, 0)
+    b_node = Node(bC, "parentB", [FwdAction(9)], 5, 0)
+    c_node = Node(aC, "parentC", [FwdAction(7)], 3, 0)
     print a_node.getCost(), 10
     print a_node.getActionList()
     print a_node.getH(), 3
@@ -149,6 +148,10 @@ if __name__ == "__main__":
 
     print "***"
     a_list = [a_node, b_node]
+    print c_node in a_list
+    print a_list
+    a_list.remove(c_node)
+    print a_list
     print c_node in a_list
     print "***"
 

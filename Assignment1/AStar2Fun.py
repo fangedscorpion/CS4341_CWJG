@@ -5,16 +5,20 @@ from FwdAction import *
 from TurnAction import *
 from Bash import *
 from Coord import *
+def AStar2(world, DEBUG_MODE):  # start and goal are cells
 
-def AStar2(world):  # start and goal are cells
-    print "running AStar2"
+    if(DEBUG_MODE == 1):
+        print "running AStar2"
 
     start = world.getStart()
     goal = world.getGoal()
-    print goal.getCoord()
+    if(DEBUG_MODE == 1):
+        print goal.getCoord()
 
     frontier = []  # nodes
     visited = []  # nodes
+
+    numberMoves = 0
 
     firstNode = Node(start, Cell(Coord(-1, -1), -1), [], 0, 0) # Last 0 is robot dir!
 
@@ -32,29 +36,37 @@ def AStar2(world):  # start and goal are cells
         del frontier[0]
         visited.append(current)  # add it to the visited list
 
-        print "------------------------------"
-        print "len of frontier"
-        print len(frontier)
-        print "len of visited"
-        print len(visited)
-        
-        print "current Coords"
-        print current.getCell().getCoord()
+        if(DEBUG_MODE == 1):
+            print "------------------------------"
+            print "len of frontier"
+            print len(frontier)
+            print "len of visited"
+            print len(visited)
+            
+            print "current Coords"
+            print current.getCell().getCoord()
+
         if(current.getCell().getIsGoal()):  # if its the goal, we are done
-            print "Goal Found!"
-            return visited
+            if(DEBUG_MODE == 1):
+                print "Goal Found!"
+            return (visited, numberMoves)
 
         # print anydup(visited)
         # raw_input()
 
-        print "Building neighbors..."
+        if(DEBUG_MODE == 1):
+            print "Building neighbors..."
+
         neighborCells = world.getNeighbors(current.getCell().getCoord())
         neighborNodes = cellsToNodes(current, neighborCells, current.getRobotDir(), False)
         bashCells = world.getBashNeighbors(current.getCell().getCoord())
         bashNodes = cellsToNodes(current, bashCells, current.getRobotDir(), True)
         moveNodes = list(neighborNodes + bashNodes)
 
-        print len(moveNodes)
+        numberMoves += len(moveNodes)
+        
+        if(DEBUG_MODE == 1):
+            print len(moveNodes)
 
         neibsRm = []
         frontRm = []
@@ -75,22 +87,27 @@ def AStar2(world):  # start and goal are cells
 
         removedFront = 0
         for rm in list(set(frontRm)):
-            print "FrontRM:",rm - removedFront
+            if(DEBUG_MODE == 1):
+                print "FrontRM:",rm - removedFront
             del frontier[rm - removedFront]
             removedFront += 1
 
         removedNeibs = 0
         for rm in list(set(neibsRm)):
-            print "MovesRM:",rm - removedNeibs
+            if(DEBUG_MODE == 1):
+                print "MovesRM:",rm - removedNeibs
             del moveNodes[rm - removedNeibs]
             removedNeibs += 1
 
-        print "len of moveNodes"
-        print len(moveNodes)
+        if(DEBUG_MODE == 1):
+            print "len of moveNodes"
+            print len(moveNodes)
         frontier += moveNodes
 
 
-    print "Goal not found!"
+    if(DEBUG_MODE == 1):
+        print "Goal not found!"
+    return ([], numberMoves)
 
 
 # takes in the current direction, the direction of the
@@ -195,7 +212,7 @@ if __name__ == "__main__":
     # testWorld = World(open("Our_Worlds/world1_5.txt", "r"), 1)
     print "World Constructed"
 
-    visited = AStar2(testWorld)
+    (visited, numMoves) = AStar2(testWorld, 1)
     print visited[len(visited)-1].getCell().getComplexity()
     path = [visited[len(visited) - 1]]
     while not pathHasStart(path):
