@@ -43,7 +43,7 @@ def getActions(pth):
 
 
 if __name__ == "__main__":
-    debug_mode = 1
+    debug_mode = 0
 
     if len(sys.argv) != 3:
         print "Structure is: python astar.py filename.txt <heuristic function integer>"
