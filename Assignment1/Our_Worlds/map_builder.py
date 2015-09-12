@@ -22,9 +22,7 @@ start = [randint(0, tenR), randint(0, tenC)]
 goal = [randint(ninR, row-1), randint(ninC, col-1)]
 
 world[start[0]][start[1]] = "S"
-print world[start[0]][start[1]], "S"
 world[goal[0]][goal[1]] = "G"
-print start, goal
 for x in range(0, row):
 	for y in range(0, col):
 		file.write(world[x][y])
