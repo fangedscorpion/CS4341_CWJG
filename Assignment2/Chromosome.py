@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-class Abstract(object):
+class Chromosome(object):
     __metaclass__ = ABCMeta
 
     # This method initializes the chromosome for generation 0
