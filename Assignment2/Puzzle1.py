@@ -1,27 +1,33 @@
 import Chromosome
-class Puzzle2(Chromosome):
+class Puzzle1(Chromosome):
 
-	def __init__(self, bin1List, bin2List, bin3List):
-		self.bin1 = bin1List
-		self.bin2 = bin2List
-		self.bin3 = bin3List
+    def __init__(self, listOfNum):
+        self.lon = listOfNum
 
     # This method initializes the Puzzle for generation 0
     def initialize(self):
-    	pass
+        pass
 
     # This method checks if a Puzzle is legal
     def checkLegality(self):
-    	pass
+        pass
 
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
-    	pass
+        
 
     # this function evaluates the fitness of a Puzzle
     def fitness(self):
-    	pass
+        pass
 
     # this funcction mutates a Puzzle
     def mutate(self):
-    	pass
+        pass
+
+    def getListOfNum(self):
+        return self.lon
+
+
+if __name__ == '__main__':
+
+
