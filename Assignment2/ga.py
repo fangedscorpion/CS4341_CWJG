@@ -1,5 +1,6 @@
 import sys
 from ListParser import ListParser
+from geneticAlgo import geneticAlgo
 
 if __name__ == "__main__":
     debug_mode = 1
@@ -11,11 +12,15 @@ if __name__ == "__main__":
         puzzleNum = int(sys.argv[2])
         secondsToRun = int(sys.argv[3])
 
-        the_list = ListParser(open(filename, "r"), puzzleNum)
+        the_list_parser = ListParser(open(filename, "r"), puzzleNum)
 
         if(debug_mode == 1):
-        	print the_list.getList()
+        	print the_list_parser.getList()
         	print
-        	print the_list.getDictionary()
+        	print the_list_parser.getDictionary()
         	print
-        	print the_list.getTarget()
+        	print the_list_parser.getTarget()
+
+        geneticAlgo(the_list_parser.getList(), secondsToRun, the_list_parser.getDictionary())
+
+
