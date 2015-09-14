@@ -6,6 +6,10 @@ class Chromosome(object):
     def initialize(self):
         self.generation = 0
 
+    # This method initializes the chromosome for generation 0
+    def initialize(self):
+        pass
+
     # This method checks if a chromosome is legal
     def checkLegality(self):
         pass
