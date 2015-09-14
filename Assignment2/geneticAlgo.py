@@ -7,7 +7,8 @@ def geneticAlgo(lon, allowedTime): #loe = list of numbers
     parents = createParents(lon, popSize)
 
     while timeRef + allowedTime <= time.clock():
-        parents.sort
+        makeMatingPool(parents)
+
 
 
 
@@ -26,8 +27,15 @@ def makeMasterDict(lon):
                 tempLon.remove(dups)
                 numOfEach += 1
         masterDict[each] = numOfEach
-    
+
     return masterDict  
+
+
+def makeMatingPool(parents):
+    for parentA in parents:
+        parentB = parents[random.random(0,(len(parents)-1))]
+        if parentA.fitness > parentB.fitness:
+            
 
 def createParents(lon, popSize):
     for i in range (popSize):
