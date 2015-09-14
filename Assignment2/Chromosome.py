@@ -1,23 +1,26 @@
 class Chromosome(object):
-    def __init__(self):
-    	pass
+    def __init__(self, gen):
+        self.generation = gen
 
     # This method initializes the chromosome for generation 0
     def initialize(self):
-    	pass
+        self.generation = 0
 
     # This method checks if a chromosome is legal
     def checkLegality(self):
-    	pass
+        pass
 
     # This method does a crossover for multiple chromosomes
     def crossover(self):
-    	pass
+        pass
 
     # this function evaluates the fitness of a chromosome
     def fitness(self):
-    	pass
+        pass
 
     # this funcction mutates a chromosome
     def mutate(self):
-    	pass
+        pass
+
+    def getGeneration(self):
+        return self.generation
