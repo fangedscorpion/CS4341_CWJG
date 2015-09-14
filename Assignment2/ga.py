@@ -4,7 +4,7 @@ from ListParser import ListParser
 if __name__ == "__main__":
     debug_mode = 1
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print "Structure is: python ga.py filename.txt puzzleNum secondsToRun"
     else:
         filename = sys.argv[1]
