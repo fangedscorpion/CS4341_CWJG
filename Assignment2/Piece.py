@@ -14,6 +14,12 @@ class Piece:
 		return (str(self.type) + "," + str(self.width) + "," + str(self.strength) + \
 			"," + str(self.cost))
 
+	def __eq__(self, other):
+		return (self.type.lower() == other.getType().lower() and
+				self.width == other.getWidth() and
+				self.strength == other.getStrength() and
+				self.cost == other.getCost())
+
 	def getCost(self):
 		return self.cost
 
@@ -27,7 +33,7 @@ class Piece:
 		return self.width
 
 	def getDictKey(self):
-		return (self.type[0]+str(self.width)+str(self.strength)+str(self.cost))
+		return (self.type[0]+str(self.width)+str(self.strength)+str(self.cost)) #unhashable otherwise
 
 if __name__ == '__main__':
 	d1 = Piece("Door", 5,3,2)
