@@ -1,6 +1,7 @@
 from Chromosome import *
 import random as rand
 
+
 class Puzzle2(Chromosome):
 
     def __init__(self, bin1List, bin2List, bin3List, generation):
@@ -57,8 +58,8 @@ class Puzzle2(Chromosome):
     # this function evaluates the fitness of a Puzzle
     # fitness = product(bin1) + sum(bin2)
     def fitness(self):
-        bProd = 1;
-        bSum = 0;
+        bProd = 1
+        bSum = 0
 
         # because  for a Puzzle2 to be legal, all bins must be the same size
         # therefore, 1 for loop can be used
@@ -66,7 +67,7 @@ class Puzzle2(Chromosome):
             bProd *= self.bin1[j]
             bSum += self.bin2[j]
 
-        return (bProd + bSum)/2
+        return (bProd + bSum) / 2
 
     def getValidMutatedNumber(self):
         # Consult dictionary here ???
@@ -119,11 +120,10 @@ class Puzzle2(Chromosome):
     # The fixChild class then makes the kid legal
     def mutate(self):
         spareNums = []
-        for x in range(0,len(self.bin1)):
-            l1Rand = rand.randint(1,100)
-            l2Rand = rand.randint(1,100)
-            l3Rand = rand.randint(1,100)
-
+        for x in range(0, len(self.bin1)):
+            l1Rand = rand.randint(1, 100)
+            l2Rand = rand.randint(1, 100)
+            l3Rand = rand.randint(1, 100)
 
             if(l1Rand <= self.mutationThreshold):
                 spareNums.append([1, x, self.bin1[x]])
@@ -149,12 +149,12 @@ class Puzzle2(Chromosome):
         return self.bin3
 
     def __repr__(self):
-        return ("Bin1: " + str(self.bin1) + "\nBin2: " + \
+        return ("Bin1: " + str(self.bin1) + "\nBin2: " +
                 str(self.bin2) + "\nBin3: " + str(self.bin3) + "\n")
 
 if __name__ == '__main__':
     from Puzzle2 import Puzzle2
-    a = [1,0,-6,-9.9,8,4.5,3,3.8,2.5]
+    a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
     par1 = Puzzle2(a[0:3], a[3:6], a[6:9], 0)
     par2 = Puzzle2(a[3:6], a[0:3], a[6:9], 0)
     par3 = Puzzle2(a[6:9], a[3:6], a[0:3], 0)
@@ -183,3 +183,4 @@ if __name__ == '__main__':
 
     print "Par1 after Xover:\n",par1
     print "Part after Xover:\n",par5
+
