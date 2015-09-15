@@ -69,10 +69,7 @@ class Puzzle2(Chromosome):
 
         return (bProd + bSum) / 2
 
-    def getValidMutatedNumber(self):
-        # Consult dictionary here ???
-        return rand.randint(1, 50)
-
+    # This is the version for when the chromosome is already legal
     def fixChild(self, listOfChangedNums):
         print listOfChangedNums
 
@@ -114,11 +111,14 @@ class Puzzle2(Chromosome):
             elif(lastChangedTuple[0] == 3):
                 self.bin3[lastChangedTuple[1]] = lastChangedTuple[2]
 
+    def getValidMutatedNumberIndex(self, lenMasterListOfNum):
+        return rand.randint(0, (lenMasterListOfNum-1))
+
     # this funcction mutates a Puzzle
     # It goes through all three at once and mutates if the number is between 1 and 8
     # If so it gets added to spareNums as a tuple with the changed index and the bin #
     # The fixChild class then makes the kid legal
-    def mutate(self):
+    def mutate(self, masterListOfNum):
         spareNums = []
         for x in range(0, len(self.bin1)):
             l1Rand = rand.randint(1, 100)
@@ -127,15 +127,15 @@ class Puzzle2(Chromosome):
 
             if(l1Rand <= self.mutationThreshold):
                 spareNums.append([1, x, self.bin1[x]])
-                #self.bin1[x] = self.getValidMutatedNumber()
+                self.bin1[x] = masterListOfNum[self.getValidMutatedNumberIndex(len(masterListOfNum))]
 
             if(l2Rand <= self.mutationThreshold):
                 spareNums.append([2, x, self.bin2[x]])
-                #self.bin2[x] = self.getValidMutatedNumber()
+                self.bin2[x] = masterListOfNum[self.getValidMutatedNumberIndex(len(masterListOfNum))]
 
             if(l3Rand <= self.mutationThreshold):
                 spareNums.append([3, x, self.bin3[x]])
-                #self.bin3[x] = self.getValidMutatedNumber()
+                self.bin3[x] = masterListOfNum[self.getValidMutatedNumberIndex(len(masterListOfNum))]
 
         self.fixChild(spareNums)
 
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     print par3
     print par4
 
-    par4.mutate()
+    par4.mutate(a) # Must pass in master list
 
     print par4
 
@@ -173,6 +173,7 @@ if __name__ == '__main__':
 
     print "Fitness for par1: ", par1.fitness(),"\n"
     print "-"*20
+    print a
 
     par5 = par2
 
