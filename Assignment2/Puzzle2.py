@@ -21,7 +21,38 @@ class Puzzle2(Chromosome):
 
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
-        pass
+        cutPointInt = rand.randint(1,(len(self.bin1)-1))
+        print "Cut point: ", cutPointInt
+
+        par1Bin1Front = self.bin1[0:cutPointInt] # up to but not including the cutPointInt
+        par1Bin2Front = self.bin2[0:cutPointInt]
+        par1Bin3Front = self.bin3[0:cutPointInt]
+
+        par2Bin1Front = other.bin1[0:cutPointInt] # up to but not including the cutPointInt
+        par2Bin2Front = other.bin2[0:cutPointInt]
+        par2Bin3Front = other.bin3[0:cutPointInt]
+
+        par1Bin1End = self.bin1[cutPointInt:len(self.bin1)] # up to but not including the end length
+        par1Bin2End = self.bin2[cutPointInt:len(self.bin2)]
+        par1Bin3End = self.bin3[cutPointInt:len(self.bin3)]
+
+        par2Bin1End = other.bin1[cutPointInt:len(other.bin1)] # up to but not including the end length
+        par2Bin2End = other.bin2[cutPointInt:len(other.bin2)]
+        par2Bin3End = other.bin3[cutPointInt:len(other.bin3)]
+
+        par1Bin1Front.extend(par2Bin1End)
+        self.bin1 = par1Bin1Front
+        par1Bin2Front.extend(par2Bin2End)
+        self.bin2 = par1Bin2Front
+        par1Bin3Front.extend(par2Bin3End)
+        self.bin3 = par1Bin3Front
+        
+        par2Bin1Front.extend(par1Bin1End)
+        other.bin1 = par2Bin1Front
+        par2Bin2Front.extend(par1Bin2End)
+        other.bin2 = par2Bin2Front
+        par2Bin3Front.extend(par1Bin3End)
+        other.bin3 = par2Bin3Front
 
     # this function evaluates the fitness of a Puzzle
     # fitness = product(bin1) + sum(bin2)
@@ -38,7 +69,7 @@ class Puzzle2(Chromosome):
         return (bProd + bSum)/2
 
     def getValidMutatedNumber(self):
-        # Consult dictionary here
+        # Consult dictionary here ???
         return rand.randint(1, 50)
 
     def fixChild(self, listOfChangedNums):
@@ -96,15 +127,15 @@ class Puzzle2(Chromosome):
 
             if(l1Rand <= self.mutationThreshold):
                 spareNums.append([1, x, self.bin1[x]])
-                self.bin1[x] = self.getValidMutatedNumber()
+                #self.bin1[x] = self.getValidMutatedNumber()
 
             if(l2Rand <= self.mutationThreshold):
                 spareNums.append([2, x, self.bin2[x]])
-                self.bin2[x] = self.getValidMutatedNumber()
+                #self.bin2[x] = self.getValidMutatedNumber()
 
             if(l3Rand <= self.mutationThreshold):
                 spareNums.append([3, x, self.bin3[x]])
-                self.bin3[x] = self.getValidMutatedNumber()
+                #self.bin3[x] = self.getValidMutatedNumber()
 
         self.fixChild(spareNums)
 
@@ -140,4 +171,15 @@ if __name__ == '__main__':
 
     print "Generation 0?: ", par1.getGeneration()
 
-    print par1.fitness()
+    print "Fitness for par1: ", par1.fitness(),"\n"
+    print "-"*20
+
+    par5 = par2
+
+    print "Par1 before Xover:\n",par1
+    print "Par5 before Xover:\n",par5
+
+    par1.crossover(par5)
+
+    print "Par1 after Xover:\n",par1
+    print "Part after Xover:\n",par5
