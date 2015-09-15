@@ -17,8 +17,16 @@ class Puzzle2(Chromosome):
         super(Puzzle2, self).__init__(0)
 
     # This method checks if a Puzzle is legal
-    def checkLegality(self):
-        pass
+    # INPUT -> (dict) master dictionary
+    # OUTPUT -> (boolean) true
+    #			[(#, (count, [(bin#, index),...])),...]
+    def checkLegality(self, master):
+        # thisDict = master.copy()
+
+        # for i in range(0, len(self.bin1)):
+        # 	if (thisDict.has_key(self.bin1[i])):
+        # 		thisDict[self.bin1] =
+
 
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
