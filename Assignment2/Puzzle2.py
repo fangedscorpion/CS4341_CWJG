@@ -1,5 +1,6 @@
 from Chromosome import *
 import random as rand
+
 class Puzzle2(Chromosome):
 
     def __init__(self, bin1List, bin2List, bin3List, generation):
@@ -23,8 +24,18 @@ class Puzzle2(Chromosome):
         pass
 
     # this function evaluates the fitness of a Puzzle
+    # fitness = product(bin1) + sum(bin2)
     def fitness(self):
-        pass
+        bProd = 1;
+        bSum = 0;
+
+        # because  for a Puzzle2 to be legal, all bins must be the same size
+        # therefore, 1 for loop can be used
+        for j in range(0, len(self.bin1)):
+            bProd *= self.bin1[j]
+            bSum += self.bin2[j]
+
+        return (bProd + bSum)/2
 
     def getValidMutatedNumber(self):
         # Consult dictionary here
@@ -121,3 +132,4 @@ if __name__ == '__main__':
 
     print par1.getGeneration()
 
+    print par1.fitness()
