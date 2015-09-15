@@ -8,7 +8,7 @@ class Puzzle2(Chromosome):
         self.bin2 = bin2List
         self.bin3 = bin3List
 
-        self.mutationThreshold = 8 # 8% for each digit
+        self.mutationThreshold = 50 # Percentage of 100 for each digit
 
     # This method initializes the Puzzle for generation 0
     def initialize(self):
@@ -33,35 +33,43 @@ class Puzzle2(Chromosome):
     def fixChild(self, listOfChangedNums):
         print listOfChangedNums
 
-        for x in range(0, len(listOfChangedNums)-1):
+        for x in range(0, (len(listOfChangedNums)-1), 2):
             # Generate another rand int in size of changed list
-            ind1 = rand.randint(0, len(listOfChangedNums)-1)
-            ind2 = rand.randint(0, len(listOfChangedNums)-1)
+            ind1 = rand.randint(0, (len(listOfChangedNums)-1))
+            ind2 = rand.randint(0, (len(listOfChangedNums)-1))
+            while(ind2 == ind1):
+                ind2 = rand.randint(0, (len(listOfChangedNums)-1))
+            print ind1,ind2
+
+            changedTuple1 = listOfChangedNums[ind1]
+            changedTuple2 = listOfChangedNums[ind2]
+
             #Swap values
-            if(listOfChangedNums[ind1][0] == 1):
-                self.bin1[listOfChangedNums[ind2][1]] = listOfChangedNums[ind2][2]
-            elif(listOfChangedNums[ind1][0] == 2):
-                self.bin2[listOfChangedNums[ind2][1]] = listOfChangedNums[ind2][2]
-            elif(listOfChangedNums[ind1][0] == 3):
-                self.bin3[listOfChangedNums[ind2][1]] = listOfChangedNums[ind2][2]
+            if(changedTuple1[0] == 1):
+                self.bin1[changedTuple1[1]] = changedTuple2[2]
+            elif(changedTuple1[0] == 2):
+                self.bin2[changedTuple1[1]] = changedTuple2[2]
+            elif(changedTuple1[0] == 3):
+                self.bin3[changedTuple1[1]] = changedTuple2[2]
 
-            if(listOfChangedNums[ind2][0] == 1):
-                self.bin1[listOfChangedNums[ind1][1]] = listOfChangedNums[ind1][2]
-            elif(listOfChangedNums[ind2][0] == 2):
-                self.bin2[listOfChangedNums[ind1][1]] = listOfChangedNums[ind1][2]
-            elif(listOfChangedNums[ind2][0] == 3):
-                self.bin3[listOfChangedNums[ind1][1]] = listOfChangedNums[ind1][2]
+            if(changedTuple2[0] == 1):
+                self.bin1[changedTuple2[1]] = changedTuple1[2]
+            elif(changedTuple2[0] == 2):
+                self.bin2[changedTuple2[1]] = changedTuple1[2]
+            elif(changedTuple2[0] == 3):
+                self.bin3[changedTuple2[1]] = changedTuple1[2]
 
-            del listOfChangedNums[ind1]
-            del listOfChangedNums[ind2]
+            listOfChangedNums.remove(changedTuple2)
+            listOfChangedNums.remove(changedTuple1)
 
         if(len(listOfChangedNums) == 1):
-            if(listOfChangedNums[0][0] == 1):
-                self.bin1[listOfChangedNums[0][1]] = listOfChangedNums[0][2]
-            elif(listOfChangedNums[0][0] == 2):
-                self.bin2[listOfChangedNums[0][1]] = listOfChangedNums[0][2]
-            elif(listOfChangedNums[0][0] == 3):
-                self.bin3[listOfChangedNums[0][1]] = listOfChangedNums[0][2]
+            lastChangedTuple = listOfChangedNums[0]
+            if(lastChangedTuple[0] == 1):
+                self.bin1[lastChangedTuple[1]] = lastChangedTuple[2]
+            elif(lastChangedTuple[0] == 2):
+                self.bin2[lastChangedTuple[1]] = lastChangedTuple[2]
+            elif(lastChangedTuple[0] == 3):
+                self.bin3[lastChangedTuple[1]] = lastChangedTuple[2]
 
     # this funcction mutates a Puzzle
     # It goes through all three at once and mutates if the number is between 1 and 8
@@ -119,5 +127,5 @@ if __name__ == '__main__':
 
     print par4
 
-    print par1.getGeneration()
+    print "Generation 0?: ", par1.getGeneration()
 
