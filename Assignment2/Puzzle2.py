@@ -1,5 +1,6 @@
 from Chromosome import *
 import random as rand
+from Illegal import Illegal
 
 
 class Puzzle2(Chromosome):
@@ -19,7 +20,7 @@ class Puzzle2(Chromosome):
     # This method checks if a Puzzle is legal
     # INPUT -> (dict) master dictionary
     # OUTPUT -> (boolean) True
-    #           [(#, (count, [(bin#, index),...])),...]
+    #           (list of Illegal) information about problems
     def checkLegality(self, master):
         # create new dict from master
         thisDict = master.copy()
@@ -32,6 +33,8 @@ class Puzzle2(Chromosome):
 
         if master == thisDict:
             return True
+
+
 
     # This function forms a counting dictionary from the values in a Puzzle2
     # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
@@ -232,3 +235,5 @@ if __name__ == '__main__':
     print "Part after Xover:\n",par5
 
     print "Is legal: ", par1.checkLegality(master)
+    par2.bin1[0] = 1
+    print "Is legal: ", par2.checkLegality(master)
