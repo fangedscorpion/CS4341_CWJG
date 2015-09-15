@@ -1,5 +1,6 @@
 from Chromosome import *
 import random as rand
+from Illegal import Illegal
 
 
 class Puzzle2(Chromosome):
@@ -17,8 +18,56 @@ class Puzzle2(Chromosome):
         super(Puzzle2, self).__init__(0)
 
     # This method checks if a Puzzle is legal
-    def checkLegality(self):
-        pass
+    # INPUT -> (dict) master dictionary
+    # OUTPUT -> (boolean) True
+    #           (list of Illegal) information about problems
+    def checkLegality(self, master):
+        # create new dict from master
+        thisDict = master.copy()
+
+        # reset values in new dict to 0
+        thisDict = self.dictReset(thisDict)
+
+        # form new dict
+        thisDict = self.countInDict(thisDict)
+
+        if master == thisDict:
+            return True
+
+
+
+    # This function forms a counting dictionary from the values in a Puzzle2
+    # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
+    # INPUT -> (dict) starting dict
+    # OUTPUT -> (dict) counted dict
+    def countInDict(self, starting):
+        for i in range(0, len(self.bin1)):
+            if (starting.has_key(self.bin1[i])):
+                starting[self.bin1[i]] += 1
+            else:
+                print "can't find key", self.bin1[i]
+                
+            if (starting.has_key(self.bin2[i])):
+                starting[self.bin2[i]] += 1
+            else:
+                print "can't find key", self.bin2[i]
+
+            if (starting.has_key(self.bin3[i])):
+                starting[self.bin3[i]] += 1
+            else:
+                print "can't find key", self.bin3[i]
+
+        return starting
+
+    # this function resets a dictonary, keeping the keys but resetting all values to 0
+    # INPUT -> (dict)
+    # OUTPUT -> (dict)
+    def dictReset(self, dict):
+        keys = dict.keys()
+        for j in range(0, len(keys)):
+            dict[keys[j]] = 0
+
+        return dict
 
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
@@ -155,6 +204,7 @@ class Puzzle2(Chromosome):
 if __name__ == '__main__':
     from Puzzle2 import Puzzle2
     a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    master = {1:1, 0:1, -6:1, -9.9:1, 8:1, 4.5:1, 3:1, 3.8:1, 2.5:1}
     par1 = Puzzle2(a[0:3], a[3:6], a[6:9], 0)
     par2 = Puzzle2(a[3:6], a[0:3], a[6:9], 0)
     par3 = Puzzle2(a[6:9], a[3:6], a[0:3], 0)
@@ -185,3 +235,6 @@ if __name__ == '__main__':
     print "Par1 after Xover:\n",par1
     print "Part after Xover:\n",par5
 
+    print "Is legal: ", par1.checkLegality(master)
+    par2.bin1[0] = 1
+    print "Is legal: ", par2.checkLegality(master)
