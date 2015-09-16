@@ -260,6 +260,7 @@ if __name__ == '__main__':
     print "Is legal: ", par1.checkLegality(master)
     par2.bin1[0] = 1
     print "Is legal: ", par2.checkLegality(master)
-    par5 = Puzzle2([], [], [], 0)
+    par5 = Puzzle2([], [], [], 2)
     par5.initialize(a)
     print par5
+    print par5.generation
