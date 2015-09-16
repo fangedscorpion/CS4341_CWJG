@@ -1,33 +1,18 @@
-import Chromosome
-class Puzzle1(Chromosome):
+class Puzzle1():
+    
+    def __init(self): #may need to pass it the entire list
+        self.gen = [] #list of chromosomes
 
-    def __init__(self, listOfNum):
-        self.lon = listOfNum
-
-    # This method initializes the Puzzle for generation 0
-    def initialize(self):
+    #creates an entire first generation 
+    def initFirstGen():
         pass
 
-    # This method checks if a Puzzle is legal
-    def checkLegality(self):
+    #evaluates the generation
+    def evalGen():
         pass
 
-    # This method does a crossover for multiple Puzzles
-    def crossover(self, other):
-        
-
-    # this function evaluates the fitness of a Puzzle
-    def fitness(self):
+    #exchanges the latter part of each chromosome based on random indices 
+    def crossover(chrome1, chrome2):
         pass
 
-    # this funcction mutates a Puzzle
-    def mutate(self):
-        pass
-
-    def getListOfNum(self):
-        return self.lon
-
-
-if __name__ == '__main__':
-
-
+    
