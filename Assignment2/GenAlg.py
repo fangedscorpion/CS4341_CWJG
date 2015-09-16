@@ -10,7 +10,8 @@ def geneticAlgorithm(puzzle):
 
 
 def Mate(gen): #make the new generation, new Gen is not mutated or valid 
-	tempGen = gen
+	#double check the ABOVE comment about mutation and validity
+        tempGen = gen
 	preGen = []
 
 	while(tempGen != [])
@@ -44,11 +45,12 @@ def Mate(gen): #make the new generation, new Gen is not mutated or valid
 			win2 = chrome4
 			tempGen.append(chrome3)
 
+                #should we be adding to a compiled list of the entire generation or just take the 2 crossed over?
 		preGen = crossOver(win1, win2)
 
 	for chrome in preGen:
 		chrome.mutate()
-		chrome.makeValid()
+		chrome.makeValid() 
 
 	return preGen
 

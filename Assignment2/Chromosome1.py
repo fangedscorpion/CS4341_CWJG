@@ -7,7 +7,7 @@ class chromosome1():
 
     #get score from the list of numbers
     def getFitness(self):
-        pass
+        return sum(self.lon)
 
     #mutate based on probability 
     def mutate(self):
