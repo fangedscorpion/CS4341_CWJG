@@ -2,6 +2,8 @@ from Chromosome import *
 import random as rand
 from Illegal import Illegal
 from Location import Location
+import copy
+
 
 class Puzzle2(Chromosome):
 
@@ -17,13 +19,15 @@ class Puzzle2(Chromosome):
     # master is a list of all possible floats to create a Puzzle2 from
     def initialize(self, master):
         super(Puzzle2, self).__init__(0)
+        new_master = copy.copy(master)
 
-        top = len(master) / 3
+        top = len(new_master) / 3
 
         for j in range(0, 3):
             for k in range(0, top):
-                number = float(master[rand.randint(0, len(master) - 1)])
-                master.remove(number)
+                number = float(
+                    new_master[rand.randint(0, len(new_master) - 1)])
+                new_master.remove(number)
 
                 if (j == 0):
                     self.bin1.append(number)
@@ -42,10 +46,10 @@ class Puzzle2(Chromosome):
         # create new dict from master
         thisDict = master.copy()
 
-        # # reset values in new dict to 0
+        # reset values in new dict to 0
         # thisDict = self.dictReset(thisDict)
 
-        # # form new dict
+        # form new dict
         # thisDict = self.countInDict(thisDict)
 
         # if master == thisDict:
@@ -65,14 +69,15 @@ class Puzzle2(Chromosome):
                     diffCount = abs(master[x] - childDictCopy[x][0])
                     print "Key: ", x, " Diff count: ", diffCount
                     for ind in range(0, diffCount):
-                        randInd = rand.randint(0, len(childDictCopy[x][1])-1)
-                        print randInd, len(childDictCopy[x][1])-1
-                        deportationList.append(Illegal(x, diffCount, childDictCopy[x][1][randInd]))
+                        randInd = rand.randint(0, len(childDictCopy[x][1]) - 1)
+                        print randInd, len(childDictCopy[x][1]) - 1
+                        deportationList.append(
+                            Illegal(x, diffCount, childDictCopy[x][1][randInd]))
             else:
                 print "Key: ", x
                 immigrationList.append(Illegal(x, 0, []))
 
-        #These lists should be the same size
+        # These lists should be the same size
         return (len(deportationList) == 0 and len(immigrationList) == 0, deportationList, immigrationList)
 
     # This function forms a counting dictionary from the values in a Puzzle2
@@ -86,7 +91,8 @@ class Puzzle2(Chromosome):
             if (starting.has_key(self.bin1[i])):
                 # print starting[self.bin1[i]][1]
                 # print starting[self.bin1[i]][2] + [Location(1, i)]
-                starting[self.bin1[i]] = (starting[self.bin1[i]][1]+1, starting[self.bin1[i]][2] + [Location(1, i)])
+                starting[self.bin1[i]] = (
+                    starting[self.bin1[i]][1] + 1, starting[self.bin1[i]][2] + [Location(1, i)])
             else:
                 # print "Bin 1 can't find key", self.bin1[i]
                 starting[self.bin1[i]] = (1, [Location(1, i)])
@@ -94,20 +100,22 @@ class Puzzle2(Chromosome):
             if (starting.has_key(self.bin2[i])):
                 # print starting[self.bin2[i]][0] + 1
                 # print (1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
-                starting[self.bin2[i]] = (starting[self.bin2[i]][0]+1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
+                starting[self.bin2[i]] = (
+                    starting[self.bin2[i]][0] + 1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
             else:
                 # print "Bin 2 can't find key", self.bin2[i]
                 starting[self.bin2[i]] = (1, [Location(2, i)])
 
             if (starting.has_key(self.bin3[i])):
-                starting[self.bin3[i]] = (starting[self.bin3[i]][1]+1, starting[self.bin3[i]][2] + [Location(3, i)])
+                starting[self.bin3[i]] = (
+                    starting[self.bin3[i]][1] + 1, starting[self.bin3[i]][2] + [Location(3, i)])
             else:
                 # print "Bin 3 can't find key", self.bin3[i]
                 starting[self.bin3[i]] = (1, [Location(3, i)])
 
         return starting
 
-    # This fixChild method makes a valid Puzzle2 chromosome from 
+    # This fixChild method makes a valid Puzzle2 chromosome from
     # an incorrect one and two lists of values that need to be swapped
     # One list is the values that need to be added into the object
     # The other list has the values that need to be moved out of the object
@@ -117,44 +125,45 @@ class Puzzle2(Chromosome):
         print exportList
 
         for x in range(0, len(importList)):
-            randint = rand.randint(0, len(importList)-1)
-            randint2 = rand.randint(0, len(exportList)-1)
+            randint = rand.randint(0, len(importList) - 1)
+            randint2 = rand.randint(0, len(exportList) - 1)
 
             importedIllegalObj = importList[randint]
             exportedIllegalObjLoc = exportList[randint2].getLocations()
 
             if(exportedIllegalObjLoc.getBin() == 1):
                 # Location is in bin 1
-                self.bin1[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                self.bin1[
+                    exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
                 del exportList[randint2]
             elif(exportedIllegalObjLoc.getBin() == 2):
                 # Bin 2
-                self.bin2[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                self.bin2[
+                    exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
                 del exportList[randint2]
             elif(exportedIllegalObjLoc.getBin() == 3):
-                #Bin 3
-                self.bin3[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                # Bin 3
+                self.bin3[
+                    exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
                 del exportList[randint2]
 
         assert len(importList) == 0
         assert len(exportList) == 0
 
-
-
-    # # This function forms a counting dictionary from the values in a Puzzle2
-    # # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
-    # # INPUT -> (dict) starting dict
-    # # OUTPUT -> (dict) counted dict
+    # This function forms a counting dictionary from the values in a Puzzle2
+    # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
+    # INPUT -> (dict) starting dict
+    # OUTPUT -> (dict) counted dict
     # def countInDict(self, starting):
     #     for i in range(0, len(self.bin1)):
     #         if (starting.has_key(self.bin1[i])):
     #             starting[self.bin1[i]] += 1
     #         else:
     #             print "can't find key", self.bin1[i]
-                
+
     #         if (starting.has_key(self.bin2[i])):
     #             starting[self.bin2[i]] += 1
     #         else:
@@ -317,55 +326,86 @@ class Puzzle2(Chromosome):
                 str(self.bin2) + "\nBin3: " + str(self.bin3) + "\n")
 
 if __name__ == '__main__':
-    from Puzzle2 import Puzzle2
-    a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
-    master = {1: 1, 0: 1, -6: 1, -9.9: 1, 8: 1, 4.5: 1, 3: 1, 3.8: 1, 2.5: 1}
-    par1 = Puzzle2(a[0:3], a[3:6], a[6:9], 0)
-    par2 = Puzzle2(a[3:6], a[0:3], a[6:9], 0)
-    par3 = Puzzle2(a[6:9], a[3:6], a[0:3], 0)
-    par4 = Puzzle2(a[6:9], a[0:3], a[3:6], 0)
+    # from Puzzle2 import Puzzle2
+    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    # master = {1: 1, 0: 1, -6: 1, -9.9: 1, 8: 1, 4.5: 1, 3: 1, 3.8: 1, 2.5: 1}
+    # par1 = Puzzle2(a[0:3], a[3:6], a[6:9], 0)
+    # par2 = Puzzle2(a[3:6], a[0:3], a[6:9], 0)
+    # par3 = Puzzle2(a[6:9], a[3:6], a[0:3], 0)
+    # par4 = Puzzle2(a[6:9], a[0:3], a[3:6], 0)
 
-    print par1
-    print par2
-    print par3
-    print par4
+    # print par1
+    # print par2
+    # print par3
+    # print par4
 
-    par4.mutate(a)  # Must pass in master list
+    # par4.mutate(a)  # Must pass in master list
 
-    print par4
+    # print par4
 
-    print "Generation 0?: ", par1.getGeneration()
+    # print "Generation 0?: ", par1.getGeneration()
 
-    print "Fitness for par1: ", par1.fitness(), "\n"
-    print "-" * 20
-    print a
+    # print "Fitness for par1: ", par1.fitness(), "\n"
+    # print "-" * 20
+    # print a
 
-    par5 = par2
+    # par5 = par2
 
-    print "Par1 before Xover:\n", par1
-    print "Par5 before Xover:\n", par5
+    # print "Par1 before Xover:\n", par1
+    # print "Par5 before Xover:\n", par5
 
-    par1.crossover(par5)
+    # par1.crossover(par5)
 
-    print "Par1 after Xover:\n", par1
-    print "Part after Xover:\n", par5
+    # print "Par1 after Xover:\n", par1
+    # print "Part after Xover:\n", par5
 
-    print master
-    print "Is legal: \n", par1.checkLegality(master)
-    par2.bin1[0] = 1
+    # print master
+    # print "Is legal: \n", par1.checkLegality(master)
+    # par2.bin1[0] = 1
 
-    print "Is legal: \n", par2.checkLegality(master)
+    # print "Is legal: \n", par2.checkLegality(master)
 
-    (legalHuh, exportL, importL) = par2.checkLegality(master)
+    # (legalHuh, exportL, importL) = par2.checkLegality(master)
 
-    par2.fixChild(exportL, importL)
+    # par2.fixChild(exportL, importL)
 
-    print "Is legal: \n", par2.checkLegality(master)
+    # print "Is legal: \n", par2.checkLegality(master)
 
-    print "Is legal: ", par2.checkLegality(master)
-    par5 = Puzzle2([], [], [], 2)
-    par5.initialize(a)
-    print par5
-    print par5.generation
+    # print "Is legal: ", par2.checkLegality(master)
+    # par5 = Puzzle2([], [], [], 2)
+    # par5.initialize(a)
+    # print par5
+    # print par5.generation
 
+    def testPrintAll():
+        print "alpha: "
+        print alpha
+        print
 
+        print "beta: "
+        print beta
+        print
+
+        print "gamma: "
+        print gamma
+        print
+
+        print "delta: "
+        print delta
+        print
+
+    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    alpha = Puzzle2([], [], [], 0)
+    beta = Puzzle2([], [], [], 0)
+
+    alpha.initialize(a)
+    beta.initialize(a)
+
+    alpha.crossover(beta)
+
+    alpha.mutate(a)
+    beta.mutate(a)
+
+    print alpha
+    print alpha.fitness()
