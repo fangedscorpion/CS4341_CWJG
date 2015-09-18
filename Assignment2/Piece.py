@@ -23,6 +23,12 @@ class Piece:
 	def getCost(self):
 		return self.cost
 
+	def isWider(self, other):
+		return self.width >= other.getWidth()
+
+	def canSupportNum(self, numPieces):
+		return self.strength >= numPieces
+
 	def getStrength(self):
 		return self.strength
 
