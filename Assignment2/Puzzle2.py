@@ -1,7 +1,7 @@
 from Chromosome import *
 import random as rand
 from Illegal import Illegal
-
+from Location import Location
 
 class Puzzle2(Chromosome):
 
@@ -25,39 +25,131 @@ class Puzzle2(Chromosome):
         # create new dict from master
         thisDict = master.copy()
 
-        # reset values in new dict to 0
-        thisDict = self.dictReset(thisDict)
+        # # reset values in new dict to 0
+        # thisDict = self.dictReset(thisDict)
 
-        # form new dict
-        thisDict = self.countInDict(thisDict)
+        # # form new dict
+        # thisDict = self.countInDict(thisDict)
 
-        if master == thisDict:
-            return True
+        # if master == thisDict:
+        #     return True
 
+        childDict = self.countInDict({})
+        print childDict
+
+        immigrationList = []
+        deportationList = []
+        childDictCopy = childDict.copy()
+
+        for x in master.keys():
+            if(childDictCopy.has_key(x)):
+                if(not (childDictCopy[x][0] == master[x])):
+
+                    diffCount = abs(master[x] - childDictCopy[x][0])
+                    print "Key: ", x, " Diff count: ", diffCount
+                    for ind in range(0, diffCount):
+                        randInd = rand.randint(0, len(childDictCopy[x][1])-1)
+                        print randInd, len(childDictCopy[x][1])-1
+                        deportationList.append(Illegal(x, diffCount, childDictCopy[x][1][randInd]))
+            else:
+                print "Key: ", x
+                immigrationList.append(Illegal(x, 0, []))
+
+        #These lists should be the same size
+        return (len(deportationList) == 0 and len(immigrationList) == 0, deportationList, immigrationList)
 
 
     # This function forms a counting dictionary from the values in a Puzzle2
-    # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
-    # INPUT -> (dict) starting dict
+    # If a value in a Puzzle2 is not a key in the dictionary,
+    # the unknown value is printed AND added to the list
+    # INPUT -> (dict) empty dict
     # OUTPUT -> (dict) counted dict
     def countInDict(self, starting):
+        print "%" * 20
         for i in range(0, len(self.bin1)):
             if (starting.has_key(self.bin1[i])):
-                starting[self.bin1[i]] += 1
+                # print starting[self.bin1[i]][1]
+                # print starting[self.bin1[i]][2] + [Location(1, i)]
+                starting[self.bin1[i]] = (starting[self.bin1[i]][1]+1, starting[self.bin1[i]][2] + [Location(1, i)])
             else:
-                print "can't find key", self.bin1[i]
+                # print "Bin 1 can't find key", self.bin1[i]
+                starting[self.bin1[i]] = (1, [Location(1, i)])
                 
             if (starting.has_key(self.bin2[i])):
-                starting[self.bin2[i]] += 1
+                # print starting[self.bin2[i]][0] + 1
+                # print (1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
+                starting[self.bin2[i]] = (starting[self.bin2[i]][0]+1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
             else:
-                print "can't find key", self.bin2[i]
+                # print "Bin 2 can't find key", self.bin2[i]
+                starting[self.bin2[i]] = (1, [Location(2, i)])
 
             if (starting.has_key(self.bin3[i])):
-                starting[self.bin3[i]] += 1
+                starting[self.bin3[i]] = (starting[self.bin3[i]][1]+1, starting[self.bin3[i]][2] + [Location(3, i)])
             else:
-                print "can't find key", self.bin3[i]
+                # print "Bin 3 can't find key", self.bin3[i]
+                starting[self.bin3[i]] = (1, [Location(3, i)])
 
         return starting
+
+    # This fixChild method makes a valid Puzzle2 chromosome from 
+    # an incorrect one and two lists of values that need to be swapped
+    # One list is the values that need to be added into the object
+    # The other list has the values that need to be moved out of the object
+    def fixChild(self, exportList, importList):
+        assert len(importList) == len(exportList)
+        print importList
+        print exportList
+
+        for x in range(0, len(importList)):
+            randint = rand.randint(0, len(importList)-1)
+            randint2 = rand.randint(0, len(exportList)-1)
+
+            importedIllegalObj = importList[randint]
+            exportedIllegalObjLoc = exportList[randint2].getLocations()
+
+            if(exportedIllegalObjLoc.getBin() == 1):
+                # Location is in bin 1
+                self.bin1[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                del importList[randint]
+                del exportList[randint2]
+            elif(exportedIllegalObjLoc.getBin() == 2):
+                # Bin 2
+                self.bin2[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                del importList[randint]
+                del exportList[randint2]
+            elif(exportedIllegalObjLoc.getBin() == 3):
+                #Bin 3
+                self.bin3[exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
+                del importList[randint]
+                del exportList[randint2]
+
+        assert len(importList) == 0
+        assert len(exportList) == 0
+
+
+
+    # # This function forms a counting dictionary from the values in a Puzzle2
+    # # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
+    # # INPUT -> (dict) starting dict
+    # # OUTPUT -> (dict) counted dict
+    # def countInDict(self, starting):
+    #     for i in range(0, len(self.bin1)):
+    #         if (starting.has_key(self.bin1[i])):
+    #             starting[self.bin1[i]] += 1
+    #         else:
+    #             print "can't find key", self.bin1[i]
+                
+    #         if (starting.has_key(self.bin2[i])):
+    #             starting[self.bin2[i]] += 1
+    #         else:
+    #             print "can't find key", self.bin2[i]
+
+    #         if (starting.has_key(self.bin3[i])):
+    #             starting[self.bin3[i]] += 1
+    #         else:
+    #             print "can't find key", self.bin3[i]
+
+    #     return starting
 
     # this function resets a dictonary, keeping the keys but resetting all values to 0
     # INPUT -> (dict)
@@ -119,7 +211,7 @@ class Puzzle2(Chromosome):
         return (bProd + bSum) / 2
 
     # This is the version for when the chromosome is already legal
-    def fixChild(self, listOfChangedNums):
+    def fixChildAfterMutate(self, listOfChangedNums):
         print listOfChangedNums
 
         for x in range(0, (len(listOfChangedNums)-1), 2):
@@ -186,7 +278,7 @@ class Puzzle2(Chromosome):
                 spareNums.append([3, x, self.bin3[x]])
                 self.bin3[x] = masterListOfNum[self.getValidMutatedNumberIndex(len(masterListOfNum))]
 
-        self.fixChild(spareNums)
+        self.fixChildAfterMutate(spareNums)
 
     def getBin1(self):
         return self.bin1
@@ -235,6 +327,13 @@ if __name__ == '__main__':
     print "Par1 after Xover:\n",par1
     print "Part after Xover:\n",par5
 
-    print "Is legal: ", par1.checkLegality(master)
+    print master
+    print "Is legal: \n", par1.checkLegality(master)
     par2.bin1[0] = 1
-    print "Is legal: ", par2.checkLegality(master)
+    print "Is legal: \n", par2.checkLegality(master)
+
+    (legalHuh, exportL, importL) = par2.checkLegality(master)
+
+    par2.fixChild(exportL, importL)
+
+    print "Is legal: \n", par2.checkLegality(master)

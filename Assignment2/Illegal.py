@@ -1,17 +1,16 @@
 """ This class is to hold information on the analysis of an illegal Chromosome """
 """ The design of the object is to built up after initialization, not built all at once """
 
-
 class Illegal(object):
 
     # self.value = the value being represented that causes illeglaity
     # self.count = the number of times self.value is represented in the Chromosome
     # self.locations = a list of the locations in which self.value is
     # represented
-    def __init__(self):
-        self.value = -1
-        self.count = -1
-        self.locations = []
+    def __init__(self, val, count, locations):
+        self.value = val
+        self.count = count
+        self.locations = locations
 
     # This function sets self.value
     # INPUT -> new value
