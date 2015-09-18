@@ -1,33 +1,32 @@
 class Puzzle3(object):
     def __init__(self, gen):
-        super(Puzzle3, self).__init__(generation)
-        self.bin1 = bin1List
-        self.bin2 = bin2List
-        self.bin3 = bin3List
-
+        super(Puzzle3, self).__init__(gen)
         self.mutationThreshold = 50  # Percentage of 100 for each digit
 
     # This method initializes the chromosome for generation 0
-    def initialize(self):
+    # jake
+    def initialize(self, masterList):
         super(Puzzle3, self).__init__(0)
-
-    # This method initializes the chromosome for generation 0
-    def initialize(self):
-        pass
+        self.towerList = XXXX # Ind 0 = Bottom 
+        # Height = len(towerList)
 
     # This method checks if a chromosome is legal
+    # jake
     def checkLegality(self):
         pass
 
     # This method does a crossover for multiple chromosomes
+    # chas
     def crossover(self):
         pass
 
     # this function evaluates the fitness of a chromosome
+    # jake
     def fitness(self):
         pass
 
     # this funcction mutates a chromosome
+    # chas
     def mutate(self):
         pass
 
