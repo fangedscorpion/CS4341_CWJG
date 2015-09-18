@@ -1,4 +1,4 @@
-class Puzzle(object):
+class Puzzle3(object):
     def __init__(self, gen):
         super(Puzzle3, self).__init__(generation)
         self.bin1 = bin1List
