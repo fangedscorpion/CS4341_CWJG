@@ -32,6 +32,12 @@ class Piece:
 	def getWidth(self):
 		return self.width
 
+	def isDoor(self):
+		return self.type.lower() == "door"
+
+	def isLookout(self):
+		return self.type.lower() == "lookout"
+
 	def getDictKey(self):
 		return (self.type[0]+str(self.width)+str(self.strength)+str(self.cost)) #unhashable otherwise
 
@@ -43,6 +49,11 @@ if __name__ == '__main__':
 	w3 = Piece("Wall", 3,3,2)
 	l1 = Piece("Lookout",2,2,3)
 	l2 = Piece("Lookout",3,1,2)
+
+	assert d1.isLookout() == False
+	assert l1.isLookout() == True
+	assert d1.isDoor() == True
+	assert w1.isDoor() == False
 
 	piecesList = [d1, w1, w2, d2, w3, l1, l2]
 
