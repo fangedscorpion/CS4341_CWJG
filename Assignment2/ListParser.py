@@ -45,7 +45,7 @@ class ListParser(object):
             dictionary = {(startList[0]): 1};
         elif(puzzleNum == 3):
             startList = [None] * (len(lines))
-            startList[0] = Piece(lines[0][0], float(lines[0][1]), float(lines[0][2]), float(lines[0][3]))
+            startList[0] = Piece(lines[0][0], int(lines[0][1]), int(lines[0][2]), int(lines[0][3]))
             dictionary = {startList[0].getDictKey(): 1};
 
         print "Num of lines: ", len(lines)
@@ -64,7 +64,7 @@ class ListParser(object):
                 startList[k] = float(lines[k][0]) 
                 dictionary = self.updateDictionary(dictionary, (lines[k][0]))
             elif(puzzleNum == 3):
-                startList[k] = Piece(lines[k][0], float(lines[k][1]), float(lines[k][2]), float(lines[k][3]))
+                startList[k] = Piece(lines[k][0], int(lines[k][1]), int(lines[k][2]), int(lines[k][3]))
                 dictionary = self.updateDictionary(dictionary, startList[k].getDictKey())
 
         # Return a tuple of all important info
