@@ -97,10 +97,4 @@ if __name__ == '__main__':
 
     for chromo in genY:
         chromo.initialize(masterList)
-        print chromo
-
-    alpha.initialize(a)
-    beta.initialize(a)
-
-    print alpha.towerList
-    print beta.towerList
+        print chromo.towerList
