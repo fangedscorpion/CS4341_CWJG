@@ -1,6 +1,7 @@
 import random as rand
+from Chromosome import Chromosome
 
-class Puzzle3(object):
+class Puzzle3(Chromosome):
     def __init__(self, gen):
         super(Puzzle3, self).__init__(gen)
         self.mutationThreshold = 50  # Percentage of 100 for each digit
@@ -58,3 +59,29 @@ class Puzzle3(object):
 
     def getGeneration(self):
         return self.generation
+
+if __name__ == '__main__':
+    from Piece import Piece
+    d1 = Piece("Door", 5,3,2, 0)
+    w1 = Piece("Wall", 5,5,1, 1)
+    w2 = Piece("Wall", 4,3,1, 2)
+    d2 = Piece("Door", 3,5,2, 3)
+    w3 = Piece("Wall", 3,3,2, 4)
+    l1 = Piece("Lookout",2,2,3, 5)
+    l2 = Piece("Lookout",3,1,2, 6)
+    l3 = Piece("Lookout",3,1,2, 7)
+
+    masterList = [d1, w1, w2, d2, w3, l1, l2, l3]
+
+    ap3a = Puzzle3(0)
+    ap3b = Puzzle3(0)
+    ap3c = Puzzle3(0)
+    ap3d = Puzzle3(0)
+    ap3e = Puzzle3(0)
+    ap3f = Puzzle3(0)
+
+    genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f]
+
+    for chromo in genY:
+        chromo.initialize(masterList)
+        print chromo
