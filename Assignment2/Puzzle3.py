@@ -9,7 +9,6 @@ class Puzzle3(Chromosome):
     def __init__(self, gen):
         super(Puzzle3, self).__init__(gen)
         self.mutationThreshold = 50  # Percentage of 100 for each digit
-        self.height = -1
         self.towerList = []
 
     # This method initializes the chromosome for generation 0
@@ -24,8 +23,6 @@ class Puzzle3(Chromosome):
             a_piece = new_masterList[rand.randint(0, len(new_masterList) - 1)]
             new_masterList.remove(a_piece)
             self.towerList.append(a_piece)
-
-        self.height = len(self.towerList)
 
     # This method checks if a chromosome is legal
     # jake
@@ -75,7 +72,21 @@ class Puzzle3(Chromosome):
     # this function evaluates the fitness of a chromosome
     # jake
     def fitness(self):
-        pass
+        if (not (self.checkLegality())):
+            return 0
+
+        else:
+            return 10 + (len(self.towerList)**2) - self.sumCost()
+
+    # this function sums the cost to build the tower
+    # INPUT -> none
+    # OUTPUT -> (int) cost
+    def sumCost(self):
+        cost = 0
+        for j in range(0, len(self.towerList)):
+            cost += self.towerList[j].getCost()
+
+        return cost
 
     # this funcction mutates a chromosome
     # chas
@@ -158,3 +169,6 @@ if __name__ == '__main__':
     print epsilon.checkLegality(), False
     print zeta.checkLegality(), False
     print eta.checkLegality(), True
+
+    print zeta.fitness(), 0
+    print eta.fitness(), 9
