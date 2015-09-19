@@ -63,11 +63,10 @@ class Puzzle3(Chromosome):
 
         rand1Num = rand.randint(1, len(thisList) - 1)
         rand2Num = rand.randint(1, len(otherList) - 1)
+        print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
 
-        self.towerList = list(
-            thisList[0:rand1Num], otherList[rand2Num:len(otherList)])
-        other.setTowerList(
-            list(otherList[0:rand2Num], thisList[rand1Num:len(thisList)]))
+        self.towerList = thisList[0:rand1Num] + otherList[rand2Num:len(otherList)]
+        other.setTowerList(otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
 
     # this function evaluates the fitness of a chromosome
     # jake
@@ -101,6 +100,7 @@ class Puzzle3(Chromosome):
 
                 if(not newPart in self.towerList):
                     self.towerList[x] = newPart
+                    print newPart
             else:
                 pass
 
@@ -112,6 +112,9 @@ class Puzzle3(Chromosome):
 
     def getGeneration(self):
         return self.generation
+
+    def __repr__(self):
+        return str(self.towerList)
 
 if __name__ == '__main__':
     from Piece import Piece
@@ -145,7 +148,20 @@ if __name__ == '__main__':
 
     for chromo in genY:
         chromo.initialize(masterList)
-        print chromo.towerList
+        #print chromo.towerList
+
+    # print "#" * 20
+    # print ap3a
+    # print ap3b
+    # print "#" * 20
+    # ap3a.crossover(ap3b)
+    # print ap3a
+    # print ap3b
+
+    print ap3a
+    print "#" * 20
+    ap3a.mutate(masterList)
+    print ap3a
 
     # 0
     alpha.towerList = [w1]
