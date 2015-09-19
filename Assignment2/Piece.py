@@ -27,8 +27,8 @@ class Piece:
     def getID(self):
         return self.ID
 
-    def isWider(self, other):
-        return self.width >= other.getWidth()
+    def canFit(self, other):
+        return self.width <= other.getWidth()
 
     def canSupportNum(self, numPieces):
         return self.strength >= numPieces
