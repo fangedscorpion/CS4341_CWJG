@@ -13,7 +13,7 @@ class Piece:
 
     def __repr__(self):
         return (str(self.type) + "," + str(self.width) + "," + str(self.strength) + \
-            "," + str(self.cost))
+            "," + str(self.cost) + "," + str(self.ID))
 
     def __eq__(self, other):
         return (self.type.lower() == other.getType().lower() and
