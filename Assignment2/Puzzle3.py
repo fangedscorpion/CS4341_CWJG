@@ -1,17 +1,29 @@
 import random as rand
+import copy
+from Piece import Piece
 from Chromosome import Chromosome
 
 class Puzzle3(Chromosome):
     def __init__(self, gen):
         super(Puzzle3, self).__init__(gen)
         self.mutationThreshold = 50  # Percentage of 100 for each digit
+        self.height = -1
+        self.towerList = []
 
     # This method initializes the chromosome for generation 0
     # jake
     def initialize(self, masterList):
         super(Puzzle3, self).__init__(0)
-        self.towerList = XXXX # Ind 0 = Bottom 
-        # Height = len(towerList)
+        size = rand.randint(2, len(masterList))
+
+        new_masterList = copy.copy(masterList)
+
+        for j in range(0, size):
+            a_piece = new_masterList[rand.randint(0, len(new_masterList) - 1)]
+            new_masterList.remove(a_piece)
+            self.towerList.append(a_piece)
+
+        self.height = len(self.towerList)
 
     # This method checks if a chromosome is legal
     # jake
@@ -70,7 +82,6 @@ if __name__ == '__main__':
     l1 = Piece("Lookout",2,2,3, 5)
     l2 = Piece("Lookout",3,1,2, 6)
     l3 = Piece("Lookout",3,1,2, 7)
-
     masterList = [d1, w1, w2, d2, w3, l1, l2, l3]
 
     ap3a = Puzzle3(0)
@@ -79,9 +90,17 @@ if __name__ == '__main__':
     ap3d = Puzzle3(0)
     ap3e = Puzzle3(0)
     ap3f = Puzzle3(0)
+    alpha = Puzzle3(0)
+    beta = Puzzle3(0)
 
-    genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f]
+    genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f, alpha, beta]
 
     for chromo in genY:
         chromo.initialize(masterList)
         print chromo
+
+    alpha.initialize(a)
+    beta.initialize(a)
+
+    print alpha.towerList
+    print beta.towerList
