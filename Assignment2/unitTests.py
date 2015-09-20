@@ -7,9 +7,9 @@ class tests(unittest.TestCase):
         tchrom = chromosome1([1, 2, 3])
         self.assertEqual(tchrom.lon, [1, 2, 3])
 
-    def test_getFitness(self):
+    def test_fitness(self):
         tchrom = chromosome1([1, 2, 3])
-        self.assertEqual(tchrom.getFitness(), 6)
+        self.assertEqual(tchrom.fitness(), 6)
 
     def test_crossoverIsh(self):
         #tests how crossover works, but does not run the actual function to get rid of randomization for simplicity in testing
@@ -25,6 +25,12 @@ class tests(unittest.TestCase):
         kchrom = chromosome1(klon) #child
         self.assertEqual(cchrom.lon, [1, 2, 11, 12, 13])
         self.assertEqual(kchrom.lon, [7, 8, 9, 10, 3, 4, 5, 6])
+
+    def test_isValid(self):
+        master = {1:1, 2:1, 3:1, 4:1, 5:1}
+        tchrom = chromosome1([1, 2, 3, 3, 4, 5, 6])
+        self.assertEqual(tchrom.isValid(3, master), False)
+        self.assertEqual(tchrom.isValid(1, master), True)
 
 if __name__ == "__main__":
     unittest.main()
