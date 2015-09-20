@@ -21,6 +21,6 @@ if __name__ == "__main__":
         	print
         	print the_list_parser.getTarget()
 
-        geneticAlgo(the_list_parser.getList(), secondsToRun, the_list_parser.getDictionary())
+        # geneticAlgo(the_list_parser.getList(), secondsToRun, the_list_parser.getDictionary())
 
 
