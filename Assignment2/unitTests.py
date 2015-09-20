@@ -32,6 +32,17 @@ class tests(unittest.TestCase):
         self.assertEqual(tchrom.isValid(3, master), False)
         self.assertEqual(tchrom.isValid(1, master), True)
 
+    def test_fixChild(self):
+        master = {1:1, 2:1, 3:1, 4:1, 5:2}
+        tchrom = chromosome1([1, 2, 2, 3, 5])
+        tchrom.fixChild(master)
+        result = True
+        for i in range(0, len(tchrom.lon) - 1):
+            if(not tchrom.isValid(tchrom.lon[i], master)):
+                result = False
+        self.assertEqual(result, False)
+
+
 if __name__ == "__main__":
     unittest.main()
 
