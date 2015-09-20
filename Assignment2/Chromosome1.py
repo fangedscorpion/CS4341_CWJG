@@ -53,15 +53,15 @@ class chromosome1():
             return False
         else:
             return True
-            
-
-    #check validity
-    def checkLegality(self):
-        pass
 
     #make it valid if need be
-    def fixChild(self):
-        pass
+    def fixChild(self, masterDict):
+        master = masterDict.keys()
+        for i in range(0, len(self.lon) - 1):
+            while(not self.isValid(self.lon[i], master)):
+                  self.lon[i] = master[random.randint(0, len(master) - 1)]
+        #nothing to return 
+                
 
 
 if __name__ == '__main__':
