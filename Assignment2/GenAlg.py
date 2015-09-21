@@ -1,5 +1,7 @@
 import random
 import time
+import Chromosome
+from Puzzle2 import Puzzle2
 
 def geneticAlgorithm(puzzle, validValues, allowedTime):
     popSize = 100
@@ -11,7 +13,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime):
     while(time.time() < (start + allowedTime)):
         evalGen(gen)
         mate(gen)
-        mutate(gen)
+        mutateGen(gen, validValues)
 
     return bestChrome(gen)
 
@@ -21,22 +23,23 @@ def geneticAlgorithm(puzzle, validValues, allowedTime):
 def makeChromes(puzzle, validValues, popSize): 
     chromes = []
     for i in range(popSize):
-        chromes[i] = Puzzle2([], [], [], 0)
+        chromes.append(Puzzle2([], [], [], 0))
         chromes[i].initialize(validValues)
 
     return chromes
 
 def makeNodes(chromosomes):
     nodes = []
-    for i in len(chromosomes):
-        nodes[i] = node(chromosomes, 0, 0)
+    for i in range(len(chromosomes)):
+        newNode = node(chromosomes[i], 0, 0)
+        nodes.append(newNode)
 
     return nodes
 
 def makeDict(values):
     newDict = {}
     for value in values:
-        if newDict[value] > 0:
+        if newDict.has_key(value):
             newDict[value] += 1
         else:
             newDict[value] = 1
@@ -48,11 +51,11 @@ def makeDict(values):
 def evalGen(gen):
     netFitness = 0
     netPercent = 0
-    for node in len(gen):
+    for node in gen:
         node.fitness = node.chromosome.fitness()
         netFitness += node.fitness
 
-    for node in len(gen):
+    for node in gen:
         percentFitness = (node.fitness/netFitness)*100
         netPercent += percentFitness
         node.percentBound = netPercent
@@ -63,28 +66,33 @@ def evalGen(gen):
 def mate(gen): #make the new generation, new Gen is not mutated or valid 
     preGen = []
 
-    for i in len(gen):
+    for i in range(len(gen)):
+        preGen = []
         point1 = random.random()*100
         point2 = random.random()*100
-        for j in len(gen):
+        sorted(gen, key = lambda node: node.percentBound)
+        for j in range(len(gen)):
             if (point1 > gen[j-1].percentBound) and (point1 < gen[j].percentBound):
                 parentA = gen[j]
             if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
                 parentB = gen[j]
-            while (parentA is parentB): # if parents A and B are the same rerun B, no clones
-                point2 = random.random()*100
-                if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
-                    parentB = gen[j]
+        while (parentA is parentB): # if parents A and B are the same rerun B, no clones
+            point2 = random.random()*100
+            if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
+                parentB = gen[j]
 
-            preGen += parentA.chromosome.crossover(parentB.chromosome)
+        children = parentA.chromosome.crossover(parentB.chromosome)
+        child1 = node(children[0], 0, 0)
+        child2 = node(children[1], 0, 0)
+        preGen.append(child1)
+        preGen.append(child2)
 
     gen = preGen
 
-def mutate(gen):
+def mutateGen(gen, masterList):
     mutGen = []
-
     for node in gen:
-        node.chromosome = node.chromosome.mutate()
+        node.chromosome.mutate(masterList)
 
 def bestChrome(gen):
     bestFitness = 0
@@ -107,13 +115,12 @@ class node():
 
 
 if __name__ == "__main__":
-    import Chromosome
-    import Puzzle1
+    testValues = []
 
     for i in range(30):
-        testValues.append(i)
+        testValues.append(i+1)
 
-    geneticAlgorithm(2, testValues, 10)
+    best = geneticAlgorithm(2, testValues, 10)
 
 
 

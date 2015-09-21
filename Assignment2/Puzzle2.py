@@ -56,7 +56,7 @@ class Puzzle2(Chromosome):
         #     return True
 
         childDict = self.countInDict({})
-        print childDict
+        # print childDict
 
         immigrationList = []
         deportationList = []
@@ -67,14 +67,14 @@ class Puzzle2(Chromosome):
                 if(not (childDictCopy[x][0] == master[x])):
 
                     diffCount = abs(master[x] - childDictCopy[x][0])
-                    print "Key: ", x, " Diff count: ", diffCount
+                    # print "Key: ", x, " Diff count: ", diffCount
                     for ind in range(0, diffCount):
                         randInd = rand.randint(0, len(childDictCopy[x][1]) - 1)
-                        print randInd, len(childDictCopy[x][1]) - 1
+                        # print randInd, len(childDictCopy[x][1]) - 1
                         deportationList.append(
                             Illegal(x, diffCount, childDictCopy[x][1][randInd]))
             else:
-                print "Key: ", x
+                # print "Key: ", x
                 immigrationList.append(Illegal(x, 0, []))
 
         # These lists should be the same size
@@ -86,7 +86,7 @@ class Puzzle2(Chromosome):
     # INPUT -> (dict) empty dict
     # OUTPUT -> (dict) counted dict
     def countInDict(self, starting):
-        print "%" * 20
+        # print "%" * 20
         for i in range(0, len(self.bin1)):
             if (starting.has_key(self.bin1[i])):
                 # print starting[self.bin1[i]][1]
@@ -96,7 +96,7 @@ class Puzzle2(Chromosome):
             else:
                 # print "Bin 1 can't find key", self.bin1[i]
                 starting[self.bin1[i]] = (1, [Location(1, i)])
-                print "can't find key", self.bin1[i]
+                # print "can't find key", self.bin1[i]
             if (starting.has_key(self.bin2[i])):
                 # print starting[self.bin2[i]][0] + 1
                 # print (1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
@@ -121,8 +121,8 @@ class Puzzle2(Chromosome):
     # The other list has the values that need to be moved out of the object
     def fixChild(self, exportList, importList):
         assert len(importList) == len(exportList)
-        print importList
-        print exportList
+        # print importList
+        # print exportList
 
         for x in range(0, len(importList)):
             randint = rand.randint(0, len(importList) - 1)
@@ -189,7 +189,7 @@ class Puzzle2(Chromosome):
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
         cutPointInt = rand.randint(1, (len(self.bin1) - 1))
-        print "Cut point: ", cutPointInt
+        # print "Cut point: ", cutPointInt
 
         # up to but not including the cutPointInt
         par1Bin1Front = self.bin1[0:cutPointInt]
@@ -246,7 +246,7 @@ class Puzzle2(Chromosome):
 
     # This is the version for when the chromosome is already legal
     def fixChildAfterMutate(self, listOfChangedNums):
-        print listOfChangedNums
+        # print listOfChangedNums
 
         for x in range(0, (len(listOfChangedNums) - 1), 2):
             # Generate another rand int in size of changed list
@@ -254,7 +254,7 @@ class Puzzle2(Chromosome):
             ind2 = rand.randint(0, (len(listOfChangedNums) - 1))
             while(ind2 == ind1):
                 ind2 = rand.randint(0, (len(listOfChangedNums) - 1))
-            print ind1, ind2
+            # print ind1, ind2
 
             changedTuple1 = listOfChangedNums[ind1]
             changedTuple2 = listOfChangedNums[ind2]
@@ -383,21 +383,21 @@ if __name__ == '__main__':
     # print par5.generation
 
     def testPrintAll():
-        print "alpha: "
-        print alpha
-        print
+        # print "alpha: "
+        # print alpha
+        # print
 
-        print "beta: "
-        print beta
-        print
+        # print "beta: "
+        # print beta
+        # print
 
-        print "gamma: "
-        print gamma
-        print
+        # print "gamma: "
+        # print gamma
+        # print
 
-        print "delta: "
-        print delta
-        print
+        # print "delta: "
+        # print delta
+        # print
 
     # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
     a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -408,11 +408,11 @@ if __name__ == '__main__':
     beta.initialize(a)
 
     crosses = alpha.crossover(beta)
-    print crosses[0] != alpha, True
-    print alpha == alpha, True
+    # print crosses[0] != alpha, True
+    # print alpha == alpha, True
 
     alpha.mutate(a)
     beta.mutate(a)
 
-    print alpha
-    print alpha.fitness()
+    # print alpha
+    # print alpha.fitness()
