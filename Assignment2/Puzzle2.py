@@ -6,13 +6,13 @@ import copy
 
 class Puzzle2(Chromosome):
 
-    def __init__(self, bin1List, bin2List, bin3List, generation):
+    def __init__(self, bin1List, bin2List, bin3List, generation, mutation):
         self.generation = generation
         self.bin1 = bin1List
         self.bin2 = bin2List
         self.bin3 = bin3List
 
-        self.mutationThreshold = 5  # Percentage of 100 for each digit
+        self.mutationThreshold = mutation  # Percentage of 100 for each digit
 
     # This method initializes the Puzzle for generation 0
     # master is a list of all possible floats to create a Puzzle2 from
@@ -210,8 +210,8 @@ class Puzzle2(Chromosome):
         par2Bin2End = other.bin2[cutPointInt:len(other.bin2)]
         par2Bin3End = other.bin3[cutPointInt:len(other.bin3)]
 
-        newPa = Puzzle2([],[],[],self.generation + 1)
-        newPb = Puzzle2([],[],[],self.generation + 1)
+        newPa = Puzzle2([],[],[],self.generation + 1, self.mutationThreshold)
+        newPb = Puzzle2([],[],[],self.generation + 1, self.mutationThreshold)
 
         par1Bin1Front.extend(par2Bin1End)
         newPa.bin1 = par1Bin1Front
@@ -329,7 +329,7 @@ class Puzzle2(Chromosome):
         return self.generation
 
     def getCopy(self):
-        tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration())
+        tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration(), self.mutationThreshold)
         return tempChromeo
 
     def __repr__(self):
@@ -409,8 +409,8 @@ if __name__ == '__main__':
 
     # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
     a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    alpha = Puzzle2([], [], [], 0)
-    beta = Puzzle2([], [], [], 0)
+    alpha = Puzzle2([], [], [], 0, 5)
+    beta = Puzzle2([], [], [], 0, 5)
 
     alpha.initialize(a)
     beta.initialize(a)

@@ -6,8 +6,8 @@ from Chromosome import Chromosome
 
 class Puzzle3(Chromosome):
 
-    def __init__(self, gen):
-        self.mutationThreshold = 8  # Percentage of 100 for each digit
+    def __init__(self, gen, mutation):
+        self.mutationThreshold = mutation  # Percentage of 100 for each digit
         self.towerList = []
         self.generation = gen
 
@@ -65,8 +65,8 @@ class Puzzle3(Chromosome):
         # This method does a crossover for multiple chromosomes
         # chas
     def crossover(self, other):
-        newPa = Puzzle3(self.generation + 1)
-        newPb = Puzzle3(self.generation + 1)
+        newPa = Puzzle3(self.generation + 1, self.mutationThreshold)
+        newPb = Puzzle3(self.generation + 1, self.mutationThreshold)
         thisList = self.towerList
         otherList = other.getTowerList()
 
@@ -124,7 +124,7 @@ class Puzzle3(Chromosome):
         return self.generation
 
     def getCopy(self):
-        tempCpy = Puzzle3(self.getGeneration)
+        tempCpy = Puzzle3(self.getGeneration(), self.mutationThreshold)
         tempCpy.setTowerList(list(self.getTowerList()))
         return tempCpy
 
@@ -143,21 +143,21 @@ if __name__ == '__main__':
     l3 = Piece("Lookout", 3, 1, 2, 7)
     masterList = [d1, w1, w2, d2, w3, l1, l2, l3]
 
-    ap3a = Puzzle3(0)
-    ap3b = Puzzle3(0)
-    ap3c = Puzzle3(0)
-    ap3d = Puzzle3(0)
-    ap3e = Puzzle3(0)
-    ap3f = Puzzle3(0)
+    ap3a = Puzzle3(0, 5)
+    ap3b = Puzzle3(0, 5)
+    ap3c = Puzzle3(0, 5)
+    ap3d = Puzzle3(0, 5)
+    ap3e = Puzzle3(0, 5)
+    ap3f = Puzzle3(0, 5)
 
-    alpha = Puzzle3(0)
-    beta = Puzzle3(0)
-    gamma = Puzzle3(0)
-    delta = Puzzle3(0)
-    epsilon = Puzzle3(0)
-    zeta = Puzzle3(0)
-    eta = Puzzle3(0)
-    theta = Puzzle3(0)
+    alpha = Puzzle3(0, 5)
+    beta = Puzzle3(0, 5)
+    gamma = Puzzle3(0, 5)
+    delta = Puzzle3(0, 5)
+    epsilon = Puzzle3(0, 5)
+    zeta = Puzzle3(0, 5)
+    eta = Puzzle3(0, 5)
+    theta = Puzzle3(0, 5)
 
 
     genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f, alpha, beta]
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     print zeta.fitness(), 0
     print eta.fitness(), 9
 
-    keta = Puzzle3(0)
-    keta.towerList = [d1, w1, w2, l2]
-    print keta.checkLegality()
-    print keta.fitness(), 20
+    eta = Puzzle3(0, 5)
+    eta.towerList = [d1, w1, w2, l2]
+    print eta.checkLegality()
+    print eta.fitness(), 20
