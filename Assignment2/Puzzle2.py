@@ -4,11 +4,10 @@ from Illegal import Illegal
 from Location import Location
 import copy
 
-
 class Puzzle2(Chromosome):
 
     def __init__(self, bin1List, bin2List, bin3List, generation):
-        super(Puzzle2, self).__init__(generation)
+        self.generation = generation
         self.bin1 = bin1List
         self.bin2 = bin2List
         self.bin3 = bin3List
@@ -18,7 +17,7 @@ class Puzzle2(Chromosome):
     # This method initializes the Puzzle for generation 0
     # master is a list of all possible floats to create a Puzzle2 from
     def initialize(self, master):
-        super(Puzzle2, self).__init__(0)
+        self.generation = 0
         new_master = copy.copy(master)
 
         top = len(new_master) / 3
@@ -323,12 +322,21 @@ class Puzzle2(Chromosome):
     def getBin2(self):
         return self.bin2
 
-    def getBin2(self):
+    def getBin3(self):
         return self.bin3
+
+    def getGeneration(self):
+        return self.generation
+
+    def getCopy(self):
+        tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration())
+        return tempChromeo
 
     def __repr__(self):
         return ("Bin1: " + str(self.bin1) + "\nBin2: " +
                 str(self.bin2) + "\nBin3: " + str(self.bin3) + "\n")
+
+Chromosome.register(Puzzle2)
 
 if __name__ == '__main__':
     # from Puzzle2 import Puzzle2
@@ -414,5 +422,10 @@ if __name__ == '__main__':
     alpha.mutate(a)
     beta.mutate(a)
 
-    # print alpha
-    # print alpha.fitness()
+    print alpha
+    print alpha.fitness()
+    gud = alpha.getCopy()
+    print gud
+    print gud.fitness()
+
+

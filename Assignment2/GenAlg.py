@@ -10,18 +10,29 @@ def geneticAlgorithm(puzzle, validValues, allowedTime):
     chromosomes = makeChromes(puzzle, validValues, popSize)
     gen = makeNodes(chromosomes)
     masterDict = makeDict(validValues)
-    best = bestChrome(gen)
+    overallChampion = bestChrome(gen).getCopy()
+    # print overallChampion
 
-    while(time.time() < (start + allowedTime)):
+
+    # while(time.time() < (start + allowedTime)):
+    for i in range(10):
+        # print "INDEX: ", i
         evalGen(gen)
         mate(gen)
         mutateGen(gen, validValues)
-        daWinner = bestChrome(gen)
-        print daWinner.fitness()
-        if daWinner.fitness() > best.fitness():
-            best = daWinner
+        daWinner = bestChrome(gen).getCopy()
+        # print daWinner.fitness()
 
-    return best
+        if daWinner.fitness() > overallChampion.fitness():
+            # print "B", overallChampion, overallChampion.fitness()
+            gud = daWinner.getCopy()
+            # print "G", gud, gud.fitness()
+            overallChampion = gud
+            # print "F", overallChampion
+
+
+
+    return overallChampion
 
 
 
@@ -112,7 +123,7 @@ def bestChrome(gen):
     for node in gen:
         if node.fitness > bestFitness:
             bestFitness = node.fitness
-            best = node.chromosome
+            best = node.chromosome.getCopy()
     return best
 
 
@@ -132,6 +143,6 @@ if __name__ == "__main__":
 
     a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
 
-    best = geneticAlgorithm(2, a, 5)
+    best = geneticAlgorithm(2, a, 3)
     print best
     print best.fitness()
