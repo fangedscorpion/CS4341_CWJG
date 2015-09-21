@@ -6,12 +6,12 @@ from Puzzle3 import Puzzle3
 import copy
 from Piece import Piece
 
-def geneticAlgorithm(puzzle, validValues, allowedTime):
+def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict):
     popSize = 10
     start = time.time()
     chromosomes = makeChromes(puzzle, validValues, popSize)
     gen = makeNodes(chromosomes)
-    masterDict = makeDict(validValues)
+    # masterDict = makeDict(validValues)
     overallChampion = bestChrome(gen).getCopy()
     # print overallChampion
 
@@ -40,7 +40,14 @@ def geneticAlgorithm(puzzle, validValues, allowedTime):
 def makeChromes(puzzle, validValues, popSize): 
     chromes = []
     for i in range(popSize):
-        chromes.append(Puzzle2([], [], [], 0))
+        if(puzzle == 1):
+            pass
+            # chromes.append(Puzzle1([], 0))
+        elif(puzzle == 2):
+            chromes.append(Puzzle2([], [], [], 0))
+        elif(puzzle == 3):
+            chromes.append(Puzzle3(0))
+
         chromes[i].initialize(validValues)
 
     return chromes
@@ -76,9 +83,6 @@ def evalGen(gen):
         percentFitness = (node.fitness/netFitness)*100
         netPercent += percentFitness
         node.percentBound = netPercent
-
-
-
 
 def mate(gen): #make the new generation, new Gen is not mutated or valid 
     preGen = []
@@ -141,7 +145,8 @@ class node():
 if __name__ == "__main__":
     testValues = []
 
-    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    aPuzzle2List = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+
     d1 = Piece("Door", 5, 2, 2, 0)
     w1 = Piece("Wall", 5, 5, 1, 1)
     w2 = Piece("Wall", 4, 3, 1, 2)
@@ -150,8 +155,12 @@ if __name__ == "__main__":
     l1 = Piece("Lookout", 2, 2, 3, 5)
     l2 = Piece("Lookout", 3, 1, 2, 6)
     l3 = Piece("Lookout", 3, 1, 2, 7)
-    a = [d1, w1, w2, d2, w3, l1, l2, l3]
+    aPieceList = [d1, w1, w2, d2, w3, l1, l2, l3]
 
-    best = geneticAlgorithm(3, a, 5)
+    best = geneticAlgorithm(2, aPuzzle2List, 5, [])
+    print best
+    print best.fitness()
+
+    best = geneticAlgorithm(3, aPieceList, 5, [])
     print best
     print best.fitness()

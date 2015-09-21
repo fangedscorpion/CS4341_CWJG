@@ -7,14 +7,12 @@ from Chromosome import Chromosome
 class Puzzle3(Chromosome):
 
     def __init__(self, gen):
-        super(Puzzle3, self).__init__(gen)
         self.mutationThreshold = 50  # Percentage of 100 for each digit
         self.towerList = []
 
     # This method initializes the chromosome for generation 0
     # jake
     def initialize(self, masterList):
-        super(Puzzle3, self).__init__(0)
         size = rand.randint(2, len(masterList))
 
         new_masterList = copy.copy(masterList)
@@ -122,6 +120,11 @@ class Puzzle3(Chromosome):
 
     def getGeneration(self):
         return self.generation
+
+    def getCopy(self):
+        tempCpy = Puzzle3(self.getGeneration)
+        tempCpy.setTowerList(list(self.getTowerList()))
+        return tempCpy
 
     def __repr__(self):
         return str(self.towerList)
