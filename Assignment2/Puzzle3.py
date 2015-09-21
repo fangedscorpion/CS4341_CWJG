@@ -38,6 +38,12 @@ class Puzzle3(Chromosome):
         if (not (self.towerList[len(self.towerList) - 1].isLookout())):
             return False
 
+        # 2.5
+        for m in range(0, len(self.towerList)):
+            for n in range(m + 1, len(self.towerList)):
+                if (self.towerList[m] == self.towerList[n]):
+                    return False
+
         # 3
         for j in range(1, len(self.towerList) - 1):
             if (not (self.towerList[0].isWall())):
@@ -142,6 +148,7 @@ if __name__ == '__main__':
     epsilon = Puzzle3(0)
     zeta = Puzzle3(0)
     eta = Puzzle3(0)
+    theta = Puzzle3(0)
 
 
     genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f, alpha, beta]
@@ -169,6 +176,8 @@ if __name__ == '__main__':
     beta.towerList = [w1, w2, d2, l1]
     # 2
     gamma.towerList = [d1, w1, w2]
+    # 2.5
+    theta.towerList = [d1, w1, w1, l1]
     # 3
     delta.towerList = [d1, d2, l1]
     # 4
@@ -181,6 +190,7 @@ if __name__ == '__main__':
     print alpha.checkLegality(), False
     print beta.checkLegality(), False
     print gamma.checkLegality(), False
+    print theta.checkLegality(), False
     print delta.checkLegality(), False
     print epsilon.checkLegality(), False
     print zeta.checkLegality(), False
