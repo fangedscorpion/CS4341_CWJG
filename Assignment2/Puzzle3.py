@@ -64,15 +64,19 @@ class Puzzle3(Chromosome):
         # This method does a crossover for multiple chromosomes
         # chas
     def crossover(self, other):
+        newPa = Puzzle3(self.generation + 1)
+        newPb = Puzzle3(self.generation + 1)
         thisList = self.towerList
         otherList = other.getTowerList()
 
         rand1Num = rand.randint(1, len(thisList) - 1)
         rand2Num = rand.randint(1, len(otherList) - 1)
-        print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
+        # print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
 
-        self.towerList = thisList[0:rand1Num] + otherList[rand2Num:len(otherList)]
-        other.setTowerList(otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
+        newPa.towerList = thisList[0:rand1Num] + otherList[rand2Num:len(otherList)]
+        newPb.setTowerList(otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
+
+        return (newPa, newPb)
 
     # this function evaluates the fitness of a chromosome
     # jake
@@ -156,6 +160,10 @@ if __name__ == '__main__':
     for chromo in genY:
         chromo.initialize(masterList)
         #print chromo.towerList
+
+    crosses = ap3a.crossover(ap3b)
+    print ap3a != crosses[0], True
+    print ap3a == ap3a, True
 
     # print "#" * 20
     # print ap3a
