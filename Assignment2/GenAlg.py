@@ -2,7 +2,9 @@ import random
 import time
 from Chromosome import Chromosome
 from Puzzle2 import Puzzle2
+from Puzzle3 import Puzzle3
 import copy
+from Piece import Piece
 
 def geneticAlgorithm(puzzle, validValues, allowedTime):
     popSize = 10
@@ -14,9 +16,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime):
     # print overallChampion
 
 
-    # while(time.time() < (start + allowedTime)):
-    for i in range(10):
-        # print "INDEX: ", i
+    while(time.time() < (start + allowedTime)):
         evalGen(gen)
         mate(gen)
         mutateGen(gen, validValues)
@@ -141,8 +141,17 @@ class node():
 if __name__ == "__main__":
     testValues = []
 
-    a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    d1 = Piece("Door", 5, 2, 2, 0)
+    w1 = Piece("Wall", 5, 5, 1, 1)
+    w2 = Piece("Wall", 4, 3, 1, 2)
+    d2 = Piece("Door", 3, 5, 2, 3)
+    w3 = Piece("Wall", 3, 3, 2, 4)
+    l1 = Piece("Lookout", 2, 2, 3, 5)
+    l2 = Piece("Lookout", 3, 1, 2, 6)
+    l3 = Piece("Lookout", 3, 1, 2, 7)
+    a = [d1, w1, w2, d2, w3, l1, l2, l3]
 
-    best = geneticAlgorithm(2, a, 3)
+    best = geneticAlgorithm(3, a, 5)
     print best
     print best.fitness()
