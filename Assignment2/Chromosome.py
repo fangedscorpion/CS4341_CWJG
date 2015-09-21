@@ -7,11 +7,6 @@ class Chromosome(object):
     def initialize(self):
         pass
 
-    # This method initializes the chromosome for generation 0
-    @abc.abstractmethod
-    def initialize(self):
-        pass
-
     # This method checks if a chromosome is legal
     @abc.abstractmethod
     def checkLegality(self):
