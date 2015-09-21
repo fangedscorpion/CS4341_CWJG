@@ -7,13 +7,15 @@ from Chromosome import Chromosome
 class Puzzle3(Chromosome):
 
     def __init__(self, gen):
-        self.mutationThreshold = 50  # Percentage of 100 for each digit
+        self.mutationThreshold = 8  # Percentage of 100 for each digit
         self.towerList = []
+        self.generation = gen
 
     # This method initializes the chromosome for generation 0
     # jake
     def initialize(self, masterList):
         size = rand.randint(2, len(masterList))
+        self.generation = 0
 
         new_masterList = copy.copy(masterList)
 
@@ -32,6 +34,7 @@ class Puzzle3(Chromosome):
         # 1
         if (not (self.towerList[0].isDoor())):
             return False
+
         # 2
         if (not (self.towerList[len(self.towerList) - 1].isLookout())):
             return False
@@ -44,7 +47,7 @@ class Puzzle3(Chromosome):
 
         # 3
         for j in range(1, len(self.towerList) - 1):
-            if (not (self.towerList[0].isWall())):
+            if (not (self.towerList[j].isWall())):
                 return False
 
         # 4
@@ -54,7 +57,7 @@ class Puzzle3(Chromosome):
 
         # 5
         for l in range(0, len(self.towerList) - 1):
-            if (self.towerList[l].canSupportNum(len(self.towerList[l::])) == False):
+            if (self.towerList[l].canSupportNum(len(self.towerList[l+1::])) == False):
                 return False
 
         return True
@@ -81,7 +84,6 @@ class Puzzle3(Chromosome):
     def fitness(self):
         if (not (self.checkLegality())):
             return 0
-
         else:
             return 10 + (len(self.towerList)**2) - self.sumCost()
 
@@ -108,7 +110,7 @@ class Puzzle3(Chromosome):
 
                 if(not newPart in self.towerList):
                     self.towerList[x] = newPart
-                    print newPart
+                    # print newPart
             else:
                 pass
 
@@ -131,7 +133,7 @@ class Puzzle3(Chromosome):
 
 if __name__ == '__main__':
     from Piece import Piece
-    d1 = Piece("Door", 5, 2, 2, 0)
+    d1 = Piece("Door", 5, 3, 2, 0)
     w1 = Piece("Wall", 5, 5, 1, 1)
     w2 = Piece("Wall", 4, 3, 1, 2)
     d2 = Piece("Door", 3, 5, 2, 3)
@@ -198,6 +200,8 @@ if __name__ == '__main__':
     # 6
     eta.towerList = [d1, l1]
 
+
+
     print alpha.checkLegality(), False
     print beta.checkLegality(), False
     print gamma.checkLegality(), False
@@ -209,3 +213,8 @@ if __name__ == '__main__':
 
     print zeta.fitness(), 0
     print eta.fitness(), 9
+
+    keta = Puzzle3(0)
+    keta.towerList = [d1, w1, w2, l2]
+    print keta.checkLegality()
+    print keta.fitness(), 20
