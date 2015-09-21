@@ -13,7 +13,7 @@ class Puzzle2(Chromosome):
         self.bin2 = bin2List
         self.bin3 = bin3List
 
-        self.mutationThreshold = 50  # Percentage of 100 for each digit
+        self.mutationThreshold = 5  # Percentage of 100 for each digit
 
     # This method initializes the Puzzle for generation 0
     # master is a list of all possible floats to create a Puzzle2 from
@@ -382,7 +382,7 @@ if __name__ == '__main__':
     # print par5
     # print par5.generation
 
-    def testPrintAll():
+    # def testPrintAll():
         # print "alpha: "
         # print alpha
         # print
