@@ -211,19 +211,24 @@ class Puzzle2(Chromosome):
         par2Bin2End = other.bin2[cutPointInt:len(other.bin2)]
         par2Bin3End = other.bin3[cutPointInt:len(other.bin3)]
 
+        newPa = Puzzle2([],[],[],self.generation + 1)
+        newPb = Puzzle2([],[],[],self.generation + 1)
+
         par1Bin1Front.extend(par2Bin1End)
-        self.bin1 = par1Bin1Front
+        newPa.bin1 = par1Bin1Front
         par1Bin2Front.extend(par2Bin2End)
-        self.bin2 = par1Bin2Front
+        newPa.bin2 = par1Bin2Front
         par1Bin3Front.extend(par2Bin3End)
-        self.bin3 = par1Bin3Front
+        newPa.bin3 = par1Bin3Front
 
         par2Bin1Front.extend(par1Bin1End)
-        other.bin1 = par2Bin1Front
+        newPb.bin1 = par2Bin1Front
         par2Bin2Front.extend(par1Bin2End)
-        other.bin2 = par2Bin2Front
+        newPb.bin2 = par2Bin2Front
         par2Bin3Front.extend(par1Bin3End)
-        other.bin3 = par2Bin3Front
+        newPb.bin3 = par2Bin3Front
+
+        return (newPa, newPb)
 
     # this function evaluates the fitness of a Puzzle
     # fitness = product(bin1) + sum(bin2)
@@ -402,7 +407,9 @@ if __name__ == '__main__':
     alpha.initialize(a)
     beta.initialize(a)
 
-    alpha.crossover(beta)
+    crosses = alpha.crossover(beta)
+    print crosses[0] != alpha, True
+    print alpha == alpha, True
 
     alpha.mutate(a)
     beta.mutate(a)
