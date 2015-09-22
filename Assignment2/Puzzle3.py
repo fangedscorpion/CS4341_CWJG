@@ -12,7 +12,6 @@ class Puzzle3(Chromosome):
         self.generation = gen
 
     # This method initializes the chromosome for generation 0
-    # jake
     def initialize(self, masterList):
         # if (len(masterList) < 2):
         #     size = len(masterList)
@@ -31,7 +30,6 @@ class Puzzle3(Chromosome):
             self.towerList.append(a_piece)
 
     # This method checks if a chromosome is legal
-    # jake
     def checkLegality(self):
         # 0
         if (not (len(self.towerList) >= 2)):
@@ -68,8 +66,7 @@ class Puzzle3(Chromosome):
 
         return True
 
-        # This method does a crossover for multiple chromosomes
-        # chas
+    # This method does a crossover for multiple chromosomes
     def crossover(self, other):
         newPa = Puzzle3(self.generation + 1, self.mutationThreshold)
         newPb = Puzzle3(self.generation + 1, self.mutationThreshold)
@@ -103,7 +100,6 @@ class Puzzle3(Chromosome):
         return (newPa, newPb)
 
     # this function evaluates the fitness of a chromosome
-    # jake
     def fitness(self):
         if (not (self.checkLegality())):
             return 0
@@ -121,7 +117,6 @@ class Puzzle3(Chromosome):
         return cost
 
     # this funcction mutates a chromosome
-    # chas
     def mutate(self, masterList):
         # if a tower has a size of 0, there is nothing to mutate
         if (len(self.towerList) > 0):

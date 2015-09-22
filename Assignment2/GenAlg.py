@@ -1,18 +1,19 @@
 import random
 import time
 from Chromosome import Chromosome
+from Chromosome1 import Chromosome1
 from Puzzle2 import Puzzle2
 from Puzzle3 import Puzzle3
 import copy
 from Piece import Piece
 
-def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize):
+def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc):
     popSize = paramPopSize
     start = time.time()
-    chromosomes = makeChromes(puzzle, validValues, popSize)
+    chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
     gen = makeNodes(chromosomes)
     # masterDict = makeDict(validValues)
-    overallChampion = bestChrome(gen).getCopy()
+    overallChampion = bestChrome(gen, masterDict).getCopy()
     # print overallChampion
 
 
@@ -20,7 +21,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize)
         evalGen(gen)
         mate(gen)
         mutateGen(gen, validValues)
-        daWinner = bestChrome(gen).getCopy()
+        daWinner = bestChrome(gen, masterDict).getCopy()
         # print daWinner.fitness()
 
         if daWinner.fitness() > overallChampion.fitness():
@@ -35,16 +36,15 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize)
 
 
 # creates 500 chromosomes (hopefully unique, though not explicitly)
-def makeChromes(puzzle, validValues, popSize): 
+def makeChromes(puzzle, validValues, popSize, mutatePerc): 
     chromes = []
     for i in range(popSize):
         if(puzzle == 1):
-            exit("Not defined!!!!")
-            # chromes.append(Puzzle1([], 0))
+            chromes.append(Chromosome1([], 0, mutatePerc))
         elif(puzzle == 2):
-            chromes.append(Puzzle2([], [], [], 0))
+            chromes.append(Puzzle2([], [], [], 0, mutatePerc))
         elif(puzzle == 3):
-            chromes.append(Puzzle3(0))
+            chromes.append(Puzzle3(0, mutatePerc))
 
         chromes[i].initialize(validValues)
 
@@ -124,10 +124,10 @@ def mutateGen(gen, masterList):
     for node in gen:
         node.chromosome.mutate(masterList)
 
-def bestChrome(gen):
+def bestChrome(gen, masterDict):
     bestFitness = -100
     for node in gen:
-        if node.fitness > bestFitness:
+        if (node.fitness > bestFitness) and (node.chromosome.checkLegality(masterDict)):
             bestFitness = node.fitness
             best = node.chromosome.getCopy()
     return best
@@ -143,9 +143,11 @@ class node():
 
 
 if __name__ == "__main__":
-    testValues = []
+    testPuzzle1Values = [1, 2, 3, 4, 5]
+    testPuzzle1ValuesDict = {1:1, 2:1, 3:1, 4:1, 5:1}
 
     aPuzzle2List = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
+    aPuzzle2Dict = {1:1, 0:1, -6:1, -9.9:1, 8:1, 4.5:1, 3:1, 3.8:1, 2.5:1}
 
     d1 = Piece("Door", 5, 3, 2, 0)
     w1 = Piece("Wall", 5, 5, 1, 1)
@@ -155,15 +157,19 @@ if __name__ == "__main__":
     l1 = Piece("Lookout", 2, 2, 3, 5)
     l2 = Piece("Lookout", 3, 1, 2, 6)
     aPieceList = [d1, w1, w2, d2, w3, l1, l2] # Best I think is score of 20
+    aPieceDict = {d1:1, w1:1, w2:1, d2:1, w3:1, l1:1, l2:1}
 
-    # best = geneticAlgorithm(1, aPuzzle2List, 5, [], 50)
-    # print best
-    # print best.fitness()
+    mutatePerc = 10
+    genSize = 50
+    runTimeSecs = 3
+    best = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs, testPuzzle1ValuesDict, genSize, mutatePerc)
+    print best
+    print best.fitness()
 
-    # best = geneticAlgorithm(2, aPuzzle2List, 5, [], 50)
-    # print best
-    # print best.fitness()
+    best = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, [], genSize, mutatePerc)
+    print best
+    print best.fitness()
 
-    best = geneticAlgorithm(3, aPieceList, 5, [], 50)
+    best = geneticAlgorithm(3, aPieceList, runTimeSecs, [], genSize, mutatePerc)
     print best
     print best.fitness()
