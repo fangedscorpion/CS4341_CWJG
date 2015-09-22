@@ -7,7 +7,7 @@ from Puzzle3 import Puzzle3
 import copy
 from Piece import Piece
 
-def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc):
+def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, mateMode):
     popSize = paramPopSize
     mutationThreshold = 20
     start = time.time()
@@ -22,7 +22,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
     while(time.time() < (start + allowedTime)):
         evalGen(gen)
-        mate(gen, 1, 5)
+        mate(gen, popSize, mateMode, 8)
         mutateGen(gen, validValues)
         daWinner = bestChrome(gen, masterDict).getCopy()
         # print daWinner.fitness()
@@ -89,25 +89,28 @@ def evalGen(gen):
         netPercent += percentFitness
         node.percentBound = netPercent
 
-def mate(gen, mateMode, numSpecialNodes): #make the new generation, new Gen is not mutated or valid 
-    print len(gen)
+def mate(gen, popSize, mateMode, numSpecialNodes): #make the new generation, new Gen is not mutated or valid 
+    iterations = len(gen)
+    print iterations
     sorted(gen, key = lambda node: node.percentBound)
     preGen = []
 
-    if mateMode == 0: # normal operation
-        iterations = len(gen)
+        
     if mateMode == 1: #if elite
-        iterations = len(gen) - numSpecialNodes
+        # iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
             preGen.append(gen[i])
-    if mateMode == 2: # if culling
-        iterations = len(gen)
+    elif mateMode == 2: # if culling
         for i in range(numSpecialNodes):
-            gen.remove(gen[(iterations-i)-1])
-    evalGen(gen) 
-    sorted(gen, key = lambda node: node.percentBound)       
-        
-    for i in range(iterations):
+            gen.remove(gen[iterations-i-1])
+        # iterations += numSpecialNodes
+        evalGen(gen) 
+        sorted(gen, key = lambda node: node.percentBound)
+    elif mateMode != 0:
+        print "invalid mateMode, must be 0, 1, or 2" 
+        exit()     
+    
+    for i in range(popSize/2):
         foundA = 0
         foundB = 0
         point1 = random.random()*100
@@ -150,7 +153,7 @@ def mutateGen(gen, masterList):
         node.chromosome.mutate(masterList)
 
 def bestChrome(gen, masterDict):
-    bestFitness = -100
+    bestFitness = -1000
     for node in gen:
         if (node.fitness > bestFitness) and (node.chromosome.checkLegality(masterDict)):
             bestFitness = node.fitness
@@ -168,6 +171,8 @@ class node():
 
 
 if __name__ == "__main__":
+    testMateMode = 1
+
     testPuzzle1Values = [1, 2, 3, 4, 5]
     testPuzzle1ValuesDict = {1:1, 2:1, 3:1, 4:1, 5:1}
 
@@ -188,13 +193,13 @@ if __name__ == "__main__":
     genSize = 50
     runTimeSecs = 3
 
-    best1 = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs, testPuzzle1ValuesDict, genSize, mutatePerc)
+    best1 = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs, testPuzzle1ValuesDict, genSize, mutatePerc, testMateMode)
     
 
-    best2 = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc)
+    best2 = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, testMateMode)
     
 
-    best3 = geneticAlgorithm(3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc)
+    # best3 = geneticAlgorithm(3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc , testMateMode)
  
     print " "
     print "Puzzle 1 results:"
