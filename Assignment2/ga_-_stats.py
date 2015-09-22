@@ -16,7 +16,7 @@ if __name__ == "__main__":
         the_list_parser = ListParser(
             open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
 
-        for pop_size in range(2, 100, 2):
+        for pop_size in range(2, 150, 2):
             print "pop_size: ", pop_size
             fileWrite.write(str(pop_size) + ",")
             for j in range(0, sample_size):
