@@ -32,37 +32,61 @@ class Puzzle3(Chromosome):
     # This method checks if a chromosome is legal
     def checkLegality(self, dict):
         # 0
+        # print 0
         if (not (len(self.towerList) >= 2)):
             return False
 
         # 1
+        # print 1
         if (not (self.towerList[0].isDoor())):
             return False
 
         # 2
+        # print 2
         if (not (self.towerList[len(self.towerList) - 1].isLookout())):
             return False
 
         # 2.5
         for m in range(0, len(self.towerList)):
+            # 2.5
+            # print 2.5
             for n in range(m + 1, len(self.towerList)):
-                if (self.towerList[m] == self.towerList[n]):
+                if (self.towerList[m].getID() == self.towerList[n].getID()):
+                    return False
+
+            # 3
+            # print 3
+            if (m != 0) and (m != len(self.towerList) - 1):
+                # print "m: ", m, self.towerList[m]
+                if (not (self.towerList[m].isWall())):
+                    return False
+
+            # 4
+            # print 4
+            if (m != 0):
+                if (self.towerList[m].canFit(self.towerList[m - 1]) == False):
+                    return False
+
+            # 5
+            # print 5
+            if (m != len(self.towerList) - 2):
+                if (self.towerList[m].canSupportNum(len(self.towerList[m + 1::])) == False):
                     return False
 
         # 3
-        for j in range(1, len(self.towerList) - 1):
-            if (not (self.towerList[j].isWall())):
-                return False
+        # for j in range(1, len(self.towerList) - 1):
+        #     if (not (self.towerList[j].isWall())):
+        #         return False
 
         # 4
-        for k in range(1, len(self.towerList)):
-            if (self.towerList[k].canFit(self.towerList[k - 1]) == False):
-                return False
+        # for k in range(1, len(self.towerList)):
+        #     if (self.towerList[k].canFit(self.towerList[k - 1]) == False):
+        #         return False
 
         # 5
-        for l in range(0, len(self.towerList) - 1):
-            if (self.towerList[l].canSupportNum(len(self.towerList[l + 1::])) == False):
-                return False
+        # for l in range(0, len(self.towerList) - 1):
+        #     if (self.towerList[l].canSupportNum(len(self.towerList[l + 1::])) == False):
+        #         return False
 
         return True
 
@@ -229,19 +253,19 @@ if __name__ == '__main__':
     kappa.initialize(noList)
     mu.initialize(aBitBiggerList)
 
-    print alpha.checkLegality(), False
-    print beta.checkLegality(), False
-    print gamma.checkLegality(), False
-    print theta.checkLegality(), False
-    print delta.checkLegality(), False
-    print epsilon.checkLegality(), False
-    print zeta.checkLegality(), False
-    print eta.checkLegality(), True
+    print alpha.checkLegality(0), False, 0
+    print beta.checkLegality(0), False, 1
+    print gamma.checkLegality(0), False, 2
+    print theta.checkLegality(0), False, 2.5
+    print delta.checkLegality(0), False, 3
+    print epsilon.checkLegality(0), False, 4
+    print zeta.checkLegality(0), False, 5
+    print eta.checkLegality(0), True
 
-    print zeta.fitness(), 0
-    print eta.fitness(), 9
+    print zeta.fitness(0, 0), 0
+    print eta.fitness(0, 0), 9
 
     eta = Puzzle3(0, 5)
     eta.towerList = [d1, w1, w2, l2]
-    print eta.checkLegality()
-    print eta.fitness(), 20
+    print eta.checkLegality(0)
+    print eta.fitness(0, 0), 20
