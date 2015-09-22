@@ -28,9 +28,13 @@ class Chromosome1(Chromosome):
             #    self.lon.append(addChoice)
             #    added += 1
 
-    #get score from the list of numbers
-    def fitness(self):
-        return sum(self.lon)
+    #get score from the list of numbers. Target is the number trying to be reached
+    def fitness(self, dict, target):
+        sumList = sum(self.lon)
+        if (self.checkLegality(dict) and sumList <= target):
+            return sum(self.lon)
+        else: #sum exceeded target means fitness 0
+            return 0
 
     #crossover this chromosome with the given chromosome
     def crossover(self, chrom):
