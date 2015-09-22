@@ -7,8 +7,8 @@ if __name__ == "__main__":
     puzzleNum = 2
     sample_size = 10
     mutatePerc = 10
-    filename1 = "sample_puzzle"
-    filename2 = "_list.txt"
+    filename1 = "ourPuzzle"
+    filename2 = "_sample.txt"
 
     for puzzleNum in range(1, 4):
         print "puzzle: ", puzzleNum
