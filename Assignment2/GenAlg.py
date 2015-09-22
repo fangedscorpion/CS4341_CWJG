@@ -149,17 +149,14 @@ def bestChrome(gen, masterDict):
         print "gen is empty"
         exit()
 
-    bestFitness = -1000000
-    # for node in gen:
-    #     if (node.fitness > bestFitness) and (node.chromosome.checkLegality(masterDict)):
-    #         bestFitness = node.fitness
-    #         best = node.chromosome.getCopy()
-    for j in range(0, len(gen)):
-        # print gen[j].fitness
-        # and (gen[j].chromosome.checkLegality(masterDict)):
-        if (gen[j].fitness > bestFitness):
-            bestFitness = gen[j].fitness
-            best = gen[j].chromosome.getCopy()
+    best = gen[0].chromosome.getCopy()
+    bestFitness = gen[0].fitness
+
+    for node in gen:
+        if (node.fitness > bestFitness):
+            bestFitness = node.fitness
+            best = node.chromosome.getCopy()
+    
     return best
 
 
