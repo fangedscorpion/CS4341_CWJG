@@ -22,7 +22,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
     while(time.time() < (start + allowedTime)):
         evalGen(gen)
-        mate(gen, 2, 5)
+        mate(gen, 1, 5)
         mutateGen(gen, validValues)
         daWinner = bestChrome(gen, masterDict).getCopy()
         # print daWinner.fitness()
@@ -90,6 +90,7 @@ def evalGen(gen):
         node.percentBound = netPercent
 
 def mate(gen, mateMode, numSpecialNodes): #make the new generation, new Gen is not mutated or valid 
+    print len(gen)
     sorted(gen, key = lambda node: node.percentBound)
     preGen = []
 
@@ -113,10 +114,6 @@ def mate(gen, mateMode, numSpecialNodes): #make the new generation, new Gen is n
         point2 = random.random()*100
         # for each in gen:
             # print each.percentBound
-        parentA = None
-        print len(gen)
-        print "The line here at 118 in GenAlg.py is broken as the genetic algorithm population size decreases by 5 FIX IT WILL"
-        exit(0)
 
         for j in range(1, len(gen)):
             if not foundA:
@@ -190,15 +187,24 @@ if __name__ == "__main__":
     mutatePerc = 10
     genSize = 50
     runTimeSecs = 3
-    best = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs, testPuzzle1ValuesDict, genSize, mutatePerc)
-    print best
-    print best.fitness()
 
-    best = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc)
-    print best
-    print best.fitness()
+    best1 = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs, testPuzzle1ValuesDict, genSize, mutatePerc)
+    
 
-    best = geneticAlgorithm(3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc)
+    best2 = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc)
+    
 
-    print best
-    print best.fitness()
+    best3 = geneticAlgorithm(3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc)
+ 
+    print " "
+    print "Puzzle 1 results:"
+    print best1
+    print best1.fitness()
+    print " "
+    print "Puzzle 2 results:"
+    print best2
+    print best2.fitness()
+    print " "
+    print "Puzzle 3 results:"
+    print best3
+    print best3.fitness()
