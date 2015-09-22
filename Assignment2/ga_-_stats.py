@@ -3,11 +3,11 @@ from GenAlg import geneticAlgorithm
 
 if __name__ == "__main__":
     debug_mode = 0
-    run_time = 15
+    run_time = 1
     puzzleNum = 2
-    sample_size = 10
+    sample_size = 1
     mutatePerc = 10
-    filename1 = "ourPuzzle"
+    filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
     for puzzleNum in range(1, 4):
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         the_list_parser = ListParser(
             open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
 
-        for pop_size in range(2, 100, 2):
+        for pop_size in range(2, 4, 2):
             print "pop_size: ", pop_size
             fileWrite.write(str(pop_size) + ",")
             for j in range(0, sample_size):
