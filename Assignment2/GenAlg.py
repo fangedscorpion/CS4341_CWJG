@@ -16,9 +16,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
 
     gen = makeNodes(chromosomes)
-    # masterDict = makeDict(validValues)
     overallChampion = bestChrome(gen, masterDict).getCopy()
-    # print overallChampion
 
     while(time.time() < (start + allowedTime)):
         evalGen(gen, masterDict, Puz1Target)
@@ -60,17 +58,6 @@ def makeNodes(chromosomes):
         nodes.append(newNode)
 
     return nodes
-
-
-def makeDict(values):
-    newDict = {}
-    for value in values:
-        if newDict.has_key(value):
-            newDict[value] += 1
-        else:
-            newDict[value] = 1
-
-    return newDict
 
 # defines the fitness of each node and the % of the net fitness which will be used for
 # mating
