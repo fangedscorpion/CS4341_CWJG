@@ -231,17 +231,20 @@ class Puzzle2(Chromosome):
 
     # this function evaluates the fitness of a Puzzle
     # fitness = product(bin1) + sum(bin2)
-    def fitness(self):
-        bProd = 1
-        bSum = 0
+    def fitness(self, dict, target):
+        if (self.checkLegality(dict)):
+            bProd = 1
+            bSum = 0
 
-        # because  for a Puzzle2 to be legal, all bins must be the same size
-        # therefore, 1 for loop can be used
-        for j in range(0, len(self.bin1)):
-            bProd *= self.bin1[j]
-            bSum += self.bin2[j]
+            # because  for a Puzzle2 to be legal, all bins must be the same size
+            # therefore, 1 for loop can be used
+            for j in range(0, len(self.bin1)):
+                bProd *= self.bin1[j]
+                bSum += self.bin2[j]
 
-        return (bProd + bSum) / 2
+            return (bProd + bSum) / 2
+        else:
+            return 0
 
     # This is the version for when the chromosome is already legal
     def fixChildAfterMutate(self, listOfChangedNums):
@@ -334,7 +337,7 @@ class Puzzle2(Chromosome):
 
     def __repr__(self):
         return ("Bin1: " + str(self.bin1) + "\nBin2: " +
-                str(self.bin2) + "\nBin3: " + str(self.bin3) + "\n")
+                str(self.bin2) + "\nBin3: " + str(self.bin3))
 
 Chromosome.register(Puzzle2)
 

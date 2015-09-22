@@ -100,8 +100,8 @@ class Puzzle3(Chromosome):
         return (newPa, newPb)
 
     # this function evaluates the fitness of a chromosome
-    def fitness(self):
-        if (not (self.checkLegality())):
+    def fitness(self, dict, target):
+        if (not (self.checkLegality(dict))):
             return 0
         else:
             return 10 + (len(self.towerList) ** 2) - self.sumCost()
