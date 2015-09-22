@@ -104,6 +104,7 @@ class Chromosome1(Chromosome):
         return self.generation
 
     def checkLegality(self, masterDict):
+        # print self.lon
         for digit in self.lon:
             if(not self.isValid(digit, masterDict)):
                 return False

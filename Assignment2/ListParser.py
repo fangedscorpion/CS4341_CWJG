@@ -6,7 +6,13 @@ class ListParser(object):
     # puzzleNum is the puzzle type
     def __init__(self, file, puzzleNum):
         self.file = file
-        (self.list, self.dictionary, self.target) = self.MakeList(self.file, puzzleNum)
+        # self.file.readlines()
+        # (self.list, self.dictionary, self.target) = self.MakeList(self.file, puzzleNum)
+        beta = self.MakeList(self.file, puzzleNum)
+        self.list = beta[0]
+        self.dictionary = beta[1]
+        self.target = beta[2]
+        file.close()
 
     def updateDictionary(self, diction, key):
         if(diction.has_key(key)):
@@ -37,7 +43,7 @@ class ListParser(object):
             lines[j] = lines[j].split()
 
         if(puzzleNum == 1):
-            startList = [None] * (len(lines)-1)
+            startList = [None] * int(len(lines)-1)
             dictionary = {};
         elif(puzzleNum == 2):
             startList = [None] * (len(lines))
@@ -48,21 +54,21 @@ class ListParser(object):
             startList[0] = Piece(lines[0][0], int(lines[0][1]), int(lines[0][2]), int(lines[0][3]), 0)
             dictionary = {startList[0].getDictKey(): 1};
 
-        print "Num of lines: ", len(lines)
+        # print "Num of lines: ", len(lines)
         # assign values from lines into starting list
         for k in range(1, len(lines)):
             if(puzzleNum == 1):
                 if(k == len(lines) - 1):
                     startList[k-1] = int(lines[k][0])   
-                    dictionary = self.updateDictionary(dictionary, (lines[k][0]))
+                    dictionary = self.updateDictionary(dictionary, int(lines[k][0]))
                     break
 
                 startList[k-1] = int(lines[k][0])   
-                dictionary = self.updateDictionary(dictionary, (lines[k][0]))
+                dictionary = self.updateDictionary(dictionary, int(lines[k][0]))
 
             elif(puzzleNum == 2):
                 startList[k] = float(lines[k][0]) 
-                dictionary = self.updateDictionary(dictionary, (lines[k][0]))
+                dictionary = self.updateDictionary(dictionary, float(lines[k][0]))
             elif(puzzleNum == 3):
                 startList[k] = Piece(lines[k][0], int(lines[k][1]), int(lines[k][2]), int(lines[k][3]), k)
                 dictionary = self.updateDictionary(dictionary, startList[k].getDictKey())
@@ -71,9 +77,9 @@ class ListParser(object):
         if(puzzleNum == 1):
             return (startList, dictionary, int(lines[0][0]))
         elif(puzzleNum == 2):
-            return (startList, dictionary, None)
+            return (startList, dictionary, 0)
         elif(puzzleNum == 3):
-            return (startList, dictionary, None)
+            return (startList, dictionary, 0)
 
 if __name__ == "__main__":
     start_list = ListParser(open("sample_puzzle1_list.txt", "r"), 1)
@@ -87,8 +93,12 @@ if __name__ == "__main__":
     print start_list.getList()
     print 
     print start_list.getDictionary()
+    print 
+    print start_list.getTarget()
 
-    start_list = ListParser(open("piecelist.txt", "r"), 3)
+    start_list = ListParser(open("sample_puzzle3_list.txt", "r"), 3)
     print start_list.getList()
     print 
     print start_list.getDictionary()
+    print 
+    print start_list.getTarget()
