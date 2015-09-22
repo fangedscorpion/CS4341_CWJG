@@ -91,7 +91,7 @@ class Puzzle2(Chromosome):
                 # print starting[self.bin1[i]][1]
                 # print starting[self.bin1[i]][2] + [Location(1, i)]
                 starting[self.bin1[i]] = (
-                    starting[self.bin1[i]][1] + 1, starting[self.bin1[i]][2] + [Location(1, i)])
+                    starting[self.bin1[i]][0] + 1, list(starting[self.bin1[i]][1] + [Location(1, i)]))
             else:
                 # print "Bin 1 can't find key", self.bin1[i]
                 starting[self.bin1[i]] = (1, [Location(1, i)])
@@ -107,7 +107,7 @@ class Puzzle2(Chromosome):
 
             if (starting.has_key(self.bin3[i])):
                 starting[self.bin3[i]] = (
-                    starting[self.bin3[i]][1] + 1, starting[self.bin3[i]][2] + [Location(3, i)])
+                    starting[self.bin3[i]][0] + 1, list(starting[self.bin3[i]][1] + [Location(3, i)]))
             else:
                 # print "Bin 3 can't find key", self.bin3[i]
                 starting[self.bin3[i]] = (1, [Location(3, i)])
