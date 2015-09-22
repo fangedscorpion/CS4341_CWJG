@@ -14,7 +14,11 @@ class Puzzle3(Chromosome):
     # This method initializes the chromosome for generation 0
     # jake
     def initialize(self, masterList):
-        size = rand.randint(2, len(masterList))
+        if (len(masterList) < 2):
+            size = len(masterList)
+        else:
+            size = rand.randint(2, len(masterList))
+
         self.generation = 0
 
         new_masterList = copy.copy(masterList)
@@ -57,7 +61,7 @@ class Puzzle3(Chromosome):
 
         # 5
         for l in range(0, len(self.towerList) - 1):
-            if (self.towerList[l].canSupportNum(len(self.towerList[l+1::])) == False):
+            if (self.towerList[l].canSupportNum(len(self.towerList[l + 1::])) == False):
                 return False
 
         return True
@@ -74,8 +78,10 @@ class Puzzle3(Chromosome):
         rand2Num = rand.randint(1, len(otherList) - 1)
         # print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
 
-        newPa.towerList = thisList[0:rand1Num] + otherList[rand2Num:len(otherList)]
-        newPb.setTowerList(otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
+        newPa.towerList = thisList[0:rand1Num] + \
+            otherList[rand2Num:len(otherList)]
+        newPb.setTowerList(
+            otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
 
         return (newPa, newPb)
 
@@ -85,7 +91,7 @@ class Puzzle3(Chromosome):
         if (not (self.checkLegality())):
             return 0
         else:
-            return 10 + (len(self.towerList)**2) - self.sumCost()
+            return 10 + (len(self.towerList) ** 2) - self.sumCost()
 
     # this function sums the cost to build the tower
     # INPUT -> none
@@ -142,6 +148,9 @@ if __name__ == '__main__':
     l2 = Piece("Lookout", 3, 1, 2, 6)
     l3 = Piece("Lookout", 3, 1, 2, 7)
     masterList = [d1, w1, w2, d2, w3, l1, l2, l3]
+    aBitBiggerList = [d1, l1]
+    smallList = [d1]
+    noList = []
 
     ap3a = Puzzle3(0, 5)
     ap3b = Puzzle3(0, 5)
@@ -158,13 +167,15 @@ if __name__ == '__main__':
     zeta = Puzzle3(0, 5)
     eta = Puzzle3(0, 5)
     theta = Puzzle3(0, 5)
-
+    iota = Puzzle3(0, 5)
+    kappa = Puzzle3(0, 5)
+    mu = Puzzle3(0, 5)
 
     genY = [ap3a, ap3b, ap3c, ap3d, ap3d, ap3e, ap3f, alpha, beta]
 
     for chromo in genY:
         chromo.initialize(masterList)
-        #print chromo.towerList
+        # print chromo.towerList
 
     crosses = ap3a.crossover(ap3b)
     print ap3a != crosses[0], True
@@ -200,7 +211,9 @@ if __name__ == '__main__':
     # 6
     eta.towerList = [d1, l1]
 
-
+    iota.initialize(smallList)
+    kappa.initialize(noList)
+    mu.initialize(aBitBiggerList)
 
     print alpha.checkLegality(), False
     print beta.checkLegality(), False
