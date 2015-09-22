@@ -9,8 +9,11 @@ from Piece import Piece
 
 def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc):
     popSize = paramPopSize
+    mutationThreshold = 20
     start = time.time()
+    
     chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
+
     gen = makeNodes(chromosomes)
     # masterDict = makeDict(validValues)
     overallChampion = bestChrome(gen, masterDict).getCopy()
@@ -19,7 +22,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
     while(time.time() < (start + allowedTime)):
         evalGen(gen)
-        mate(gen)
+        mate(gen, 2, 5)
         mutateGen(gen, validValues)
         daWinner = bestChrome(gen, masterDict).getCopy()
         # print daWinner.fitness()
@@ -86,26 +89,46 @@ def evalGen(gen):
         netPercent += percentFitness
         node.percentBound = netPercent
 
-def mate(gen): #make the new generation, new Gen is not mutated or valid 
+def mate(gen, mateMode, numSpecialNodes): #make the new generation, new Gen is not mutated or valid 
+    sorted(gen, key = lambda node: node.percentBound)
     preGen = []
 
-    for i in range(len(gen)):
-        preGen = []
+    if mateMode == 0: # normal operation
+        iterations = len(gen)
+    if mateMode == 1: #if elite
+        iterations = len(gen) - numSpecialNodes
+        for i in range(numSpecialNodes):
+            preGen.append(gen[i])
+    if mateMode == 2: # if culling
+        iterations = len(gen)
+        for i in range(numSpecialNodes):
+            gen.remove(gen[(iterations-i)-1])
+    evalGen(gen) 
+    sorted(gen, key = lambda node: node.percentBound)       
+        
+    for i in range(iterations):
+        foundA = 0
+        foundB = 0
         point1 = random.random()*100
         point2 = random.random()*100
-        sorted(gen, key = lambda node: node.percentBound)
         # for each in gen:
             # print each.percentBound
         for j in range(1, len(gen)):
-            if (point1 > gen[j-1].percentBound):
-                parentA = gen[j]
-            else:
-                parentA = gen[0]
+            if not foundA:
+                if (point1 > gen[j-1].percentBound):
+                    parentA = gen[j]
+                    foundA = 1
+                elif (point1 < gen[0].percentBound):
+                    parentA = gen[0]
+                    foundA = 1  
 
-            if (point2 > gen[j-1].percentBound):
-                parentB = gen[j]
-            else:
-                parentB = gen[0]
+            if not foundB:
+                if (point2 > gen[j-1].percentBound):
+                    parentB = gen[j]
+                    foundB = 1
+                elif (point2 < gen[0].percentBound):
+                    parentB = gen[0]
+                    foundB = 1
         # while (parentA is parentB): # if parents A and B are the same rerun B, no clones
         #     point2 = random.random()*100
         #     if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
@@ -171,5 +194,10 @@ if __name__ == "__main__":
     print best.fitness()
 
     best = geneticAlgorithm(3, aPieceList, runTimeSecs, [], genSize, mutatePerc)
+
     print best
     print best.fitness()
+
+    # best = geneticAlgorithm(3, aPieceList, 5, [], 50)
+    # print best
+    # print best.fitness()
