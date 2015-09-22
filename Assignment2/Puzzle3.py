@@ -30,7 +30,7 @@ class Puzzle3(Chromosome):
             self.towerList.append(a_piece)
 
     # This method checks if a chromosome is legal
-    def checkLegality(self):
+    def checkLegality(self, dict):
         # 0
         if (not (len(self.towerList) >= 2)):
             return False

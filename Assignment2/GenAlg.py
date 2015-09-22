@@ -11,7 +11,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     popSize = paramPopSize
     mutationThreshold = 20
     start = time.time()
-    
+
     chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
 
     gen = makeNodes(chromosomes)
@@ -113,6 +113,11 @@ def mate(gen, mateMode, numSpecialNodes): #make the new generation, new Gen is n
         point2 = random.random()*100
         # for each in gen:
             # print each.percentBound
+        parentA = None
+        print len(gen)
+        print "The line here at 118 in GenAlg.py is broken as the genetic algorithm population size decreases by 5 FIX IT WILL"
+        exit(0)
+
         for j in range(1, len(gen)):
             if not foundA:
                 if (point1 > gen[j-1].percentBound):
@@ -180,7 +185,7 @@ if __name__ == "__main__":
     l1 = Piece("Lookout", 2, 2, 3, 5)
     l2 = Piece("Lookout", 3, 1, 2, 6)
     aPieceList = [d1, w1, w2, d2, w3, l1, l2] # Best I think is score of 20
-    aPieceDict = {d1:1, w1:1, w2:1, d2:1, w3:1, l1:1, l2:1}
+    aPieceDict = {d1.getDictKey():1, w1.getDictKey():1, w2.getDictKey():1, d2.getDictKey():1, w3.getDictKey():1, l1.getDictKey():1, l2.getDictKey():1}
 
     mutatePerc = 10
     genSize = 50
@@ -189,15 +194,11 @@ if __name__ == "__main__":
     print best
     print best.fitness()
 
-    best = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, [], genSize, mutatePerc)
+    best = geneticAlgorithm(2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc)
     print best
     print best.fitness()
 
-    best = geneticAlgorithm(3, aPieceList, runTimeSecs, [], genSize, mutatePerc)
+    best = geneticAlgorithm(3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc)
 
     print best
     print best.fitness()
-
-    # best = geneticAlgorithm(3, aPieceList, 5, [], 50)
-    # print best
-    # print best.fitness()
