@@ -14,10 +14,12 @@ class Puzzle3(Chromosome):
     # This method initializes the chromosome for generation 0
     # jake
     def initialize(self, masterList):
-        if (len(masterList) < 2):
-            size = len(masterList)
-        else:
-            size = rand.randint(2, len(masterList))
+        # if (len(masterList) < 2):
+        #     size = len(masterList)
+        # else:
+        #     size = rand.randint(2, len(masterList))
+
+        size = rand.randint(0, len(masterList))
 
         self.generation = 0
 
@@ -74,14 +76,29 @@ class Puzzle3(Chromosome):
         thisList = self.towerList
         otherList = other.getTowerList()
 
-        rand1Num = rand.randint(1, len(thisList) - 1)
-        rand2Num = rand.randint(1, len(otherList) - 1)
-        # print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
+        # check special case for a tower of size 0
+        if (len(self.towerList) == 0) or (len(self.towerList) == 0):
+            newPa.setTowerList(thisList)
+            newPb.setTowerList(otherList)
 
-        newPa.towerList = thisList[0:rand1Num] + \
-            otherList[rand2Num:len(otherList)]
-        newPb.setTowerList(
-            otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
+        else:
+            # check special case for a tower of size 1
+            if (len(thisList) == 1):
+                rand1Num = 0
+            else:
+                rand1Num = rand.randint(1, len(thisList) - 1)
+
+            # check special case for a tower of size 1
+            if (len(otherList) == 1):
+                rand2Num = 0
+            else:
+                rand2Num = rand.randint(1, len(otherList) - 1)
+            # print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
+
+            newPa.towerList = thisList[0:rand1Num] + \
+                otherList[rand2Num:len(otherList)]
+            newPb.setTowerList(
+                otherList[0:rand2Num] + thisList[rand1Num:len(thisList)])
 
         return (newPa, newPb)
 
@@ -106,19 +123,21 @@ class Puzzle3(Chromosome):
     # this funcction mutates a chromosome
     # chas
     def mutate(self, masterList):
-        for x in range(len(self.towerList)):
-            randPerc = rand.randint(1, 100)
+        # if a tower has a size of 0, there is nothing to mutate
+        if (len(self.towerList) > 0):
+            for x in range(len(self.towerList)):
+                randPerc = rand.randint(1, 100)
 
-            if(randPerc <= self.mutationThreshold):
-                randInt = rand.randint(0, len(masterList) - 1)
+                if(randPerc <= self.mutationThreshold):
+                    randInt = rand.randint(0, len(masterList) - 1)
 
-                newPart = masterList[randInt]
+                    newPart = masterList[randInt]
 
-                if(not newPart in self.towerList):
-                    self.towerList[x] = newPart
-                    # print newPart
-            else:
-                pass
+                    if(not newPart in self.towerList):
+                        self.towerList[x] = newPart
+                        # print newPart
+                else:
+                    pass
 
     def getTowerList(self):
         return self.towerList
