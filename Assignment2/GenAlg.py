@@ -83,12 +83,11 @@ def evalGen(gen, masterDict, Puz1Target):
 # make the new generation, new Gen is not mutated or valid
 def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     iterations = len(gen)
-    # print iterations
     sorted(gen, key=lambda node: node.percentBound)
     preGen = []
 
     if mateMode == 1:  # if elite
-        # iterations -= numSpecialNodes
+        iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
             preGen.append(gen[i])
     elif mateMode == 2:  # if culling
@@ -101,7 +100,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
         print "invalid mateMode, must be 0, 1, or 2"
         exit()
 
-    for i in range(popSize / 2):
+    for i in range(iterations/2):
         foundA = 0
         foundB = 0
         point1 = random.random() * 100
@@ -147,7 +146,8 @@ def mutateGen(gen, masterList):
 
 def bestChrome(gen, masterDict):
     if (len(gen) == 0):
-        return None
+        print "gen is empty"
+        exit()
 
     bestFitness = -1000000
     # for node in gen:
