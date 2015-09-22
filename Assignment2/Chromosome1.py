@@ -1,10 +1,10 @@
 import random
 class chromosome1():
     
-    def __init__(self, listOfNumbers):
+    def __init__(self, listOfNumbers, probabilityMutate):
         self.lon = listOfNumbers #I guess this does not happen because of an initialize function...?
         self.dictionary = {} #empty dictionary fills initialization
-        self.probMutate = 20 #probability each gene in the chromosome gets mutated
+        self.probMutate = probabilityMutate  #probability each gene in the chromosome gets mutated
     #Initialize an instance of a chromosome based on the possible numbers that can be added to self. Possible numbers comes from keys of master (the master dictionary)
     def initialize(self, master):
         added = 0
@@ -29,7 +29,6 @@ class chromosome1():
         cchrom1 = chromosome1(self.lon[0:split1] + chrom.lon[split2:len(chrom.lon)])
         cchrom2 = chromosome1(chrom.lon[0:split2] + self.lon[split1:len(self.lon)])
 
-        #So this is probably not what it returns
         return [cchrom1, cchrom2]
 
 
