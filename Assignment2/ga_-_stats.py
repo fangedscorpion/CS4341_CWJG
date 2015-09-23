@@ -4,7 +4,7 @@ from GenAlg import geneticAlgorithm
 if __name__ == "__main__":
     debug_mode = 0
     run_time = 15
-    puzzleNum = 2
+    puzzleNum = 1
     sample_size = 10
     mutatePerc = 10
     filename1 = "our_Puzzle"
