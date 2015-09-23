@@ -3,9 +3,9 @@ from GenAlg import geneticAlgorithm
 
 if __name__ == "__main__":
     debug_mode = 0
-    run_time = 15
+    run_time = 1
     puzzleNum = 1
-    sample_size = 10
+    sample_size = 5
     mutatePerc = 10
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
@@ -16,15 +16,15 @@ if __name__ == "__main__":
         the_list_parser = ListParser(
             open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
 
-        for pop_size in range(2, 150, 2):
+        for pop_size in range(2, 4, 2):
             print "pop_size: ", pop_size
             fileWrite.write(str(pop_size) + ",")
             for j in range(0, sample_size):
                 print "sample: ", j
                 answer = geneticAlgorithm(puzzleNum, the_list_parser.getList(), run_time, the_list_parser.getDictionary(
                 ), pop_size, mutatePerc, the_list_parser.getTarget(), 0)
-                fileWrite.write(
-                    str(answer.fitness(the_list_parser.getDictionary(), the_list_parser.getTarget())))
+                fileWrite.write(str(answer.fitness(
+                    the_list_parser.getDictionary(), the_list_parser.getTarget())) + ",")
 
             fileWrite.write("\n")
         fileWrite.close()
