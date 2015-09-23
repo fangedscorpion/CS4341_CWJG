@@ -23,13 +23,12 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     generationNumber = 0
     while(time.time() < (start + allowedTime)):
         evalGen(gen, masterDict, Puz1Target)
-        mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
+        gen = mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
         mutateGen(gen, validValues)
         daWinner = bestChrome(gen, masterDict).getCopy()
         # print daWinner.fitness(masterDict, Puz1Target)
 
         if daWinner.fitness(masterDict, Puz1Target) > overallChampion.fitness(masterDict, Puz1Target):
-            print daWinner.getGeneration()
 
             print "B", overallChampion, overallChampion.fitness(masterDict, Puz1Target)
             gud = daWinner.getCopy()
@@ -145,6 +144,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
                 elif (point2 < gen[0].percentBound):
                     parentB = gen[0]
                     foundB = 1
+
         # while (parentA is parentB): # if parents A and B are the same rerun B, no clones
         #     point2 = random.random()*100
         #     if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
@@ -156,13 +156,14 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
         preGen.append(child1)
         preGen.append(child2)
 
-    gen = list(preGen)
+    return preGen
 
 
 def mutateGen(gen, masterList):
     mutGen = []
     for node in gen:
         node.chromosome.mutate(masterList)
+
 
 
 def bestChrome(gen, masterDict):

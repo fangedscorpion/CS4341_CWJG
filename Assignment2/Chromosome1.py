@@ -5,7 +5,6 @@ class Chromosome1(Chromosome):
     def __init__(self, listOfNumbers, gen, probabilityMutate):
         self.lon = listOfNumbers #I guess this does not happen because of an initialize function...?
         self.probMutate = probabilityMutate  #probability each gene in the chromosome gets mutated
-        print gen
         self.generation = gen
 
 
@@ -49,7 +48,7 @@ class Chromosome1(Chromosome):
         cchrom1 = Chromosome1(list(self.lon[0:split1] + chrom.lon[split2:len(chrom.lon)]), (self.getGeneration()+1), self.probMutate)
         cchrom2 = Chromosome1(list(chrom.lon[0:split2] + self.lon[split1:len(self.lon)]), (chrom.getGeneration()+1), self.probMutate)
 
-        return (cchrom1.getCopy(), cchrom2.getCopy())
+        return (cchrom1, cchrom2)
 
 
     #mutate based on probability, if it mutates needs to take a list from the "master" dictionary. If turns into just a list, remove .keys
