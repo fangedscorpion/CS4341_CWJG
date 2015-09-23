@@ -92,8 +92,8 @@ class Puzzle3(Chromosome):
 
     # This method does a crossover for multiple chromosomes
     def crossover(self, other):
-        newPa = Puzzle3(self.generation + 1, self.mutationThreshold)
-        newPb = Puzzle3(self.generation + 1, self.mutationThreshold)
+        newPa = Puzzle3((self.generation + 1), self.mutationThreshold)
+        newPb = Puzzle3((self.generation + 1), self.mutationThreshold)
         thisList = self.towerList
         otherList = other.getTowerList()
 
@@ -173,7 +173,7 @@ class Puzzle3(Chromosome):
         return tempCpy
 
     def __repr__(self):
-        return str(self.towerList)
+        return str(self.towerList) + " G:" + str(self.generation)
 
 if __name__ == '__main__':
     from Piece import Piece

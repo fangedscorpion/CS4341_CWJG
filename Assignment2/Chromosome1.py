@@ -5,6 +5,7 @@ class Chromosome1(Chromosome):
     def __init__(self, listOfNumbers, gen, probabilityMutate):
         self.lon = listOfNumbers #I guess this does not happen because of an initialize function...?
         self.probMutate = probabilityMutate  #probability each gene in the chromosome gets mutated
+        print gen
         self.generation = gen
 
 
@@ -16,21 +17,18 @@ class Chromosome1(Chromosome):
             print "Input master list of numbers must have at least one element!"
             exit(0)
 
-        chromLen = random.randint(0, len(master)) #whatever we decide should be the max length of a chromosome 
+        chromLen = random.randint(0, len(master)) 
 
         while(added < chromLen):
             addChoice = master[random.randint(0, len(master) - 1)]
 
             self.lon.append(addChoice)
             added += 1
-            
-            #if(self.lon.count(addChoice) < master[addChoice]): #if there are not too many of this number in the list...
-            #    self.lon.append(addChoice)
-            #    added += 1
 
     #get score from the list of numbers. Target is the number trying to be reached
     def fitness(self, dict, target):
         sumList = sum(self.lon)
+        self. target = target
         if (self.checkLegality(dict) and sumList <= target):
             return sum(self.lon)
         else: #sum exceeded target means fitness 0
@@ -38,20 +36,20 @@ class Chromosome1(Chromosome):
 
     #crossover this chromosome with the given chromosome
     def crossover(self, chrom):
-        if(len(self.lon) > 0):
-            split1 = random.randint(0, len(self.lon) - 1)
+        if(len(self.lon) > 1):
+            split1 = random.randint(1, len(self.lon) - 1)
         else:
             split1 = 0
-        if(len(chrom.lon) > 0):
-            split2 = random.randint(0, len(chrom.lon) - 1) 
+        if(len(chrom.lon) > 1):
+            split2 = random.randint(1, len(chrom.lon) - 1) 
         else:
             split2 = 0
 
         #children
-        cchrom1 = Chromosome1(list(self.lon[0:split1] + chrom.lon[split2:len(chrom.lon)]), self.probMutate, self.generation +1)
-        cchrom2 = Chromosome1(list(chrom.lon[0:split2] + self.lon[split1:len(self.lon)]), self.probMutate, self.generation +1)
+        cchrom1 = Chromosome1(list(self.lon[0:split1] + chrom.lon[split2:len(chrom.lon)]), (self.getGeneration()+1), self.probMutate)
+        cchrom2 = Chromosome1(list(chrom.lon[0:split2] + self.lon[split1:len(self.lon)]), (chrom.getGeneration()+1), self.probMutate)
 
-        return [cchrom1, cchrom2]
+        return (cchrom1.getCopy(), cchrom2.getCopy())
 
 
     #mutate based on probability, if it mutates needs to take a list from the "master" dictionary. If turns into just a list, remove .keys
@@ -62,14 +60,26 @@ class Chromosome1(Chromosome):
         if (len(self.lon) > len(masterList)):
             self.lon = list(self.lon[0:len(masterList)-1])
 
-        for i in range(0, len(self.lon)): #iterate over each number in list
+        i = 0
+        while i < len(self.lon):
             if(random.randint(1, 100) < self.probMutate): #If less than probMutate, mutate. Probabilities scaled for 0-100 to avoid floats. Because I can.
-                self.lon[i] = master[random.randint(0, len(master)-1)]
+                mutationType = random.randint(1,3)
+
+                if(mutationType == 1): # Transform
+                    self.lon[i] = master[random.randint(0, len(master)-1)]
+                    i += 1
+                elif(mutationType == 2): # Remove number
+                    del self.lon[i]
+                else: # Add number
+                    self.lon.append(master[random.randint(0, len(master)-1)])
+                    i += 1
                 # print "Mutated to", str(self.lon[i]), " at ", str(i)
+
 
         # print "Mutate before fix"
         # print self.lon
-        self.fixChild(masterList) # Python is reference based, so no need to return it
+
+        #self.fixChild(masterList) # Python is reference based, so no need to return it
                 
                 
     #specifically to check the validity of one number to see if it is a valid mutation. MasterDict needs to be the dictionary
@@ -100,6 +110,7 @@ class Chromosome1(Chromosome):
             self.lon[illegalIndexList[i]] = tmpMasterList[randNum]
             tmpMasterList.remove(tmpMasterList[randNum])
 
+
     def getGeneration(self):
         return self.generation
 
@@ -112,7 +123,7 @@ class Chromosome1(Chromosome):
         return True
 
     def getCopy(self):
-        copyChromeo = Chromosome1(list(self.lon), self.probMutate, self.generation)
+        copyChromeo = Chromosome1(list(self.lon), self.generation, self.probMutate)
         return copyChromeo          
 
     def __repr__(self):

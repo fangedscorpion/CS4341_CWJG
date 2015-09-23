@@ -152,28 +152,6 @@ class Puzzle2(Chromosome):
         assert len(importList) == 0
         assert len(exportList) == 0
 
-    # This function forms a counting dictionary from the values in a Puzzle2
-    # If a value in a Puzzle2 is not a key in the dictionary, the unknown value is printed
-    # INPUT -> (dict) starting dict
-    # OUTPUT -> (dict) counted dict
-    # def countInDict(self, starting):
-    #     for i in range(0, len(self.bin1)):
-    #         if (starting.has_key(self.bin1[i])):
-    #             starting[self.bin1[i]] += 1
-    #         else:
-    #             print "can't find key", self.bin1[i]
-
-    #         if (starting.has_key(self.bin2[i])):
-    #             starting[self.bin2[i]] += 1
-    #         else:
-    #             print "can't find key", self.bin2[i]
-
-    #         if (starting.has_key(self.bin3[i])):
-    #             starting[self.bin3[i]] += 1
-    #         else:
-    #             print "can't find key", self.bin3[i]
-
-    #     return starting
 
     # this function resets a dictonary, keeping the keys but resetting all values to 0
     # INPUT -> (dict)
@@ -210,8 +188,8 @@ class Puzzle2(Chromosome):
         par2Bin2End = other.bin2[cutPointInt:len(other.bin2)]
         par2Bin3End = other.bin3[cutPointInt:len(other.bin3)]
 
-        newPa = Puzzle2([],[],[],self.generation + 1, self.mutationThreshold)
-        newPb = Puzzle2([],[],[],self.generation + 1, self.mutationThreshold)
+        newPa = Puzzle2([],[],[], self.generation + 1, self.mutationThreshold)
+        newPb = Puzzle2([],[],[], other.generation + 1, other.mutationThreshold)
 
         par1Bin1Front.extend(par2Bin1End)
         newPa.bin1 = par1Bin1Front
@@ -291,7 +269,7 @@ class Puzzle2(Chromosome):
     def getValidMutatedNumberIndex(self, lenMasterListOfNum):
         return rand.randint(0, (lenMasterListOfNum - 1))
 
-    # this funcction mutates a Puzzle
+    # this function mutates a Puzzle
     # It goes through all three at once and mutates if the number is between 1 and 8
     # If so it gets added to spareNums as a tuple with the changed index and the bin #
     # The fixChild class then makes the kid legal
@@ -337,7 +315,7 @@ class Puzzle2(Chromosome):
 
     def __repr__(self):
         return ("Bin1: " + str(self.bin1) + "\nBin2: " +
-                str(self.bin2) + "\nBin3: " + str(self.bin3))
+                str(self.bin2) + "\nBin3: " + str(self.bin3) + " Gen: " + str(self.generation))
 
 Chromosome.register(Puzzle2)
 

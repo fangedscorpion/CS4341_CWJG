@@ -10,7 +10,7 @@ from Piece import Piece
 
 def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode):
     popSize = paramPopSize
-    mutationThreshold = 20
+
     start = time.time()
 
     chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
@@ -20,6 +20,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     overallChampion = bestChrome(gen, masterDict).getCopy()
     # print overallChampion
 
+    generationNumber = 0
     while(time.time() < (start + allowedTime)):
         evalGen(gen, masterDict, Puz1Target)
         mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
@@ -28,13 +29,19 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
         # print daWinner.fitness(masterDict, Puz1Target)
 
         if daWinner.fitness(masterDict, Puz1Target) > overallChampion.fitness(masterDict, Puz1Target):
-            # print "B", overallChampion, overallChampion.fitness(masterDict)
+            print daWinner.getGeneration()
+
+            print "B", overallChampion, overallChampion.fitness(masterDict, Puz1Target)
             gud = daWinner.getCopy()
-            # print "G", gud, gud.fitness(masterDict, Puz1Target)
+            print "G", gud, gud.fitness(masterDict, Puz1Target)
             overallChampion = gud
             # print "F", overallChampion
 
-    return overallChampion
+        generationNumber += 1
+
+    print "Total Generations: " + str(generationNumber)
+
+    return (overallChampion, generationNumber)
 
 
 # creates 500 chromosomes (hopefully unique, though not explicitly)
@@ -149,7 +156,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
         preGen.append(child1)
         preGen.append(child2)
 
-    gen = preGen
+    gen = list(preGen)
 
 
 def mutateGen(gen, masterList):
@@ -207,24 +214,24 @@ if __name__ == "__main__":
     genSize = 50
     runTimeSecs = 3
 
-    best1 = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs,
+    (best1, gens) = geneticAlgorithm(1, testPuzzle1Values, runTimeSecs,
                              testPuzzle1ValuesDict, genSize, mutatePerc, target, testMateMode)
 
-    best2 = geneticAlgorithm(
+    (best2, gens) = geneticAlgorithm(
         2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target, testMateMode)
 
-    best3 = geneticAlgorithm(
+    (best3, gens) = geneticAlgorithm(
         3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
 
     print " "
     print "Puzzle 1 results:"
     print best1
     print best1.fitness(testPuzzle1ValuesDict, target)
-    print " "
-    print "Puzzle 2 results:"
-    print best2
-    print best2.fitness(aPuzzle2Dict, target)
-    print " "
-    print "Puzzle 3 results:"
-    print best3
-    print best3.fitness(aPieceDict, target)
+    # print " "
+    # print "Puzzle 2 results:"
+    # print best2
+    # print best2.fitness(aPuzzle2Dict, target)
+    # print " "
+    # print "Puzzle 3 results:"
+    # print best3
+    # print best3.fitness(aPieceDict, target)
