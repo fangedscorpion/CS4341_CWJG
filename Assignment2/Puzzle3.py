@@ -172,6 +172,9 @@ class Puzzle3(Chromosome):
         tempCpy.setTowerList(list(self.getTowerList()))
         return tempCpy
 
+    def fixChild(self, masterDict):
+        pass
+        
     def __repr__(self):
         return str(self.towerList) + " G:" + str(self.generation)
 
