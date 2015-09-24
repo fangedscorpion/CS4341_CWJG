@@ -58,7 +58,7 @@ if __name__ == "__main__":
         if puzzleNum == 3:
             print "3 - long"
             runTimeSeconds = 60
-            # numberOfRuns = 3
+            numberOfRuns = 3
             the_list_parser = ListParser(
                 open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
             fileWrite = open(
