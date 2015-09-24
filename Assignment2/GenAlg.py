@@ -13,7 +13,8 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
     start = time.time()
 
-    chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
+    chromosomes = makeChromes(
+        puzzle, validValues, masterDict, popSize, mutationPerc)
 
     gen = makeNodes(chromosomes)
     overallChampion = bestChrome(gen, masterDict).getCopy()
@@ -26,7 +27,6 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
         gen = mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
         mutateGen(gen, validValues, masterDict)
         daWinner = bestChrome(gen, masterDict).getCopy()
-
 
         if daWinner.fitness(masterDict, Puz1Target) > overallChampion.fitness(masterDict, Puz1Target):
 
@@ -41,7 +41,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
 
 # creates 500 chromosomes (hopefully unique, though not explicitly)
-def makeChromes(puzzle, validValues, popSize, mutatePerc):
+def makeChromes(puzzle, validValues, masterDict, popSize, mutatePerc):
     chromes = []
     for i in range(popSize):
         if(puzzle == 1):
@@ -116,7 +116,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
         print "invalid mateMode, must be 0, 1, or 2"
         exit()
 
-    for i in range(iterations/2):
+    for i in range(iterations / 2):
         foundA = 0
         foundB = 0
         point1 = random.random() * 100
@@ -161,7 +161,6 @@ def mutateGen(gen, masterList, masterDict):
         node.chromosome.mutate(masterList, masterDict)
 
 
-
 def bestChrome(gen, masterDict):
     if (len(gen) == 0):
         print "gen is empty"
@@ -187,7 +186,6 @@ class node():
         self.percentBound = percentBound
 
 if __name__ == "__main__":
-    
 
     testPuzzle1Values = [1, 2, 3, 4, 5]
     aPuzzle1Dict = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
@@ -219,10 +217,12 @@ if __name__ == "__main__":
         1, testPuzzle1Values, runTimeSecs, aPuzzle1Dict, genSize, mutatePerc, target, testMateMode)
 
     # (best2, gens) = geneticAlgorithm(
-    #     2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target, testMateMode)
+    # 2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target,
+    # testMateMode)
 
     # (best3, gens) = geneticAlgorithm(
-    #     3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
+    # 3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target,
+    # testMateMode)
 
     print " "
     print "Puzzle 1 results:"
