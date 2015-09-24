@@ -16,7 +16,6 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     chromosomes = makeChromes(puzzle, validValues, popSize, mutationPerc)
 
     gen = makeNodes(chromosomes)
-    # masterDict = makeDict(validValues)
     overallChampion = bestChrome(gen, masterDict).getCopy()
     # print overallChampion
 
@@ -30,10 +29,12 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
         if daWinner.fitness(masterDict, Puz1Target) > overallChampion.fitness(masterDict, Puz1Target):
 
-            print "B", overallChampion, overallChampion.fitness(masterDict, Puz1Target)
+            
             gud = daWinner.getCopy()
-            print "G", gud, gud.fitness(masterDict, Puz1Target)
+            
             overallChampion = gud
+            # print "B", overallChampion, overallChampion.fitness(masterDict, Puz1Target)
+            # print "G", gud, gud.fitness(masterDict, Puz1Target)
             # print "F", overallChampion
 
         generationNumber += 1
@@ -102,25 +103,23 @@ def evalGen(gen, masterDict, Puz1Target):
 # make the new generation, new Gen is not mutated or valid
 def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     iterations = len(gen)
-    # print iterations
     sorted(gen, key=lambda node: node.percentBound)
     preGen = []
 
     if mateMode == 1:  # if elite
-        # iterations -= numSpecialNodes
+        iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
             preGen.append(gen[i])
     elif mateMode == 2:  # if culling
         for i in range(numSpecialNodes):
-            gen.remove(gen[iterations - i - 1])
-        # iterations += numSpecialNodes
+            gen[iterations - i - 1].fitness = 0
         evalGen(gen, masterDict, Puz1Target)
         sorted(gen, key=lambda node: node.percentBound)
     elif mateMode != 0:
         print "invalid mateMode, must be 0, 1, or 2"
         exit()
 
-    for i in range(popSize / 2):
+    for i in range(iterations/2):
         foundA = 0
         foundB = 0
         point1 = random.random() * 100
@@ -190,7 +189,7 @@ class node():
         self.percentBound = percentBound
 
 if __name__ == "__main__":
-    testMateMode = 0
+    testMateMode = 2
 
     testPuzzle1Values = [1, 2, 3, 4, 5]
     testPuzzle1ValuesDict = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
@@ -228,11 +227,11 @@ if __name__ == "__main__":
     print "Puzzle 1 results:"
     print best1
     print best1.fitness(testPuzzle1ValuesDict, target)
-    # print " "
-    # print "Puzzle 2 results:"
-    # print best2
-    # print best2.fitness(aPuzzle2Dict, target)
-    # print " "
-    # print "Puzzle 3 results:"
-    # print best3
-    # print best3.fitness(aPieceDict, target)
+    print " "
+    print "Puzzle 2 results:"
+    print best2
+    print best2.fitness(aPuzzle2Dict, target)
+    print " "
+    print "Puzzle 3 results:"
+    print best3
+    print best3.fitness(aPieceDict, target)
