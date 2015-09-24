@@ -33,9 +33,9 @@ class Chromosome1(Chromosome):
     # reached
     def fitness(self, dict, target):
         sumList = sum(self.lon)
-        self. target = target
+        self.target = target
         if (self.checkLegality(dict) and sumList <= target):
-            return sum(self.lon)
+            return sumList
         else:  # sum exceeded target means fitness 0
             return 0
 
