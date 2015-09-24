@@ -129,6 +129,9 @@ class Chromosome1(Chromosome):
         for j in masterDict.keys():
             total += masterDict[j]
 
+        if len(self.lon) > total:
+            return False
+
         for digit in self.lon:
             if(not self.isValid(digit, masterDict)):
                 return False
