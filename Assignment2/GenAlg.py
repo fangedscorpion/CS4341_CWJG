@@ -17,6 +17,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
     gen = makeNodes(chromosomes)
     overallChampion = bestChrome(gen, masterDict).getCopy()
+    overallChampion.fixChild(masterDict)
     # print overallChampion
 
     generationNumber = 0
