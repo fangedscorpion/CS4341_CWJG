@@ -4,14 +4,14 @@ from GenAlg import geneticAlgorithm
 if __name__ == "__main__":
     debug_mode = 0
 
-    runTimeSeconds = 5
+    runTimeSeconds = 15
 
     numberOfRuns = 15
     mutatePerc = 10
 
     startPopSize = 10
-    popStepSize = 4
-    endingPopSize = startPopSize + popStepSize
+    popStepSize = 2
+    endingPopSize = 152
 
     geneticsType = 0  # 1 for elitism? 2 for culling?
 
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     filename2 = "_sample.txt"
     j = 0
 
-    puzzleNumList = [1]  # Add in 2 or 3 for more puzzles
+    puzzleNumList = [1, 2, 3]  # Add in 2 or 3 for more puzzles
 
     for puzzleNum in puzzleNumList:
         the_list_parser = ListParser(
