@@ -69,7 +69,6 @@ class Chromosome1(Chromosome):
 
         i = 0
         while i < len(self.lon):
-            print i, len(self.lon)
             # If less than probMutate, mutate. Probabilities scaled for 0-100
             # to avoid floats. Because I can.
             if(random.randint(1, 100) < self.probMutate):
