@@ -23,7 +23,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     while(time.time() < (start + allowedTime)):
         evalGen(gen, masterDict, Puz1Target)
         gen = mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
-        mutateGen(gen, validValues)
+        mutateGen(gen, validValues, masterDict)
         daWinner = bestChrome(gen, masterDict).getCopy()
 
 
@@ -153,10 +153,10 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     return preGen
 
 
-def mutateGen(gen, masterList):
+def mutateGen(gen, masterList, masterDict):
     mutGen = []
     for node in gen:
-        node.chromosome.mutate(masterList)
+        node.chromosome.mutate(masterList, masterDict)
 
 
 
@@ -185,7 +185,7 @@ class node():
         self.percentBound = percentBound
 
 if __name__ == "__main__":
-    testMateMode = 2
+    
 
     testPuzzle1Values = [1, 2, 3, 4, 5]
     aPuzzle1Dict = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
@@ -206,6 +206,7 @@ if __name__ == "__main__":
     aPieceDict = {d1.getDictKey(): 1, w1.getDictKey(): 1, w2.getDictKey(
     ): 1, d2.getDictKey(): 1, w3.getDictKey(): 1, l1.getDictKey(): 1, l2.getDictKey(): 1}
 
+    testMateMode = 0
     mutatePerc = 10
     genSize = 50
     runTimeSecs = 3
