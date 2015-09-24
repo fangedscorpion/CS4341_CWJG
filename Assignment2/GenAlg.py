@@ -23,7 +23,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     while(time.time() < (start + allowedTime)):
         evalGen(gen, masterDict, Puz1Target)
         gen = mate(gen, popSize, mateMode, 8, masterDict, Puz1Target)
-        mutateGen(gen, validValues)
+        mutateGen(gen, validValues, masterDict)
         daWinner = bestChrome(gen, masterDict).getCopy()
 
 
