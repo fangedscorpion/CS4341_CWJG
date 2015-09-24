@@ -58,15 +58,9 @@ class Puzzle2(Chromosome):
 
                     diffCount = master[x] - childDictCopy[x][0]
                     if(diffCount > 0):
-                        tmpList = list(childDictCopy[x][1])
-                        # print "Key: ", x, " Diff count: ", diffCount
                         for ind in range(0, diffCount):
-                            randInd = rand.randint(0, len(tmpList) - 1)
-                            # print randInd, len(childDictCopy[x][1]) - 1
-                            immigrationList.append(
-                                Illegal(x, 0, []))
+                            immigrationList.append(Illegal(x, 0, []))
 
-                            tmpList.remove(tmpList[randInd])
                     if(diffCount < 0):
                         diffCount = abs(diffCount)
                         tmpList = list(childDictCopy[x][1])
@@ -78,8 +72,8 @@ class Puzzle2(Chromosome):
                                 Illegal(x, diffCount, tmpList[randInd]))
                             tmpList.remove(tmpList[randInd])
             else:
-                # print "Key: ", x
-                immigrationList.append(Illegal(x, 0, []))
+                for i in range(0, master[x]):
+                    immigrationList.append(Illegal(x, 0, []))
 
         # These lists should be the same size
         return (len(deportationList) == 0 and len(immigrationList) == 0, deportationList, immigrationList)
