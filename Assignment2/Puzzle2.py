@@ -313,6 +313,9 @@ class Puzzle2(Chromosome):
         tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration(), self.mutationThreshold)
         return tempChromeo
 
+    def fixChild(self, masterDict):
+        pass
+
     def __repr__(self):
         return ("Bin1: " + str(self.bin1) + "\nBin2: " +
                 str(self.bin2) + "\nBin3: " + str(self.bin3) + " Gen: " + str(self.generation))
