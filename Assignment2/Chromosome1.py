@@ -64,8 +64,8 @@ class Chromosome1(Chromosome):
         master = masterList
 
         # Have to truncate size to the master list size at most
-        if (len(self.lon) > len(masterList)):
-            self.lon = list(self.lon[0:len(masterList) - 1])
+        # if (len(self.lon) > len(masterList)):
+        #     self.lon = list(self.lon[0:len(masterList) - 1])
 
         i = 0
         while i < len(self.lon):
@@ -125,10 +125,9 @@ class Chromosome1(Chromosome):
         return self.generation
 
     def checkLegality(self, masterDict):
-        # print self.lon
-        total = sum(masterDict.values())
-        if (len(self.lon) > total):
-            return False
+        total = 0
+        for j in range(0, len(masterDictionary)):
+            total += masterDictionary[j]
 
         for digit in self.lon:
             if(not self.isValid(digit, masterDict)):
