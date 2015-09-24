@@ -126,8 +126,8 @@ class Chromosome1(Chromosome):
 
     def checkLegality(self, masterDict):
         total = 0
-        for j in range(0, len(masterDictionary)):
-            total += masterDictionary[j]
+        for j in range(0, len(masterDict)):
+            total += masterDict[j]
 
         for digit in self.lon:
             if(not self.isValid(digit, masterDict)):
