@@ -45,15 +45,6 @@ class Puzzle2(Chromosome):
         # create new dict from master
         thisDict = master.copy()
 
-        # reset values in new dict to 0
-        # thisDict = self.dictReset(thisDict)
-
-        # form new dict
-        # thisDict = self.countInDict(thisDict)
-
-        # if master == thisDict:
-        #     return True
-
         childDict = self.countInDict({})
         # print childDict
 
@@ -65,13 +56,27 @@ class Puzzle2(Chromosome):
             if(childDictCopy.has_key(x)):
                 if(not (childDictCopy[x][0] == master[x])):
 
-                    diffCount = abs(master[x] - childDictCopy[x][0])
-                    # print "Key: ", x, " Diff count: ", diffCount
-                    for ind in range(0, diffCount):
-                        randInd = rand.randint(0, len(childDictCopy[x][1]) - 1)
-                        # print randInd, len(childDictCopy[x][1]) - 1
-                        deportationList.append(
-                            Illegal(x, diffCount, childDictCopy[x][1][randInd]))
+                    diffCount = master[x] - childDictCopy[x][0]
+                    if(diffCount > 0):
+                        tmpList = list(childDictCopy[x][1])
+                        # print "Key: ", x, " Diff count: ", diffCount
+                        for ind in range(0, diffCount):
+                            randInd = rand.randint(0, len(tmpList) - 1)
+                            # print randInd, len(childDictCopy[x][1]) - 1
+                            immigrationList.append(
+                                Illegal(x, 0, []))
+
+                            tmpList.remove(tmpList[randInd])
+                    if(diffCount < 0):
+                        diffCount = abs(diffCount)
+                        tmpList = list(childDictCopy[x][1])
+                        # print "Key: ", x, " Diff count: ", diffCount
+                        for ind in range(0, diffCount):
+                            randInd = rand.randint(0, len(tmpList) - 1)
+                            # print randInd, len(childDictCopy[x][1]) - 1
+                            deportationList.append(
+                                Illegal(x, diffCount, tmpList[randInd]))
+                            tmpList.remove(tmpList[randInd])
             else:
                 # print "Key: ", x
                 immigrationList.append(Illegal(x, 0, []))
@@ -152,17 +157,6 @@ class Puzzle2(Chromosome):
         assert len(importList) == 0
         assert len(exportList) == 0
 
-
-    # this function resets a dictonary, keeping the keys but resetting all values to 0
-    # INPUT -> (dict)
-    # OUTPUT -> (dict)
-    def dictReset(self, dict):
-        keys = dict.keys()
-        for j in range(0, len(keys)):
-            dict[keys[j]] = 0
-
-        return dict
-
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
         cutPointInt = rand.randint(1, (len(self.bin1) - 1))
@@ -209,8 +203,8 @@ class Puzzle2(Chromosome):
 
     # this function evaluates the fitness of a Puzzle
     # fitness = product(bin1) + sum(bin2)
-    def fitness(self, dict, target):
-        if (self.checkLegality(dict)):
+    def fitness(self, diction, target):
+        if (self.checkLegality(diction)):
             bProd = 1
             bSum = 0
 
@@ -313,9 +307,6 @@ class Puzzle2(Chromosome):
         tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration(), self.mutationThreshold)
         return tempChromeo
 
-    def fixChild(self, masterDict):
-        pass
-
     def __repr__(self):
         return ("Bin1: " + str(self.bin1) + "\nBin2: " +
                 str(self.bin2) + "\nBin3: " + str(self.bin3) + " Gen: " + str(self.generation))
@@ -392,7 +383,10 @@ if __name__ == '__main__':
         # print
 
     # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
-    a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    a = [-6.3, -9.9, -3.0, 4.0, 0.0, 2.5, 8.8, 0.6, -4.5, 2.3, -5.0, 7.0, 2.5, 4.5, -6.0, 8.0, 7.5, 6.5, 2.0, -1.0, -0.5, 0.0, 3.3, 8.2, 1.5, 9.2, -7.0, 2.5, 6.2, -2.2]
+
+    adict = {0.0: 2, 2.5: 3, 2.0: 1, 4.0: 1, 7.5: 1, 7.0: 1, 8.0: 1, 3.3: 1, 8.2: 1, -2.2: 1, -0.5: 1, 2.3: 1, 6.2: 1, -6.3: 1, 9.2: 1, 1.5: 1, -4.5: 1, 0.6: 1, -9.9: 1, 8.8: 1, -7.0: 1, -6.0: 1, -5.0: 1, 4.5: 1, -3.0: 1, -1.0: 1, 6.5: 1}
+
     alpha = Puzzle2([], [], [], 0, 5)
     beta = Puzzle2([], [], [], 0, 5)
 
@@ -403,13 +397,22 @@ if __name__ == '__main__':
     # print crosses[0] != alpha, True
     # print alpha == alpha, True
 
-    alpha.mutate(a)
-    beta.mutate(a)
+    alpha.mutate(a, adict)
+    beta.mutate(a, adict)
 
     print alpha
-    print alpha.fitness()
+    print alpha.fitness(adict, None)
     gud = alpha.getCopy()
     print gud
-    print gud.fitness()
+    print gud.fitness(adict, None)
+    print gud.checkLegality(adict)
+    gud.bin1[0] = -9.9
+    gud.bin1[1] = -9.9
+    gud.bin1[2] = -9.9
+    gud.bin1[3] = -9.9
+    (isValid, exportList, importList) = gud.checkLegality(adict)
+    print isValid, exportList, importList
+    gud.fixChild(exportList, importList)
+    print gud.checkLegality(adict)
 
 
