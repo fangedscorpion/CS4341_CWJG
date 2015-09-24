@@ -52,6 +52,7 @@ def makeChromes(puzzle, validValues, popSize, mutatePerc):
             chromes.append(Puzzle3(0, mutatePerc))
 
         chromes[i].initialize(validValues)
+        chromes[i].fixChild(masterDict)
 
     return chromes
 
