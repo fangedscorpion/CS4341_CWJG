@@ -78,6 +78,42 @@ class Puzzle2(Chromosome):
         # These lists should be the same size
         return (len(deportationList) == 0 and len(immigrationList) == 0, deportationList, immigrationList)
 
+    def fixChild(self,masterDictionary):
+        
+        thisDict = masterDictionary.copy()
+
+        childDict = self.countInDict({})
+        # print childDict
+
+        immigrationList = []
+        deportationList = []
+        childDictCopy = childDict.copy()
+
+        for x in masterDictionary.keys():
+            if(childDictCopy.has_key(x)):
+                if(not (childDictCopy[x][0] == masterDictionary[x])):
+
+                    diffCount = masterDictionary[x] - childDictCopy[x][0]
+                    if(diffCount > 0):
+                        for ind in range(0, diffCount):
+                            immigrationList.append(Illegal(x, 0, []))
+
+                    if(diffCount < 0):
+                        diffCount = abs(diffCount)
+                        tmpList = list(childDictCopy[x][1])
+                        # print "Key: ", x, " Diff count: ", diffCount
+                        for ind in range(0, diffCount):
+                            randInd = rand.randint(0, len(tmpList) - 1)
+                            # print randInd, len(childDictCopy[x][1]) - 1
+                            deportationList.append(
+                                Illegal(x, diffCount, tmpList[randInd]))
+                            tmpList.remove(tmpList[randInd])
+            else:
+                for i in range(0, masterDictionary[x]):
+                    immigrationList.append(Illegal(x, 0, []))
+
+        self.fixChildGivenLists(deportationList, immigrationList)
+
     # This function forms a counting dictionary from the values in a Puzzle2
     # If a value in a Puzzle2 is not a key in the dictionary,
     # the unknown value is printed AND added to the list
@@ -117,7 +153,7 @@ class Puzzle2(Chromosome):
     # an incorrect one and two lists of values that need to be swapped
     # One list is the values that need to be added into the object
     # The other list has the values that need to be moved out of the object
-    def fixChild(self, exportList, importList):
+    def fixChildGivenLists(self, exportList, importList):
         assert len(importList) == len(exportList)
         # print importList
         # print exportList
@@ -406,7 +442,7 @@ if __name__ == '__main__':
     gud.bin1[3] = -9.9
     (isValid, exportList, importList) = gud.checkLegality(adict)
     print isValid, exportList, importList
-    gud.fixChild(exportList, importList)
+    gud.fixChildGivenLists(exportList, importList)
     print gud.checkLegality(adict)
 
 
