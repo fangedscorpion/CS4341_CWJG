@@ -273,7 +273,7 @@ class Puzzle2(Chromosome):
     # It goes through all three at once and mutates if the number is between 1 and 8
     # If so it gets added to spareNums as a tuple with the changed index and the bin #
     # The fixChild class then makes the kid legal
-    def mutate(self, masterListOfNum):
+    def mutate(self, masterListOfNum, masterDict):
         spareNums = []
         for x in range(0, len(self.bin1)):
             l1Rand = rand.randint(1, 100)

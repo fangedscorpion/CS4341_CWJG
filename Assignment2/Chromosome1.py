@@ -60,7 +60,7 @@ class Chromosome1(Chromosome):
 
     # mutate based on probability, if it mutates needs to take a list from the
     # "master" dictionary. If turns into just a list, remove .keys
-    def mutate(self, masterList):
+    def mutate(self, masterList, masterDict):
         master = masterList
 
         # Have to truncate size to the master list size at most
@@ -89,7 +89,7 @@ class Chromosome1(Chromosome):
         # print "Mutate before fix"
         # print self.lon
 
-        # self.fixChild(masterList) # Python is reference based, so no need to
+        self.fixChild(masterDict) # Python is reference based, so no need to
         # return it
 
     # specifically to check the validity of one number to see if it is a valid
@@ -102,24 +102,23 @@ class Chromosome1(Chromosome):
             return True
 
     # make it valid if need be
-    def fixChild(self, masterList):
-        # print "Fix child"
-        tmpMasterList = list(masterList)
-        # print "Master list: ", tmpMasterList
-        illegalIndexList = []  # Store all the locations we need to fix
+    def fixChild(self, masterDict):
+        chromList = self.lon
+        masterList = masterDict.keys()
+        removeList = [] #indices to remove
+        for i in range(len(chromList)):
+            keep_going = not self.isValid(chromList[i], masterDict)
 
-        for i in range(0, len(self.lon)):
-            if(self.lon[i] in tmpMasterList):
-                tmpMasterList.remove(self.lon[i])
-            else:
-                illegalIndexList.append(i)
-        # print illegalIndexList
-
-        for i in range(0, len(illegalIndexList)):
-            randNum = random.randint(0, len(tmpMasterList) - 1)
-            # print len(tmpMasterList), randNum
-            self.lon[illegalIndexList[i]] = tmpMasterList[randNum]
-            tmpMasterList.remove(tmpMasterList[randNum])
+            #while(not self.isValid(chromList[i], masterDict)):
+            while (keep_going): # shits going down with this number, yo
+                if(len(chromList) > len(masterList)):
+                    removeList.append(i)
+		    keep_going = False
+                else:
+                    chromList[i] = random.choice(masterList)
+                    keep_going = False
+        for j in range(len(removeList) - 1, -1, -1):
+            chromList.pop(j)
 
     def getGeneration(self):
         return self.generation

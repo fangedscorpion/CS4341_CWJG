@@ -141,7 +141,7 @@ class Puzzle3(Chromosome):
         return cost
 
     # this funcction mutates a chromosome
-    def mutate(self, masterList):
+    def mutate(self, masterList, masterDict):
         # if a tower has a size of 0, there is nothing to mutate
         if (len(self.towerList) > 0):
             for x in range(len(self.towerList)):
