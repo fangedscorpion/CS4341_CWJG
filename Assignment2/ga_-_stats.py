@@ -18,7 +18,7 @@ if __name__ == "__main__":
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
-    puzzleNumList = [1, 2, 3]  # Add in 2 or 3 for more puzzles
+    puzzleNumList = [2]  # Add in 2 or 3 for more puzzles
 
     for puzzleNum in puzzleNumList:
         the_list_parser = ListParser(

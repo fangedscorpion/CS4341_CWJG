@@ -35,7 +35,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
         generationNumber += 1
 
-    print "Total Generations: " + str(generationNumber)
+    # print "Total Generations: " + str(generationNumber)
 
     return (overallChampion, generationNumber)
 
