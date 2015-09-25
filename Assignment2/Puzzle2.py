@@ -319,7 +319,7 @@ class Puzzle2(Chromosome):
                 self.bin3[x] = masterListOfNum[
                     self.getValidMutatedNumberIndex(len(masterListOfNum))]
 
-        self.fixChildAfterMutate(spareNums)
+        self.fixChild(masterDict)
 
     def getBin1(self):
         return self.bin1
@@ -442,7 +442,9 @@ if __name__ == '__main__':
     gud.bin1[3] = -9.9
     (isValid, exportList, importList) = gud.checkLegality(adict)
     print isValid, exportList, importList
+    print gud, "\n"
     gud.fixChildGivenLists(exportList, importList)
+    print gud
     print gud.checkLegality(adict)
 
 
