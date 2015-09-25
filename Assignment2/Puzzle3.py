@@ -98,7 +98,7 @@ class Puzzle3(Chromosome):
         otherList = other.getTowerList()
 
         # check special case for a tower of size 0
-        if (len(self.towerList) == 0) or (len(self.towerList) == 0):
+        if (len(self.towerList) == 0) or (len(other.towerList) == 0):
             newPa.setTowerList(thisList)
             newPb.setTowerList(otherList)
 

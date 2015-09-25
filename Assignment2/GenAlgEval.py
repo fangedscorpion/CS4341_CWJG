@@ -14,7 +14,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
     listOfMedian = []
     listOfHighest = []
     popSize = paramPopSize
-    measurementGen = 0
+    measurementGen = 100
     start = time.time()
 
     chromosomes = makeChromes(
@@ -40,7 +40,7 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
         generationNumber += 1
 
         measurementGen += 1
-        if measurementGen > 99:
+        if measurementGen > 0 :
             gen = sorted(gen, key=lambda node: node.chromosome.fitness(masterDict, Puz1Target))
             genxLowest = gen[0].chromosome.fitness(masterDict, Puz1Target)
             genxMedian = gen[(popSize/2)-1].chromosome.fitness(masterDict, Puz1Target)
@@ -84,19 +84,8 @@ def makeNodes(chromosomes):
     return nodes
 
 
-def makeDict(values):
-    newDict = {}
-    for value in values:
-        if newDict.has_key(value):
-            newDict[value] += 1
-        else:
-            newDict[value] = 1
-
-    return newDict
-
 # defines the fitness of each node and the % of the net fitness which will be used for
 # mating
-
 
 def evalGen(gen, masterDict, Puz1Target):
     netFitness = 0
@@ -107,15 +96,16 @@ def evalGen(gen, masterDict, Puz1Target):
 
     gen = sorted(gen, key=lambda node: node.fitness)
 
-    for node in gen:
+    for i in range(len(gen)):
         if(netFitness == 0):
-            print "fitness assignment failed"
-            exit() 
-        percentFitness = (float(node.fitness) / netFitness) * 100
-        print percentFitness
-        netPercent += percentFitness
-        node.percentBound = netPercent
-        print "Node fit: ", node.percentBound
+            gen[i].percentBound = (float(i)*100/len(gen))
+
+        else:
+            percentFitness = (float(gen[i].fitness) / netFitness) * 100
+            # print percentFitness
+            netPercent += percentFitness
+            gen[i].percentBound = netPercent
+            # print "Node fit: ", gen[i].percentBound
 
 
 # make the new generation, new Gen is not mutated or valid
@@ -155,20 +145,26 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
 
         for j in range(1, len(gen)):
             if not foundA:
-                if (point1 > gen[j - 1].percentBound) and point1 < gen[j].percentBound:
+                # if (point1 > gen[j - 1].percentBound) and point1 < gen[j].percentBound:
+                if point1 < gen[j].percentBound:
                     parentA = gen[j]
                     foundA = 1
-                elif (point1 < gen[j-1].percentBound):
-                    parentA = gen[j-1]
-                    foundA = 1
+                else:
+                    parentA = gen[len(gen)-1]
+                # elif (point1 < gen[j-1].percentBound):
+                #     parentA = gen[j-1]
+                #     foundA = 1
 
             if not foundB:
-                if (point2 > gen[j - 1].percentBound) and point2 < gen[j].percentBound:
+                if point2 < gen[j].percentBound:
                     parentB = gen[j]
                     foundB = 1
-                elif (point2 < gen[j - 1].percentBound):
-                    parentB = gen[j]
-                    foundB = 1
+                else:
+                    parentB = gen[len(gen)-1]
+
+                # elif (point2 < gen[j - 1].percentBound):
+                #     parentB = gen[j]
+                #     foundB = 1
 
         # while (parentA is parentB): # if parents A and B are the same rerun B, no clones
         #     point2 = random.random()*100
