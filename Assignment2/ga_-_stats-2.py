@@ -1,22 +1,23 @@
 from ListParser import ListParser
-from GenAlg import geneticAlgorithm
+from GenAlgEval import geneticAlgorithm
 
 if __name__ == "__main__":
     debug_mode = 0
 
-    runTimeSeconds = 10
+    runTimeSeconds = 6
 
     numberOfRuns = 5
     mutatePerc = 10
 
-    startPopSize = 75
+    startPopSize = 50
 
     geneticsType = 0  # 1 for elitism? 2 for culling?
 
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
-    puzzleNumList = [1, 2, 3]  # Add in 2 or 3 for more puzzles
+    # puzzleNumList = [1, 2, 3]  # Add in 2 or 3 for more puzzles
+    puzzleNumList = [2]
 
     for puzzleNum in puzzleNumList:
         print puzzleNum
@@ -30,8 +31,8 @@ if __name__ == "__main__":
             for j in range(0, numberOfRuns):
                 print "sample: ", j
                 (low, mediam, high) = geneticAlgorithm(puzzleNum, the_list_parser.getList(), runTimeSeconds, the_list_parser.getDictionary(
-                ), pop_size, mutatePerc, the_list_parser.getTarget(), geneticsType)
+                ), startPopSize, mutatePerc, the_list_parser.getTarget(), geneticsType)
 
                 for k in range(0, len(low)):
-                    fileWrite.write(str(low[k]) + "," + str(mediam[k]) + "," + str(high[k]) + "," + str(k*100) + "\n")
+                    fileWrite.write(str(low[k]) + "," + str(mediam[k]) + "," + str(high[k]) + "," + str(k*1) + "\n")
             fileWrite.close()
