@@ -25,13 +25,13 @@ if __name__ == "__main__":
             the_list_parser = ListParser(
                 open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
             fileWrite = open("genTest_-_Puzzle" + str(puzzleNum) + " type-" + str(geneticsType) + ".csv", "w+")
-            fileWrite.write("low,high,median,generation\n")
+            fileWrite.write("low,mediam,high,generation\n")
 
             for j in range(0, numberOfRuns):
                 print "sample: ", j
-                (low, high, median) = geneticAlgorithm(puzzleNum, the_list_parser.getList(), runTimeSeconds, the_list_parser.getDictionary(
+                (low, mediam, high) = geneticAlgorithm(puzzleNum, the_list_parser.getList(), runTimeSeconds, the_list_parser.getDictionary(
                 ), pop_size, mutatePerc, the_list_parser.getTarget(), geneticsType)
 
                 for k in range(0, len(low)):
-                    fileWrite.write(str(low[k]) + "," + str(high[k]) + "," + str(median[k]) + "," + str(k*100) + "\n")
+                    fileWrite.write(str(low[k]) + "," + str(mediam[k]) + "," + str(high[k]) + "," + str(k*100) + "\n")
             fileWrite.close()
