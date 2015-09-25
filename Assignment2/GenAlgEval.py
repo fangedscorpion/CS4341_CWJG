@@ -105,7 +105,8 @@ def evalGen(gen, masterDict, Puz1Target):
         node1.fitness = node1.chromosome.fitness(masterDict, Puz1Target)
         netFitness += node1.fitness
 
-    print "creating node Fitnesses"
+    gen = sorted(gen, key=lambda node: node.fitness)
+
     for node in gen:
         if(netFitness == 0):
             print "fitness assignment failed"
@@ -114,6 +115,7 @@ def evalGen(gen, masterDict, Puz1Target):
         print percentFitness
         netPercent += percentFitness
         node.percentBound = netPercent
+        print "Node fit: ", node.percentBound
 
 
 # make the new generation, new Gen is not mutated or valid
@@ -161,11 +163,11 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
                     foundA = 1
 
             if not foundB:
-                if (point2 > gen[j - 1].percentBound):
+                if (point2 > gen[j - 1].percentBound) and point2 < gen[j].percentBound:
                     parentB = gen[j]
                     foundB = 1
-                elif (point2 < gen[0].percentBound):
-                    parentB = gen[0]
+                elif (point2 < gen[j - 1].percentBound):
+                    parentB = gen[j]
                     foundB = 1
 
         # while (parentA is parentB): # if parents A and B are the same rerun B, no clones
@@ -251,11 +253,11 @@ if __name__ == "__main__":
     evalGen(nodeListTest, testDict,testTarget)
     for i in range(len(nodeListTest)):
         print nodeListTest[i].percentBound
-    print "---------------------"
+    print "-"*10, "ifmain test of sorted nodes"
     nodeListTest = sorted(nodeListTest, key=lambda node: node.percentBound)
     for i in range(len(nodeListTest)):
         print nodeListTest[i].percentBound
-    print "---------------------"
+    print "-"*10, "end of ifmain test of sorted nodes"
 
 
     # puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode
