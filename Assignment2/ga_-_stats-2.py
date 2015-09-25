@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     runTimeSeconds = 6
 
-    numberOfRuns = 5
+    numberOfRuns = 1
     mutatePerc = 10
 
     startPopSize = 50
@@ -16,7 +16,6 @@ if __name__ == "__main__":
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
-    # puzzleNumList = [1, 2, 3]  # Add in 2 or 3 for more puzzles
     puzzleNumList = [2]
 
     for puzzleNum in puzzleNumList:
