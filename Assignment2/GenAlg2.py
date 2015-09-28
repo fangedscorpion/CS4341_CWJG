@@ -97,7 +97,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     if mateMode == 1:  # if elite
         iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
-            preGen.append(gen[i])
+            preGen.append(gen[iterations - i -1])
     elif mateMode == 2:  # if culling
         for i in range(numSpecialNodes):
             gen[i].fitness = 0
@@ -207,13 +207,13 @@ if __name__ == "__main__":
 
     # print sampleBest1.fitness(aPuzzle1Dict, target), sampleBest1
 
-    # (sampleBest2, sampleBest2gen) = geneticAlgorithm(
-    #     2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target, testMateMode)
+    (sampleBest2, sampleBest2gen) = geneticAlgorithm(
+        2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target, testMateMode)
 
-    # print sampleBest2.fitness(aPuzzle2Dict, target), sampleBest2
+    print sampleBest2.fitness(aPuzzle2Dict, target), sampleBest2
 
-    (sampleBest3, sampleBest3gen) = geneticAlgorithm(
-        3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
+    # (sampleBest3, sampleBest3gen) = geneticAlgorithm(
+    #     3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
 
-    print sampleBest3.fitness(aPieceDict, target), sampleBest3
+    # print sampleBest3.fitness(aPieceDict, target), sampleBest3
     

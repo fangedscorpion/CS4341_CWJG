@@ -121,7 +121,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     if mateMode == 1:  # if elite
         iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
-            preGen.append(gen[i])
+            preGen.append(gen[iterations - i -1])
     elif mateMode == 2:  # if culling
         for i in range(numSpecialNodes):
             gen[i].fitness = 0
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     aPieceDict = {d1.getDictKey(): 1, w1.getDictKey(): 1, w2.getDictKey(
     ): 1, d2.getDictKey(): 1, w3.getDictKey(): 1, l1.getDictKey(): 1, l2.getDictKey(): 1}
 
-    testMateMode = 0
+    testMateMode = 1
     mutatePerc = 10
     genSize = 500
     runTimeSecs = 3
@@ -245,15 +245,15 @@ if __name__ == "__main__":
     testDict = {1:1, 2:1, 4:1,5:1}
     testTarget = 7
 
-    nodeListTest = (nodeaTest,nodebTest,nodecTest)
-    evalGen(nodeListTest, testDict,testTarget)
-    for i in range(len(nodeListTest)):
-        print nodeListTest[i].percentBound
-    print "-"*10, "ifmain test of sorted nodes"
-    nodeListTest = sorted(nodeListTest, key=lambda node: node.percentBound)
-    for i in range(len(nodeListTest)):
-        print nodeListTest[i].percentBound
-    print "-"*10, "end of ifmain test of sorted nodes"
+    # nodeListTest = (nodeaTest,nodebTest,nodecTest)
+    # evalGen(nodeListTest, testDict,testTarget)
+    # for i in range(len(nodeListTest)):
+    #     print nodeListTest[i].percentBound
+    # print "-"*10, "ifmain test of sorted nodes"
+    # nodeListTest = sorted(nodeListTest, key=lambda node: node.percentBound)
+    # for i in range(len(nodeListTest)):
+    #     print nodeListTest[i].percentBound
+    # print "-"*10, "end of ifmain test of sorted nodes"
 
 
     # puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode
