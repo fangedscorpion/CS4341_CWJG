@@ -100,7 +100,7 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
             preGen.append(gen[i])
     elif mateMode == 2:  # if culling
         for i in range(numSpecialNodes):
-            gen[iterations - i - 1].fitness = 0
+            gen[i].fitness = 0
         evalGen(gen, masterDict, Puz1Target)
         gen = sorted(gen, key=lambda node: node.percentBound)
     elif mateMode != 0: # if invalid mode number
@@ -196,7 +196,7 @@ if __name__ == "__main__":
 
     testMateMode = 0
     mutatePerc = 10
-    genSize = 50
+    genSize = 500
     runTimeSecs = 10
 
     # geneticAlgorithm inputs: (yeah theres a lot)

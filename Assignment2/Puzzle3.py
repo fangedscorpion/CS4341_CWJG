@@ -232,7 +232,7 @@ if __name__ == '__main__':
 
     print ap3a
     print "#" * 20
-    ap3a.mutate(masterList)
+    ap3a.mutate(masterList, [])
     print ap3a
 
     # 0

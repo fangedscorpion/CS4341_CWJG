@@ -4,23 +4,23 @@ from GenAlgEval import geneticAlgorithm
 if __name__ == "__main__":
     debug_mode = 0
 
-    runTimeSeconds = 6
+    runTimeSeconds = 10
 
     numberOfRuns = 1
     mutatePerc = 10
 
-    startPopSize = 50
+    startPopSize = 500
 
     geneticsType = 0  # 1 for elitism? 2 for culling?
 
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
-    puzzleNumList = [2]
+    puzzleNumList = [1,2]
 
     for puzzleNum in puzzleNumList:
         print puzzleNum
-        for geneticsType in range(0, 3):
+        for geneticsType in range(2, 3):
             print geneticsType
             the_list_parser = ListParser(
                 open(filename1 + str(puzzleNum) + filename2, "r"), puzzleNum)
