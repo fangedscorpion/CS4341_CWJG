@@ -1,7 +1,9 @@
 To run:
 
 $python ga.py filename.txt puzzleNum secondsToRun
+For puzzle 3, it is suggested to let the function run for at least 30 seconds. Less time than that and it will arrive at an answer, but not as good of an answer as it could.
 
+The mutation rate and population size are in ga.py on lines {21, 22}, respectively
 
 In the file ga.py, there is a variable "debug_mode" on line 6.
 When debug_mode is set to 0, there will be no additional print statements.
