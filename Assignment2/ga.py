@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
         the_list_parser = ListParser(open(filename, "r"), puzzleNum)
         mutationRate = 10
-        population = 50
+        population = 500
 
         if(debug_mode == 1):
             print the_list_parser.getList()
