@@ -1,6 +1,7 @@
 """ This class is to hold information on the analysis of an illegal Chromosome """
 """ The design of the object is to built up after initialization, not built all at once """
 
+
 class Illegal(object):
 
     # self.value = the value being represented that causes illeglaity

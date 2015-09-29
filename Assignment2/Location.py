@@ -1,13 +1,14 @@
-class Location():	
-	def __init__(self, binNum, indexInBin):
-		self.binNum = binNum
-		self.indexInBin = indexInBin
+class Location():
 
-	def getBin(self):
-		return self.binNum
+    def __init__(self, binNum, indexInBin):
+        self.binNum = binNum
+        self.indexInBin = indexInBin
 
-	def getIndex(self):
-		return self.indexInBin
+    def getBin(self):
+        return self.binNum
 
-	def __repr__(self):
-		return "(" + str(self.binNum) + " , " + str(self.indexInBin) + ")"
+    def getIndex(self):
+        return self.indexInBin
+
+    def __repr__(self):
+        return "(" + str(self.binNum) + " , " + str(self.indexInBin) + ")"

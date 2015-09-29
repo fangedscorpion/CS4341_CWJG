@@ -1,4 +1,6 @@
-import abc 
+import abc
+
+
 class Chromosome(object):
     __metaclass__ = abc.ABCMeta
 

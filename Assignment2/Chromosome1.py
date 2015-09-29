@@ -5,7 +5,6 @@ from Chromosome import Chromosome
 class Chromosome1(Chromosome):
 
     def __init__(self, listOfNumbers, gen, probabilityMutate):
-        # I guess this does not happen because of an initialize function...?
         self.lon = listOfNumbers
         # probability each gene in the chromosome gets mutated
         self.probMutate = probabilityMutate
@@ -63,14 +62,10 @@ class Chromosome1(Chromosome):
     def mutate(self, masterList, masterDict):
         master = masterList
 
-        # Have to truncate size to the master list size at most
-        # if (len(self.lon) > len(masterList)):
-        #     self.lon = list(self.lon[0:len(masterList) - 1])
-
         i = 0
         while i < len(self.lon):
             # If less than probMutate, mutate. Probabilities scaled for 0-100
-            # to avoid floats. Because I can.
+            # to avoid floats.
             if(random.randint(1, 100) < self.probMutate):
                 mutationType = random.randint(1, 3)
 
@@ -82,14 +77,10 @@ class Chromosome1(Chromosome):
                 else:  # Add number
                     self.lon.append(master[random.randint(0, len(master) - 1)])
                     i += 1
-                # print "Mutated to", str(self.lon[i]), " at ", str(i)
             else:
                 i += 1
 
-        # print "Mutate before fix"
-        # print self.lon
-
-        self.fixChild(masterDict) # Python is reference based, so no need to
+        self.fixChild(masterDict)  # reference based, so no need to
         # return it
 
     # specifically to check the validity of one number to see if it is a valid
@@ -105,15 +96,14 @@ class Chromosome1(Chromosome):
     def fixChild(self, masterDict):
         chromList = self.lon
         masterList = masterDict.keys()
-        removeList = [] #indices to remove
+        removeList = []  # indices to remove
         for i in range(len(chromList)):
             keep_going = not self.isValid(chromList[i], masterDict)
 
-            #while(not self.isValid(chromList[i], masterDict)):
-            while (keep_going): # shits going down with this number, yo
+            while (keep_going):
                 if(len(chromList) > len(masterList)):
                     removeList.append(i)
-		    keep_going = False
+                    keep_going = False
                 else:
                     chromList[i] = random.choice(masterList)
                     keep_going = False

@@ -4,6 +4,7 @@ from Illegal import Illegal
 from Location import Location
 import copy
 
+
 class Puzzle2(Chromosome):
 
     def __init__(self, bin1List, bin2List, bin3List, generation, mutation):
@@ -46,7 +47,6 @@ class Puzzle2(Chromosome):
         thisDict = master.copy()
 
         childDict = self.countInDict({})
-        # print childDict
 
         immigrationList = []
         deportationList = []
@@ -64,10 +64,8 @@ class Puzzle2(Chromosome):
                     if(diffCount < 0):
                         diffCount = abs(diffCount)
                         tmpList = list(childDictCopy[x][1])
-                        # print "Key: ", x, " Diff count: ", diffCount
                         for ind in range(0, diffCount):
                             randInd = rand.randint(0, len(tmpList) - 1)
-                            # print randInd, len(childDictCopy[x][1]) - 1
                             deportationList.append(
                                 Illegal(x, diffCount, tmpList[randInd]))
                             tmpList.remove(tmpList[randInd])
@@ -78,12 +76,11 @@ class Puzzle2(Chromosome):
         # These lists should be the same size
         return (len(deportationList) == 0 and len(immigrationList) == 0, deportationList, immigrationList)
 
-    def fixChild(self,masterDictionary):
-        
+    def fixChild(self, masterDictionary):
+
         thisDict = masterDictionary.copy()
 
         childDict = self.countInDict({})
-        # print childDict
 
         immigrationList = []
         deportationList = []
@@ -101,10 +98,8 @@ class Puzzle2(Chromosome):
                     if(diffCount < 0):
                         diffCount = abs(diffCount)
                         tmpList = list(childDictCopy[x][1])
-                        # print "Key: ", x, " Diff count: ", diffCount
                         for ind in range(0, diffCount):
                             randInd = rand.randint(0, len(tmpList) - 1)
-                            # print randInd, len(childDictCopy[x][1]) - 1
                             deportationList.append(
                                 Illegal(x, diffCount, tmpList[randInd]))
                             tmpList.remove(tmpList[randInd])
@@ -123,28 +118,20 @@ class Puzzle2(Chromosome):
         # print "%" * 20
         for i in range(0, len(self.bin1)):
             if (starting.has_key(self.bin1[i])):
-                # print starting[self.bin1[i]][1]
-                # print starting[self.bin1[i]][2] + [Location(1, i)]
                 starting[self.bin1[i]] = (
                     starting[self.bin1[i]][0] + 1, list(starting[self.bin1[i]][1] + [Location(1, i)]))
             else:
-                # print "Bin 1 can't find key", self.bin1[i]
                 starting[self.bin1[i]] = (1, [Location(1, i)])
-                # print "can't find key", self.bin1[i]
             if (starting.has_key(self.bin2[i])):
-                # print starting[self.bin2[i]][0] + 1
-                # print (1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
                 starting[self.bin2[i]] = (
                     starting[self.bin2[i]][0] + 1, list(starting[self.bin2[i]][1] + [Location(2, i)]))
             else:
-                # print "Bin 2 can't find key", self.bin2[i]
                 starting[self.bin2[i]] = (1, [Location(2, i)])
 
             if (starting.has_key(self.bin3[i])):
                 starting[self.bin3[i]] = (
                     starting[self.bin3[i]][0] + 1, list(starting[self.bin3[i]][1] + [Location(3, i)]))
             else:
-                # print "Bin 3 can't find key", self.bin3[i]
                 starting[self.bin3[i]] = (1, [Location(3, i)])
 
         return starting
@@ -155,8 +142,6 @@ class Puzzle2(Chromosome):
     # The other list has the values that need to be moved out of the object
     def fixChildGivenLists(self, exportList, importList):
         assert len(importList) == len(exportList)
-        # print importList
-        # print exportList
 
         for x in range(0, len(importList)):
             randint = rand.randint(0, len(importList) - 1)
@@ -166,19 +151,16 @@ class Puzzle2(Chromosome):
             exportedIllegalObjLoc = exportList[randint2].getLocations()
 
             if(exportedIllegalObjLoc.getBin() == 1):
-                # Location is in bin 1
                 self.bin1[
                     exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
                 del exportList[randint2]
             elif(exportedIllegalObjLoc.getBin() == 2):
-                # Bin 2
                 self.bin2[
                     exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
                 del exportList[randint2]
             elif(exportedIllegalObjLoc.getBin() == 3):
-                # Bin 3
                 self.bin3[
                     exportedIllegalObjLoc.getIndex()] = importedIllegalObj.getValue()
                 del importList[randint]
@@ -190,7 +172,6 @@ class Puzzle2(Chromosome):
     # This method does a crossover for multiple Puzzles
     def crossover(self, other):
         cutPointInt = rand.randint(1, (len(self.bin1) - 1))
-        # print "Cut point: ", cutPointInt
 
         # up to but not including the cutPointInt
         par1Bin1Front = self.bin1[0:cutPointInt]
@@ -212,8 +193,10 @@ class Puzzle2(Chromosome):
         par2Bin2End = other.bin2[cutPointInt:len(other.bin2)]
         par2Bin3End = other.bin3[cutPointInt:len(other.bin3)]
 
-        newPa = Puzzle2([],[],[], self.generation + 1, self.mutationThreshold)
-        newPb = Puzzle2([],[],[], other.generation + 1, other.mutationThreshold)
+        newPa = Puzzle2(
+            [], [], [], self.generation + 1, self.mutationThreshold)
+        newPb = Puzzle2(
+            [], [], [], other.generation + 1, other.mutationThreshold)
 
         par1Bin1Front.extend(par2Bin1End)
         newPa.bin1 = par1Bin1Front
@@ -247,48 +230,6 @@ class Puzzle2(Chromosome):
             return (bProd + bSum) / 2
         else:
             return 0
-
-    # This is the version for when the chromosome is already legal
-    def fixChildAfterMutate(self, listOfChangedNums):
-        # print listOfChangedNums
-
-        for x in range(0, (len(listOfChangedNums) - 1), 2):
-            # Generate another rand int in size of changed list
-            ind1 = rand.randint(0, (len(listOfChangedNums) - 1))
-            ind2 = rand.randint(0, (len(listOfChangedNums) - 1))
-            while(ind2 == ind1):
-                ind2 = rand.randint(0, (len(listOfChangedNums) - 1))
-            # print ind1, ind2
-
-            changedTuple1 = listOfChangedNums[ind1]
-            changedTuple2 = listOfChangedNums[ind2]
-
-            # Swap values
-            if(changedTuple1[0] == 1):
-                self.bin1[changedTuple1[1]] = changedTuple2[2]
-            elif(changedTuple1[0] == 2):
-                self.bin2[changedTuple1[1]] = changedTuple2[2]
-            elif(changedTuple1[0] == 3):
-                self.bin3[changedTuple1[1]] = changedTuple2[2]
-
-            if(changedTuple2[0] == 1):
-                self.bin1[changedTuple2[1]] = changedTuple1[2]
-            elif(changedTuple2[0] == 2):
-                self.bin2[changedTuple2[1]] = changedTuple1[2]
-            elif(changedTuple2[0] == 3):
-                self.bin3[changedTuple2[1]] = changedTuple1[2]
-
-            listOfChangedNums.remove(changedTuple2)
-            listOfChangedNums.remove(changedTuple1)
-
-        if(len(listOfChangedNums) == 1):
-            lastChangedTuple = listOfChangedNums[0]
-            if(lastChangedTuple[0] == 1):
-                self.bin1[lastChangedTuple[1]] = lastChangedTuple[2]
-            elif(lastChangedTuple[0] == 2):
-                self.bin2[lastChangedTuple[1]] = lastChangedTuple[2]
-            elif(lastChangedTuple[0] == 3):
-                self.bin3[lastChangedTuple[1]] = lastChangedTuple[2]
 
     def getValidMutatedNumberIndex(self, lenMasterListOfNum):
         return rand.randint(0, (lenMasterListOfNum - 1))
@@ -334,7 +275,8 @@ class Puzzle2(Chromosome):
         return self.generation
 
     def getCopy(self):
-        tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(self.getBin3()), self.getGeneration(), self.mutationThreshold)
+        tempChromeo = Puzzle2(list(self.getBin1()), list(self.getBin2()), list(
+            self.getBin3()), self.getGeneration(), self.mutationThreshold)
         return tempChromeo
 
     def __repr__(self):
@@ -344,78 +286,11 @@ class Puzzle2(Chromosome):
 Chromosome.register(Puzzle2)
 
 if __name__ == '__main__':
-    # from Puzzle2 import Puzzle2
-    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
-    # master = {1: 1, 0: 1, -6: 1, -9.9: 1, 8: 1, 4.5: 1, 3: 1, 3.8: 1, 2.5: 1}
-    # par1 = Puzzle2(a[0:3], a[3:6], a[6:9], 0)
-    # par2 = Puzzle2(a[3:6], a[0:3], a[6:9], 0)
-    # par3 = Puzzle2(a[6:9], a[3:6], a[0:3], 0)
-    # par4 = Puzzle2(a[6:9], a[0:3], a[3:6], 0)
+    a = [-6.3, -9.9, -3.0, 4.0, 0.0, 2.5, 8.8, 0.6, -4.5, 2.3, -5.0, 7.0, 2.5, 4.5, -
+         6.0, 8.0, 7.5, 6.5, 2.0, -1.0, -0.5, 0.0, 3.3, 8.2, 1.5, 9.2, -7.0, 2.5, 6.2, -2.2]
 
-    # print par1
-    # print par2
-    # print par3
-    # print par4
-
-    # par4.mutate(a)  # Must pass in master list
-
-    # print par4
-
-    # print "Generation 0?: ", par1.getGeneration()
-
-    # print "Fitness for par1: ", par1.fitness(), "\n"
-    # print "-" * 20
-    # print a
-
-    # par5 = par2
-
-    # print "Par1 before Xover:\n", par1
-    # print "Par5 before Xover:\n", par5
-
-    # par1.crossover(par5)
-
-    # print "Par1 after Xover:\n", par1
-    # print "Part after Xover:\n", par5
-
-    # print master
-    # print "Is legal: \n", par1.checkLegality(master)
-    # par2.bin1[0] = 1
-
-    # print "Is legal: \n", par2.checkLegality(master)
-
-    # (legalHuh, exportL, importL) = par2.checkLegality(master)
-
-    # par2.fixChild(exportL, importL)
-
-    # print "Is legal: \n", par2.checkLegality(master)
-
-    # print "Is legal: ", par2.checkLegality(master)
-    # par5 = Puzzle2([], [], [], 2)
-    # par5.initialize(a)
-    # print par5
-    # print par5.generation
-
-    # def testPrintAll():
-        # print "alpha: "
-        # print alpha
-        # print
-
-        # print "beta: "
-        # print beta
-        # print
-
-        # print "gamma: "
-        # print gamma
-        # print
-
-        # print "delta: "
-        # print delta
-        # print
-
-    # a = [1, 0, -6, -9.9, 8, 4.5, 3, 3.8, 2.5]
-    a = [-6.3, -9.9, -3.0, 4.0, 0.0, 2.5, 8.8, 0.6, -4.5, 2.3, -5.0, 7.0, 2.5, 4.5, -6.0, 8.0, 7.5, 6.5, 2.0, -1.0, -0.5, 0.0, 3.3, 8.2, 1.5, 9.2, -7.0, 2.5, 6.2, -2.2]
-
-    adict = {0.0: 2, 2.5: 3, 2.0: 1, 4.0: 1, 7.5: 1, 7.0: 1, 8.0: 1, 3.3: 1, 8.2: 1, -2.2: 1, -0.5: 1, 2.3: 1, 6.2: 1, -6.3: 1, 9.2: 1, 1.5: 1, -4.5: 1, 0.6: 1, -9.9: 1, 8.8: 1, -7.0: 1, -6.0: 1, -5.0: 1, 4.5: 1, -3.0: 1, -1.0: 1, 6.5: 1}
+    adict = {0.0: 2, 2.5: 3, 2.0: 1, 4.0: 1, 7.5: 1, 7.0: 1, 8.0: 1, 3.3: 1, 8.2: 1, -2.2: 1, -0.5: 1, 2.3: 1, 6.2: 1, -
+             6.3: 1, 9.2: 1, 1.5: 1, -4.5: 1, 0.6: 1, -9.9: 1, 8.8: 1, -7.0: 1, -6.0: 1, -5.0: 1, 4.5: 1, -3.0: 1, -1.0: 1, 6.5: 1}
 
     alpha = Puzzle2([], [], [], 0, 5)
     beta = Puzzle2([], [], [], 0, 5)
@@ -424,8 +299,6 @@ if __name__ == '__main__':
     beta.initialize(a)
 
     crosses = alpha.crossover(beta)
-    # print crosses[0] != alpha, True
-    # print alpha == alpha, True
 
     alpha.mutate(a, adict)
     beta.mutate(a, adict)
@@ -446,5 +319,3 @@ if __name__ == '__main__':
     gud.fixChildGivenLists(exportList, importList)
     print gud
     print gud.checkLegality(adict)
-
-

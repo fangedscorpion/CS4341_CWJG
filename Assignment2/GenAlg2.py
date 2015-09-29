@@ -7,7 +7,9 @@ from Puzzle3 import Puzzle3
 import copy
 from Piece import Piece
 
-#Finds the best solution (that it can in the time limit) to the given puzzle 
+# Finds the best solution (that it can in the time limit) to the given puzzle
+
+
 def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode):
     popSize = paramPopSize
 
@@ -34,12 +36,10 @@ def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize,
 
         generationNumber += 1
 
- 
-
     return (overallChampion, generationNumber)
 
 
-# creates x chromosomes (hopefully unique, though not explicitly)
+# creates x chromosomes
 def makeChromes(puzzle, validValues, masterDict, popSize, mutatePerc):
     chromes = []
     for i in range(popSize):
@@ -52,11 +52,12 @@ def makeChromes(puzzle, validValues, masterDict, popSize, mutatePerc):
 
         chromes[i].initialize(validValues)
         chromes[i].fixChild(masterDict)
-        
 
     return chromes
 
 # makes a list of nodes from the chromosomes
+
+
 def makeNodes(chromosomes):
     nodes = []
     for i in range(len(chromosomes)):
@@ -79,7 +80,7 @@ def evalGen(gen, masterDict, Puz1Target):
 
     for i in range(len(gen)):
         if(netFitness == 0):
-            gen[i].percentBound = (float(i)*100/len(gen))
+            gen[i].percentBound = (float(i) * 100 / len(gen))
 
         else:
             percentFitness = (float(gen[i].fitness) / netFitness) * 100
@@ -97,13 +98,13 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     if mateMode == 1:  # if elite
         iterations -= numSpecialNodes
         for i in range(numSpecialNodes):
-            preGen.append(gen[iterations - i -1])
+            preGen.append(gen[iterations - i - 1])
     elif mateMode == 2:  # if culling
         for i in range(numSpecialNodes):
             gen[i].fitness = 0
         evalGen(gen, masterDict, Puz1Target)
         gen = sorted(gen, key=lambda node: node.percentBound)
-    elif mateMode != 0: # if invalid mode number
+    elif mateMode != 0:  # if invalid mode number
         print "invalid mateMode, must be 0, 1, or 2"
         exit()
 
@@ -113,9 +114,9 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
         point1 = 0
         point2 = 0
         while point1 == 0:
-            point1 = random.random()*100
+            point1 = random.random() * 100
         while point2 == 0:
-            point2 = random.random()*100
+            point2 = random.random() * 100
 
         for j in range(1, len(gen)):
             if not foundA:
@@ -123,14 +124,14 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
                     parentA = gen[j]
                     foundA = 1
                 else:
-                    parentA = gen[len(gen)-1]
+                    parentA = gen[len(gen) - 1]
 
             if not foundB:
                 if point2 < gen[j].percentBound:
                     parentB = gen[j]
                     foundB = 1
                 else:
-                    parentB = gen[len(gen)-1]
+                    parentB = gen[len(gen) - 1]
 
         children = parentA.chromosome.crossover(parentB.chromosome)
         child1 = node(children[0], 0, 0)
@@ -148,7 +149,8 @@ def mutateGen(gen, masterList, masterDict):
         node.chromosome.mutate(masterList, masterDict)
 
 
-# find the best chromosome in a list of chromosomes given the allowed variables (dict)
+# find the best chromosome in a list of chromosomes given the allowed
+# variables (dict)
 def bestChrome(gen, masterDict):
     if (len(gen) == 0):
         print "gen is empty"
@@ -190,7 +192,7 @@ if __name__ == "__main__":
     w3 = Piece("Wall", 3, 3, 2, 4)
     l1 = Piece("Lookout", 2, 2, 3, 5)
     l2 = Piece("Lookout", 3, 1, 2, 6)
-    aPieceList = [d1, w1, w2, d2, w3, l1, l2]  
+    aPieceList = [d1, w1, w2, d2, w3, l1, l2]
     aPieceDict = {d1.getDictKey(): 1, w1.getDictKey(): 1, w2.getDictKey(
     ): 1, d2.getDictKey(): 1, w3.getDictKey(): 1, l1.getDictKey(): 1, l2.getDictKey(): 1}
 
@@ -202,18 +204,17 @@ if __name__ == "__main__":
     # geneticAlgorithm inputs: (yeah theres a lot)
     # puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode
 
-    # (sampleBest1, sampleBest1gen) = geneticAlgorithm(
-    #     1, aPuzzle1List, runTimeSecs, aPuzzle1Dict, genSize, mutatePerc, target, testMateMode)
+    (sampleBest1, sampleBest1gen) = geneticAlgorithm(
+        1, aPuzzle1List, runTimeSecs, aPuzzle1Dict, genSize, mutatePerc, target, testMateMode)
 
-    # print sampleBest1.fitness(aPuzzle1Dict, target), sampleBest1
+    print sampleBest1.fitness(aPuzzle1Dict, target), sampleBest1
 
     (sampleBest2, sampleBest2gen) = geneticAlgorithm(
         2, aPuzzle2List, runTimeSecs, aPuzzle2Dict, genSize, mutatePerc, target, testMateMode)
 
     print sampleBest2.fitness(aPuzzle2Dict, target), sampleBest2
 
-    # (sampleBest3, sampleBest3gen) = geneticAlgorithm(
-    #     3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
+    (sampleBest3, sampleBest3gen) = geneticAlgorithm(
+        3, aPieceList, runTimeSecs, aPieceDict, genSize, mutatePerc, target, testMateMode)
 
-    # print sampleBest3.fitness(aPieceDict, target), sampleBest3
-    
+    print sampleBest3.fitness(aPieceDict, target), sampleBest3

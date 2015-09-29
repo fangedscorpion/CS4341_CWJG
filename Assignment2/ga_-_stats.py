@@ -13,12 +13,12 @@ if __name__ == "__main__":
     popStepSize = 2
     endingPopSize = 152
 
-    geneticsType = 0  # 1 for elitism? 2 for culling?
+    geneticsType = 0  # 1 for elitism, 2 for culling
 
     filename1 = "our_Puzzle"
     filename2 = "_sample.txt"
 
-    puzzleNumList = [2]  # Add in 2 or 3 for more puzzles
+    puzzleNumList = [2]  # Add in puzzle numbers
 
     for puzzleNum in puzzleNumList:
         the_list_parser = ListParser(

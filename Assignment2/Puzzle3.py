@@ -13,11 +13,6 @@ class Puzzle3(Chromosome):
 
     # This method initializes the chromosome for generation 0
     def initialize(self, masterList):
-        # if (len(masterList) < 2):
-        #     size = len(masterList)
-        # else:
-        #     size = rand.randint(2, len(masterList))
-
         size = rand.randint(0, len(masterList))
 
         self.generation = 0
@@ -32,61 +27,38 @@ class Puzzle3(Chromosome):
     # This method checks if a chromosome is legal
     def checkLegality(self, dict):
         # 0
-        # print 0
         if (not (len(self.towerList) >= 2)):
             return False
 
         # 1
-        # print 1
         if (not (self.towerList[0].isDoor())):
             return False
 
         # 2
-        # print 2
         if (not (self.towerList[len(self.towerList) - 1].isLookout())):
             return False
 
-        # 2.5
         for m in range(0, len(self.towerList)):
             # 2.5
-            # print 2.5
             for n in range(m + 1, len(self.towerList)):
                 if (self.towerList[m].getID() == self.towerList[n].getID()):
                     return False
 
             # 3
-            # print 3
             if (m != 0) and (m != len(self.towerList) - 1):
                 # print "m: ", m, self.towerList[m]
                 if (not (self.towerList[m].isWall())):
                     return False
 
             # 4
-            # print 4
             if (m != 0):
                 if (self.towerList[m].canFit(self.towerList[m - 1]) == False):
                     return False
 
             # 5
-            # print 5
             if (m != len(self.towerList) - 2):
                 if (self.towerList[m].canSupportNum(len(self.towerList[m + 1::])) == False):
                     return False
-
-        # 3
-        # for j in range(1, len(self.towerList) - 1):
-        #     if (not (self.towerList[j].isWall())):
-        #         return False
-
-        # 4
-        # for k in range(1, len(self.towerList)):
-        #     if (self.towerList[k].canFit(self.towerList[k - 1]) == False):
-        #         return False
-
-        # 5
-        # for l in range(0, len(self.towerList) - 1):
-        #     if (self.towerList[l].canSupportNum(len(self.towerList[l + 1::])) == False):
-        #         return False
 
         return True
 
@@ -114,7 +86,6 @@ class Puzzle3(Chromosome):
                 rand2Num = 0
             else:
                 rand2Num = rand.randint(1, len(otherList) - 1)
-            # print "Split 1: ", str(rand1Num), " Split 2: ", str(rand2Num)
 
             newPa.towerList = thisList[0:rand1Num] + \
                 otherList[rand2Num:len(otherList)]
@@ -154,7 +125,6 @@ class Puzzle3(Chromosome):
 
                     if(not newPart in self.towerList):
                         self.towerList[x] = newPart
-                        # print newPart
                 else:
                     pass
 
@@ -174,7 +144,7 @@ class Puzzle3(Chromosome):
 
     def fixChild(self, masterDict):
         pass
-        
+
     def __repr__(self):
         return str(self.towerList) + " G:" + str(self.generation)
 
@@ -216,19 +186,10 @@ if __name__ == '__main__':
 
     for chromo in genY:
         chromo.initialize(masterList)
-        # print chromo.towerList
 
     crosses = ap3a.crossover(ap3b)
     print ap3a != crosses[0], True
     print ap3a == ap3a, True
-
-    # print "#" * 20
-    # print ap3a
-    # print ap3b
-    # print "#" * 20
-    # ap3a.crossover(ap3b)
-    # print ap3a
-    # print ap3b
 
     print ap3a
     print "#" * 20
