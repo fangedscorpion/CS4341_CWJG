@@ -1,6 +1,6 @@
 To run:
 
-$python ga.py filename.txt puzzleNum secondsToRun
+$python ga.py filename.txt puzzleNum secondsToRun special 
 For puzzle 3, it is suggested to let the function run for at least 30 seconds. Less time than that and it will arrive at an answer, but not as good of an answer as it could.
 
 The mutation rate and population size are in ga.py on lines {21, 22}, respectively
@@ -16,8 +16,7 @@ Chromosome1.py	-> Puzzle 1 implementation
 ga.py 			-> main run file
 ga_-_stats.py 	-> file to gather statistics on population size
 ga_-_stats-2.py -> file to gather statistics on generations
-GenAlg.py 		-> definition of function to run Genetic Algorithm
-GenAlg2.py 		-> modified Genetic Algorithm used in ga.py
+GenAlg2.py 		-> definition of function to run Genetic Algorithm
 GenAlgEval.py 	-> modified Genetic Algorithm used in ga_-_stats-2.py
 Illegal.py 		-> class used for fixing Puzzle 2 crossovers
 ListParser.py 	-> class used for parsing an input file
