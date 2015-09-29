@@ -7,7 +7,6 @@ from Puzzle3 import Puzzle3
 import copy
 from Piece import Piece
 
-yesItsAShittyGlobal = 0
 
 def geneticAlgorithm(puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode):
     listOfLowests = []
@@ -112,10 +111,7 @@ def evalGen(gen, masterDict, Puz1Target):
 def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
     iterations = len(gen)
     gen = sorted(gen, key=lambda node: node.percentBound)
-    # print "**************"
-    # for i in range(len(gen)):
-    #     print gen[i].percentBound
-    # print "--------------" * 10
+
     preGen = []
 
     if mateMode == 1:  # if elite
@@ -140,20 +136,14 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
             point1 = random.random()*100
         while point2 == 0:
             point2 = random.random()*100
-        # for each in gen:
-        # print each.percentBound
 
         for j in range(1, len(gen)):
             if not foundA:
-                # if (point1 > gen[j - 1].percentBound) and point1 < gen[j].percentBound:
                 if point1 < gen[j].percentBound:
                     parentA = gen[j]
                     foundA = 1
                 else:
                     parentA = gen[len(gen)-1]
-                # elif (point1 < gen[j-1].percentBound):
-                #     parentA = gen[j-1]
-                #     foundA = 1
 
             if not foundB:
                 if point2 < gen[j].percentBound:
@@ -162,14 +152,6 @@ def mate(gen, popSize, mateMode, numSpecialNodes, masterDict, Puz1Target):
                 else:
                     parentB = gen[len(gen)-1]
 
-                # elif (point2 < gen[j - 1].percentBound):
-                #     parentB = gen[j]
-                #     foundB = 1
-
-        # while (parentA is parentB): # if parents A and B are the same rerun B, no clones
-        #     point2 = random.random()*100
-        #     if (point2 > gen[j-1].percentBound) and (point2 < gen[j].percentBound):
-        #         parentB = gen[j]
 
         children = parentA.chromosome.crossover(parentB.chromosome)
         child1 = node(children[0], 0, 0)
@@ -231,7 +213,7 @@ if __name__ == "__main__":
     aPieceDict = {d1.getDictKey(): 1, w1.getDictKey(): 1, w2.getDictKey(
     ): 1, d2.getDictKey(): 1, w3.getDictKey(): 1, l1.getDictKey(): 1, l2.getDictKey(): 1}
 
-    testMateMode = 1
+    testMateMode = 0
     mutatePerc = 10
     genSize = 500
     runTimeSecs = 3
@@ -245,18 +227,12 @@ if __name__ == "__main__":
     testDict = {1:1, 2:1, 4:1,5:1}
     testTarget = 7
 
-    # nodeListTest = (nodeaTest,nodebTest,nodecTest)
-    # evalGen(nodeListTest, testDict,testTarget)
-    # for i in range(len(nodeListTest)):
-    #     print nodeListTest[i].percentBound
-    # print "-"*10, "ifmain test of sorted nodes"
-    # nodeListTest = sorted(nodeListTest, key=lambda node: node.percentBound)
-    # for i in range(len(nodeListTest)):
-    #     print nodeListTest[i].percentBound
-    # print "-"*10, "end of ifmain test of sorted nodes"
 
-
+    # **********************************************************************************************
+    # GeneticAlgorithm Inputs:
     # puzzle, validValues, allowedTime, masterDict, paramPopSize, mutationPerc, Puz1Target, mateMode
+    # **********************************************************************************************
+
 
     # (lowest1, median1, highest1) = geneticAlgorithm(
     #     1, testPuzzle1Values, runTimeSecs, aPuzzle1Dict, genSize, mutatePerc, target, testMateMode)
