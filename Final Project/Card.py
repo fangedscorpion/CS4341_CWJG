@@ -18,11 +18,11 @@ class Card(object):
     HIGH = "high"
     LOW = "low"
 
-    def __init__(self, value, suit, isVisible, hl):
+    def __init__(self, value, suit, isVisible):
         self.value = value
         self.suit = suit
         self.isVisible = isVisible
-        self.hl = hl
+        self.hl = "high"
 
     def setValue(self, val):
         self.value = val
