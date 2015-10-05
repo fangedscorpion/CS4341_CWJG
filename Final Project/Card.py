@@ -18,10 +18,11 @@ class Card(object):
     HIGH = "high"
     LOW = "low"
 
-    def __init__(self, value, suit, isVisible):
+    def __init__(self, value, suit, isVisible, hl):
         self.value = value
         self.suit = suit
         self.isVisible = isVisible
+        self.hl = hl
 
     def setValue(self, val):
         self.value = val
@@ -43,6 +44,17 @@ class Card(object):
 
     def isAce(self):
         return self.value == Card.ACE
+
+    # input: HL "high" or "low" for aces
+    def setHL(self, HL):
+        self.hl = HL
+
+    # output: returns if an ace is high or low
+    def getHL(self):
+        if self.isAce():
+            return self.hl
+        else:
+            print "not an Ace"
 
     def isFaceCard(self):
         return self.value == Card.JACK or self.value == Card.QUEEN or self.value == Card.KING
