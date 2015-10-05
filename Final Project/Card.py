@@ -24,6 +24,16 @@ class Card(object):
         self.isVisible = isVisible
         self.high = True
 
+    # overrides ==
+    # tests based upon value only
+    def __eq__(self, other):
+	return self.value == other.value
+
+    # overrides !=
+    # tests based upon value only
+    def __ne__(self, other):
+	return not self == other
+
     def setValue(self, val):
         self.value = val
 
@@ -65,6 +75,7 @@ class Card(object):
 if __name__ == "__main__":
     a = Card(Card.ACE, Card.S, True)
     t = Card(2, Card.D, False)
+    tt = Card(2, Card.S, True)
     j = Card(Card.JACK, Card.S, True)
     q = Card(Card.QUEEN, Card.S, True)
     k = Card(Card.KING, Card.S, True)
@@ -87,3 +98,8 @@ if __name__ == "__main__":
     print a.getIsVisible(), False
 
     print t, "2 diamond"
+
+    print t == tt, True
+    print t != tt, False
+    print t == a, False
+    print t != a, True
