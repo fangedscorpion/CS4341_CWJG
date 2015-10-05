@@ -16,13 +16,13 @@ class Deck(object):
         for i in range(0, Deck.SUIT):
             for j in range(0, Deck.CARDS):
                 if (i == 0):
-                    self.cards.append(Card(j + 1, Card.D, True, Card.HIGH))
+                    self.cards.append(Card(j + 1, Card.D, True))
                 elif (i == 1):
-                    self.cards.append(Card(j + 1, Card.H, True, Card.HIGH))
+                    self.cards.append(Card(j + 1, Card.H, True))
                 elif (i == 2):
-                    self.cards.append(Card(j + 1, Card.C, True, Card.HIGH))
+                    self.cards.append(Card(j + 1, Card.C, True))
                 else:
-                    self.cards.append(Card(j + 1, Card.S, True, Card.HIGH))
+                    self.cards.append(Card(j + 1, Card.S, True))
 
         shuffle(self.cards)
 
@@ -33,12 +33,12 @@ class Deck(object):
         return deepcopy(self.cards)
 
     def __repr__(self):
-    	string = ""
+        string = ""
 
-    	for j in range(0, len(self.cards)):
-    		string += str(self.cards[j]) + "\n"
+        for j in range(0, len(self.cards)):
+            string += str(self.cards[j]) + "\n"
 
-    	return string
+        return string
 
 if __name__ == "__main__":
     ad = Deck()
