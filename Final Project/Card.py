@@ -22,7 +22,7 @@ class Card(object):
         self.value = value
         self.suit = suit
         self.isVisible = isVisible
-        self.hl = "high"
+        self.high = True
 
     def setValue(self, val):
         self.value = val
@@ -45,14 +45,14 @@ class Card(object):
     def isAce(self):
         return self.value == Card.ACE
 
-    # input: HL "high" or "low" for aces
-    def setHL(self, HL):
-        self.hl = HL
+    # input: High = true, low = false
+    def setHigh(self, HighOrLow):
+        self.hl = HighOrLow
 
     # output: returns if an ace is high or low
     def getHL(self):
         if self.isAce():
-            return self.hl
+            return self.high
         else:
             print "not an Ace"
 
