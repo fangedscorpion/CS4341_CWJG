@@ -75,7 +75,7 @@ class Hand(object):
             return False
 
 if __name__ == "__main__":
-    emptyLine = "------------------------------------"
+    emptyLine = "-"*20
     a = Card(Card.ACE, Card.S, True)
     t = Card(2, Card.D, False)
     s = Card(7, Card.H, True)
