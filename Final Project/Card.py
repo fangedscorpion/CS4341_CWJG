@@ -12,7 +12,7 @@ class Card(object):
     D = "diamond"
     H = "heart"
     C = "club"
-    S = "spaid"
+    S = "spades"
 
     # Static variables representing Ace relative values
     HIGH = "high"
