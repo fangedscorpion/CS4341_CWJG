@@ -19,7 +19,7 @@ class Dealer(Player):
                 return True
 
     def __repr__(self):
-        print "Dealer:"
+        return "Dealer:"
         # print self.getHand()
 
 
