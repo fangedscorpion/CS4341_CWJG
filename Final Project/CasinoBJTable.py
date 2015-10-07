@@ -8,7 +8,7 @@ class CasinoBJTable(object):
         self.playersList = []
         self.numPlayers = numPlayers
         for i in range(0, numPlayers):
-            playerPerson = Player(i, 500, numDecks)
+            playerPerson = Player(i, Player.startingBank, numDecks)
             self.playersList.append(playerPerson)
 
     def givePlayerCard(self, player):

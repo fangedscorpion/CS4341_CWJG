@@ -1,6 +1,7 @@
 from Hand import Hand
 
 class Player(object):
+    startingBank = 500
 
     def __init__(self, idName, bankAccountStart, numDecks):
         self.idName = idName
