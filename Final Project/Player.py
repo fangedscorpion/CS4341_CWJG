@@ -1,5 +1,6 @@
 from Hand import Hand
 
+
 class Player(object):
     startingBank = 500
 
@@ -7,8 +8,8 @@ class Player(object):
         self.idName = idName
         self.bankAccountBalance = bankAccountStart
         self.canHit = True
-        self.currentCards = Hand([])
-        self.cardCountList = [0]*11
+        self.hands = [Hand(([]))]
+        self.cardCountList = [0] * 11
         self.currentBet = 0
         self.numDecks = numDecks
 
@@ -19,44 +20,46 @@ class Player(object):
         return self.idName
 
     def __repr__(self):
-        return ("Player: " + str(self.idName) + "\n\tBank: " + str(self.bankAccountBalance) + \
-            "\n\tCan Hit: " + str(self.canHit) + "\n\tCurrent Cards: " + str(self.currentCards) + "\n\tCard Count list: " +\
-            str(self.cardCountList) + "\n\tBet: " + str(self.currentBet))
+        return ("Player: " + str(self.idName) + "\n\tBank: " + str(self.bankAccountBalance) +
+                "\n\tCan Hit: " + str(self.canHit) + "\n\tCurrent Cards: " + str(self.hands) + "\n\tCard Count list: " +
+                str(self.cardCountList) + "\n\tBet: " + str(self.currentBet))
 
     # Adds a card to the player's hand
-    def getCard(self, card):
-        self.getHand().addCard(card)
+    # handNum is the hand number to add the card, indexed from 0
+    def getCard(self, card, handNum):
+        self.getHands()[handNum].addCard(card)
         # self.countCard(card)
 
     # Counts a card the player has received
     def countCard(self, card):
-        #If the card is a face card
+        # If the card is a face card
         if(card.getValue() > 10):
             self.cardCountList[10] += 1
         else:
             self.cardCountList[card.getValue()] += 1
 
-    # Gets the current player's hand
-    def getHand(self):
-        return self.currentCards
+    # Gets the current player's hands
+    def getHands(self):
+        return self.hands
 
     # Gets the listing of counted cards cheater
     def getCardCounts(self):
         return self.cardCountList
 
     def getProbCardList(self):
-        emptyList = [0]*11
+        emptyList = [0] * 11
         for i in range(1, len(self.cardCountList)):
-            if(not i == len(self.cardCountList)-1):
-                emptyList[i] = self.cardCountList[i]/float(4*self.numDecks)
+            if(not i == len(self.cardCountList) - 1):
+                emptyList[i] = self.cardCountList[i] / float(4 * self.numDecks)
             else:
-                emptyList[i] = self.cardCountList[i]/float(16*self.numDecks)
+                emptyList[i] = self.cardCountList[
+                    i] / float(16 * self.numDecks)
 
         return emptyList
 
     # Sets a player's hand
     def setHand(self, newHand):
-        self.currentCards = newHand
+        self.hands = list(newHand)
 
     # Get the players bank account and win big
     def getBankAccount(self):
@@ -103,9 +106,14 @@ class Player(object):
 
         return visibleCards
 
+    # Function header to allow CasinoBJTable to compile
+    # Will is implementing this function later
+    def play():
+        pass
+
 if __name__ == '__main__':
     from Card import Card
-    aPlayer = Player("Ted", 100, 6) # 6 decks
+    aPlayer = Player("Ted", 100, 6)  # 6 decks
 
     aCard1 = Card(Card.ACE, Card.H, True)
     print "ACE card: ", aCard1
@@ -115,14 +123,14 @@ if __name__ == '__main__':
 
     print aPlayer
 
-    print "-"*15, "Adding cards:", "-"*15
-    aPlayer.getCard(aCard1)
-    aPlayer.getCard(aCard2)
-    aPlayer.getCard(aCard3)
-    aPlayer.getCard(aCard4)
+    print "-" * 15, "Adding cards:", "-" * 15
+    aPlayer.getCard(aCard1, 0)
+    aPlayer.getCard(aCard2, 0)
+    aPlayer.getCard(aCard3, 0)
+    aPlayer.getCard(aCard4, 0)
     print aPlayer
 
-    print "-"*15, "Now let's give and take $", "-"*15
+    print "-" * 15, "Now let's give and take $", "-" * 15
     print "Giving the lucky guy 50"
     aPlayer.setBankAccount(aPlayer.getBankAccount() + 50)
     print aPlayer
@@ -137,7 +145,7 @@ if __name__ == '__main__':
     aPlayer.updateBank(False)
     print aPlayer
 
-    print "-"*15, "Now let's double down", "-"*15
+    print "-" * 15, "Now let's double down", "-" * 15
     print "Starting with 200 and bet of 100"
     aPlayer.setBankAccount(200)
     aPlayer.setBet(100)
@@ -145,6 +153,6 @@ if __name__ == '__main__':
     aPlayer.doDoubleDown()
     print aPlayer
 
-    print "*"*50
+    print "*" * 50
     listOfProbs = aPlayer.getProbCardList()
     print listOfProbs, sum(listOfProbs)
