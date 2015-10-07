@@ -3,14 +3,14 @@ from Player import Player
 class Dealer(Player):
 
 
-    def __init__(self, bankAccountStart):
-        Player.__init__(self, "Dealer", bankAccountStart)
+    def __init__(self, bankAccountStart, numDecks):
+        Player.__init__(self, "Dealer", bankAccountStart, numDecks)
 
 
-        def showHiddenCard(self):
+    def showHiddenCard(self):
             self.currentCards.showHiddenCard()
 
-        def play(self):
+    def play(self):
             if self.getHand().isBust():
                 return False
             elif self.getHand().getHandValue() >= 17:
@@ -19,8 +19,7 @@ class Dealer(Player):
                 return True
 
     def __repr__(self):
-        return "Dealer:"
-        # print self.getHand()
+        return ("Dealer:" + str(Player.__repr__(self)))
 
 
 if __name__ == "__main__":
@@ -33,7 +32,7 @@ if __name__ == "__main__":
     q = Card(Card.QUEEN, Card.S, True)
     k = Card(Card.KING, Card.S, True)
 
-    aDealer = Dealer(10000000)
+    aDealer = Dealer(10000000, 6) #6 decks
 
     aDealer.getCard(s)
     aDealer.getCard(j)

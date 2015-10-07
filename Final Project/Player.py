@@ -2,13 +2,20 @@ from Hand import Hand
 
 class Player(object):
 
-    def __init__(self, idName, bankAccountStart):
+    def __init__(self, idName, bankAccountStart, numDecks):
         self.idName = idName
         self.bankAccountBalance = bankAccountStart
         self.canHit = True
         self.currentCards = Hand([])
-        self.cardCountList = [0,0,0,0,0,0,0,0,0,0,0]
+        self.cardCountList = [0]*11
         self.currentBet = 0
+        self.numDecks = numDecks
+
+    def __eq__(self, other):
+        return self.idName == other.getName()
+
+    def getName(self):
+        return self.idName
 
     def __repr__(self):
         return ("Player: " + str(self.idName) + "\n\tBank: " + str(self.bankAccountBalance) + \
@@ -18,7 +25,7 @@ class Player(object):
     # Adds a card to the player's hand
     def getCard(self, card):
         self.getHand().addCard(card)
-        self.countCard(card)
+        # self.countCard(card)
 
     # Counts a card the player has received
     def countCard(self, card):
@@ -35,6 +42,16 @@ class Player(object):
     # Gets the listing of counted cards cheater
     def getCardCounts(self):
         return self.cardCountList
+
+    def getProbCardList(self):
+        emptyList = [0]*11
+        for i in range(1, len(self.cardCountList)):
+            if(not i == len(self.cardCountList)-1):
+                emptyList[i] = self.cardCountList[i]/float(4*self.numDecks)
+            else:
+                emptyList[i] = self.cardCountList[i]/float(16*self.numDecks)
+
+        return emptyList
 
     # Sets a player's hand
     def setHand(self, newHand):
@@ -87,7 +104,7 @@ class Player(object):
 
 if __name__ == '__main__':
     from Card import Card
-    aPlayer = Player("Ted", 100)
+    aPlayer = Player("Ted", 100, 6) # 6 decks
 
     aCard1 = Card(Card.ACE, Card.H, True)
     print "ACE card: ", aCard1
@@ -126,3 +143,7 @@ if __name__ == '__main__':
     print aPlayer
     aPlayer.doDoubleDown()
     print aPlayer
+
+    print "*"*50
+    listOfProbs = aPlayer.getProbCardList()
+    print listOfProbs, sum(listOfProbs)
