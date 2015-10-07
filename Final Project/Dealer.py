@@ -1,22 +1,22 @@
 from Player import Player
 
-class Dealer(Player):
 
+class Dealer(Player):
+    bankStart = 0
 
     def __init__(self, bankAccountStart, numDecks):
         Player.__init__(self, "Dealer", bankAccountStart, numDecks)
 
-
     def showHiddenCard(self):
-            self.currentCards.showHiddenCard()
+        self.currentCards.showHiddenCard()
 
     def play(self):
-            if self.getHand().isBust():
-                return False
-            elif self.getHand().getHandValue() >= 17:
-                return False
-            else:
-                return True
+        if self.getHands()[0].isBust():
+            return False
+        elif self.getHands()[0].getHandValue() >= 17:
+            return False
+        else:
+            return True
 
     def __repr__(self):
         return ("Dealer:" + str(Player.__repr__(self)))
@@ -32,11 +32,9 @@ if __name__ == "__main__":
     q = Card(Card.QUEEN, Card.S, True)
     k = Card(Card.KING, Card.S, True)
 
-    aDealer = Dealer(10000000, 6) #6 decks
+    aDealer = Dealer(10000000, 6)  # 6 decks
 
-    aDealer.getCard(s)
-    aDealer.getCard(j)
+    aDealer.getCard(s, 0)
+    aDealer.getCard(j, 0)
 
     print aDealer
-
-
