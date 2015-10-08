@@ -1,0 +1,56 @@
+=== Run information ===
+
+Evaluator:    weka.attributeSelection.CfsSubsetEval 
+Search:weka.attributeSelection.BestFirst -D 1 -N 5
+Relation:     german_credit
+Instances:    1000
+Attributes:   21
+              checking_status
+              duration
+              credit_history
+              purpose
+              credit_amount
+              savings_status
+              employment
+              installment_commitment
+              personal_status
+              other_parties
+              residence_since
+              property_magnitude
+              age
+              other_payment_plans
+              housing
+              existing_credits
+              job
+              num_dependents
+              own_telephone
+              foreign_worker
+              class
+Evaluation mode:10-fold cross-validation
+
+
+
+=== Attribute selection 10 fold cross-validation (stratified), seed: 1 ===
+
+number of folds (%)  attribute
+          10(100 %)     1 checking_status
+          10(100 %)     2 duration
+          10(100 %)     3 credit_history
+           0(  0 %)     4 purpose
+           2( 20 %)     5 credit_amount
+           5( 50 %)     6 savings_status
+           0(  0 %)     7 employment
+           0(  0 %)     8 installment_commitment
+           0(  0 %)     9 personal_status
+           0(  0 %)    10 other_parties
+           0(  0 %)    11 residence_since
+           0(  0 %)    12 property_magnitude
+           2( 20 %)    13 age
+           0(  0 %)    14 other_payment_plans
+           4( 40 %)    15 housing
+           0(  0 %)    16 existing_credits
+           0(  0 %)    17 job
+           0(  0 %)    18 num_dependents
+           0(  0 %)    19 own_telephone
+           1( 10 %)    20 foreign_worker
+
