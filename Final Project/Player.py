@@ -1,4 +1,6 @@
 from Hand import Hand
+from random import random
+
 
 
 class Player(object):
@@ -61,6 +63,10 @@ class Player(object):
     def setHand(self, newHand):
         self.hands = list(newHand)
 
+    # adds a hand to a player's list of hands
+    def addHand(self, newHand):
+        pass
+
     # Get the players bank account and win big
     def getBankAccount(self):
         return self.bankAccountBalance
@@ -108,8 +114,22 @@ class Player(object):
 
     # Function header to allow CasinoBJTable to compile
     # Will is implementing this function later
-    def play():
-        pass
+    # does one single move
+    def play(self, splitChance, doubleChance, hitChance):
+        randMoveCheck =[0,1,2]
+        shuffle(randMoveCheck)
+
+        for i in randMoveCheck:
+            if i = 0 and self.canSplit() and (random.random() <= splitChance):
+                newHand = Hand([self.getHands().popCard()])
+                self.addHand(newHand)
+
+            if i = 1 and self.canDouble() and (random.random() <= doubleChance):
+                # self.
+                pass
+            if i = 2 and self.canHit() and (random.random() <= hitChance):
+                # self.
+                pass
 
 if __name__ == '__main__':
     from Card import Card
