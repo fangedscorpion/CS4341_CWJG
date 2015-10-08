@@ -54,12 +54,14 @@ class Hand(object):
         if len(self.cardList) == 2:
             if self.cardList[0] == self.cardList[1]:
                 popCard = self.cardList[1]
-                self.cardList.remove(popCard)
+                #self.cardList.remove(popCard) #Real subtle logic error removing my card because I redefined their equals method
+                del self.cardList[1]
                 return popCard
             else:
                 print "cards are not equal, cant be split"
         else:
-            print "have more than 2 cards, cant split"
+            print self.cardList
+            print "have ", str(len(self.cardList)), " cards, cant split"
             
     # Returns a bool. true if the hand is bust, false if not.
     # if the hand contains a "high" ace, it will force it low

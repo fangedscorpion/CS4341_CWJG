@@ -27,7 +27,10 @@ class Card(object):
     # overrides ==
     # tests based upon value only
     def __eq__(self, other):
-	return self.value == other.value
+        if(self.value >= 10 and other.value >= 10):
+	       return True
+        else:  
+            return self.value == other.value
 
     # overrides !=
     # tests based upon value only
