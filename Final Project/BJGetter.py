@@ -16,6 +16,7 @@ class BJGetter(object):
 
         if(self.dictionary.has_key(keyVal)):
             prevEntry = self.dictionary.get(keyVal)
+            print prevEntry
             if(wonData == Move.WON):
                 self.dictionary[keyVal] = (prevEntry[0]+1, prevEntry[1], prevEntry[2])
             elif(wonData == Move.LOST):
@@ -65,7 +66,7 @@ class BJGetter(object):
             print line
 
             if(int(line[3]) == int(Move.SPLITNUM)):
-                keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4], line[2], line[5])
+                keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4])
                 print keyRollOut
                 self.updateDictEntry(keyRollOut, line[5])
 
@@ -75,29 +76,28 @@ class BJGetter(object):
                 print line
                 while (not int(line[3]) == Move.NOTSPLIT and not int(line[3]) == Move.SPLITNUM):
 
-                    keyRollOut = RolloutKey(line[0], self.getMoveLetter(line[1]), line[4], line[2], line[5])
+                    keyRollOut = RolloutKey(line[0], self.getMoveLetter(line[1]), line[4])
                     print keyRollOut
                     self.updateDictEntry(keyRollOut, line[5])
                     i += 1
-                    print i
                     line = lines[i].rstrip()
                     line = line.split(",")
                     print line
 
             if(str(line[1]).lower() == Move.SPLIT.lower()):
-                keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4], line[2], line[5])
+                keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4])
                 self.updateDictEntry(keyRollOut, line[5])
 
             elif(str(line[1]).lower() == Move.STAY.lower()):
-                keyRollOut = RolloutKey(line[0], Move.STAY_SHORT, line[4], line[2], line[5])
+                keyRollOut = RolloutKey(line[0], Move.STAY_SHORT, line[4])
                 self.updateDictEntry(keyRollOut, line[5])
 
             elif(str(line[1]).lower() == Move.HIT.lower()):
-                keyRollOut = RolloutKey(line[0], Move.HIT_SHORT, line[4], line[2], line[5])
+                keyRollOut = RolloutKey(line[0], Move.HIT_SHORT, line[4])
                 self.updateDictEntry(keyRollOut, line[5])
 
             elif(str(line[1]).lower() == Move.DOUBLE.lower()):
-                keyRollOut = RolloutKey(line[0], Move.DOUBLE_SHORT, line[4], line[2], line[5])
+                keyRollOut = RolloutKey(line[0], Move.DOUBLE_SHORT, line[4])
                 self.updateDictEntry(keyRollOut, line[5])
 
             i += 1

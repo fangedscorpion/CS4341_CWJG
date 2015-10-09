@@ -1,14 +1,10 @@
 
 class RolloutKey(object):
 
-    def __init__(self, playerScore, moveName, dealerScore, bustedAfterMove, wonVsDealer):
+    def __init__(self, playerScore, moveName, dealerScore):
         self.playerScore = playerScore
         self.dealerScore = dealerScore
         self.moveName = moveName
-
-        #Probably don't need these last attributes
-        self.bustedAfterMove = bustedAfterMove
-        self.won = wonVsDealer
 
     def getPlayerScore(self):
         return self.playerScore
@@ -25,11 +21,13 @@ class RolloutKey(object):
     def getIfBustedPostMove(self):
         return self.bustedAfterMove
 
+    def __hash__(self):
+        return hash((str(self)))
+
     def __repr__(self):
         return ("p" + str(self.playerScore) + \
                 "d" + str(self.dealerScore) + \
-                "m" + str(self.moveName) + \
-                "w" + str(self.won))
+                "m" + str(self.moveName).upper())
 
     def __eq__(self, other):
         return int(self.playerScore) == int(other.getPlayerScore()) and \
@@ -40,15 +38,22 @@ if __name__ == '__main__':
     from RolloutKey import RolloutKey
 
     dictRollout = {}
-    aKey1 = RolloutKey(10, "H", 17, 0, 0)
-    aKey4 = RolloutKey(10, "H", 19, 0, 0)
-    aKey2 = RolloutKey(10, "S", 20, 0, -1)
-    aKey3 = RolloutKey(19, "S", 20, 0, 1)
+    aKey1 = RolloutKey(10, "H", 17)
+    aKey4 = RolloutKey(10, "H", 19)
+    aKey2 = RolloutKey(10, "S", 20)
+    aKey3 = RolloutKey(19, "H", 20)
+    aKey5 = RolloutKey(19, "H", 20)
 
     print not aKey1 == aKey2
     print aKey1, aKey2
 
+    assert not aKey1 == aKey2
+    assert aKey3 == aKey5
+
     dictRollout[aKey1] = (1,0,0)
     dictRollout[aKey2] = (0,1,0)
+    dictRollout[aKey3] = (0,1,0)
+    print dictRollout.has_key(aKey3), dictRollout.has_key(aKey5)
+    dictRollout[aKey3] = (0,1,0)
 
     print dictRollout

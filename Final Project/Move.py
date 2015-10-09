@@ -4,7 +4,7 @@ class Move(object):
     BUSTED = 1
     WON = 1
     LOST = -1
-    NOTCOMPLETE = 2
+    NOTCOMPLETE = 0
     NOTBUSTED = 0
     SPLITNUM = -2
     NOTSPLIT = 0
