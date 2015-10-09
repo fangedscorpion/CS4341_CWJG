@@ -2,12 +2,22 @@
 class Move(object):
 
     BUSTED = 1
+    WON = 1
+    LOST = -1
+    NOTCOMPLETE = 2
     NOTBUSTED = 0
-    MAXHANDS = 2
+    SPLITNUM = -2
+    NOTSPLIT = 0
+
     SPLIT = "Split"
     HIT = "Hit"
     DOUBLE = "Double"
     STAY = "Stay"
+
+    SPLIT_SHORT = "S"
+    HIT_SHORT = "H"
+    DOUBLE_SHORT = "D"
+    STAY_SHORT = "Y"
 
     def __init__(self, playerCnt, moveStrName, bustedOrNot, split):
         self.playerCnt = playerCnt
@@ -23,10 +33,10 @@ class Move(object):
 if __name__ == '__main__':
     from Move import Move
 
-    aMove = Move(10, "Hit", 0, 0)
-    aMove2 = Move(19, "Stay", 0, 0)
-    aMove3 = Move(18, "Hit", 1, 0)
-    aMove4 = Move(18, "Split", 0, 2) # Breaks into two hands being played
+    aMove = Move(10, "Hit",     Move.BUSTED,        Move.NOTCOMPLETE)
+    aMove2 = Move(19, "Stay",   Move.NOTBUSTED,     Move.NOTCOMPLETE)
+    aMove3 = Move(18, "Hit",    Move.BUSTED,        Move.WON)
+    aMove4 = Move(18, "Split",  Move.NOTBUSTED,     Move.SPLITNUM) # Breaks into two hands being played
 
     print aMove
     print aMove2
