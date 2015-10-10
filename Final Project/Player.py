@@ -6,6 +6,10 @@ from Move import Move
 
 class Player(object):
     startingBank = 500
+    stayThreshold = 0.25
+    hitThreshold = 0.50
+    splitThreshold = 0.75
+    doubleThreshold = 1.00
 
     def __init__(self, idName, bankAccountStart, numDecks):
         self.idName = idName
@@ -43,8 +47,8 @@ class Player(object):
 
     # determines if a player can split his/her hand
     # returns a boolean
-    def canSplit(self, handNum):
-        return (self.getHands()[handNum].getHandValue() % 2 == 0)
+    # def canSplit(self, handNum):
+    #     return (self.getHands()[handNum].getHandValue() % 2 == 0)
 
     # Gets the current player's hands
     def getHands(self):
@@ -119,26 +123,58 @@ class Player(object):
 
         return visibleCards
 
-    # Function header to allow CasinoBJTable to compile
-    # Will is implementing this function later
-    # does one single move
-    def play(self, splitChance, doubleChance, hitChance):
-        randMoveCheck = [0, 1, 2]
-        # shuffle(randMoveCheck)
+    # does a split move for the currect player
+    # modifications to player's bet needs to be added
+    def doSplit(self):
+        self.addHand(Hand([self.getHands()[0].popCard()]))
 
-        for i in randMoveCheck:
-            if i == 0 and self.canSplit(0) and (random.random() <= splitChance):
-                StaticBJLogger.writePlayerMove(Move(
-                    self.getHands()[0].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.MAXHANDS))
-                newHand = Hand([self.getHands()[0].popCard()])
-                self.addHand(newHand)
+    # This function does 1 move for the player
+    # hand is an integer for the hand being played
+    # hand is indexed from 0
+    def play(self, hand):
+        found = False  # flag if a move as been performed
 
-            # if i == 1 and self.canDouble() and (random.random() <= doubleChance):
-            #     # self.
-            #     pass
-            # if i == 2 and self.canHit() and (random.random() <= hitChance):
-            #     # self.
-            #     pass
+        while not found:
+            number = random.random()  # random move to do
+
+            if (0 <= number < Player.stayThreshold) or (self.getHands()[hand].isBust()):
+                # stay
+                print "stay"
+                return False
+            elif (Player.stayThreshold <= number < Player.hitThreshold):
+                # hit
+                print "hit"
+                return True
+            elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit():
+                # split
+                print "split"
+                self.doSplit()
+                return True
+            elif self.getHands()[hand].canDouble():
+                # double
+                print "double"
+                self.doDoubleDown()
+                return True
+
+    # # Function header to allow CasinoBJTable to compile
+    # # does one single move
+    # def play(self, splitChance, doubleChance, hitChance):
+    #     randMoveCheck = [0, 1, 2]
+    #     # shuffle(randMoveCheck)
+
+    #     for i in randMoveCheck:
+    #         if i == 0 and self.canSplit(0) and (random.random() <= splitChance):
+    #             StaticBJLogger.writePlayerMove(Move(
+    #                 self.getHands()[0].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.MAXHANDS))
+    #             newHand = Hand([self.getHands()[0].popCard()])
+    #             self.addHand(newHand)
+
+    #         # if i == 1 and self.canDouble() and (random.random() <= doubleChance):
+    #         #     # self.
+    #         #     pass
+    #         # if i == 2 and self.canHit() and (random.random() <= hitChance):
+    #         #     # self.
+    #         #     pass
 
 if __name__ == '__main__':
     from Card import Card
@@ -150,6 +186,7 @@ if __name__ == '__main__':
     aCard2 = Card(Card.QUEEN, Card.S, True)
     aCard3 = Card(Card.KING, Card.D, True)
     aCard4 = Card(7, Card.C, True)
+    aCard5 = Card(7, Card.H, True)
 
     print aPlayer
 
@@ -188,8 +225,8 @@ if __name__ == '__main__':
     print listOfProbs, sum(listOfProbs)
 
     aPlayer2 = Player("Teo", 100, 6)  # 6 decks
-    aPlayer2.getCard(aCard2, 0)
+    aPlayer2.getCard(aCard4, 0)
     aPlayer2.getCard(aCard3, 0)
-    print "Pre split: ", aPlayer2
-    aPlayer2.play(10, 10, 10)
-    print "Post split: ", aPlayer2
+    aPlayer2.getCard(aCard1, 0)
+    print aPlayer2
+    aPlayer2.play(0)
