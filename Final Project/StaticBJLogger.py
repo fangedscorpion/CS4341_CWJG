@@ -25,3 +25,6 @@ class StaticBJLogger(object):
         fileHandleCurrent.write(str(moveObj))  # See the Move.py class
         fileHandleCurrent.write("\n")
         fileHandleCurrent.close()
+
+if __name__ == "__main__":
+    StaticBJLogger.init(0)
