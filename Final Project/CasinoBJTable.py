@@ -31,16 +31,13 @@ class CasinoBJTable(object):
             counter = -1
             for hn in pl.getHands():
                 counter += 1
-                print counter
                 keepGoing = True
                 while keepGoing == True:
                     keepGoing = pl.play(counter)
 
                     if keepGoing == True:
                         hn.addCard(self.deck.getTopCard())
-                    print pl
         
-        print "Dealer"
         keepGoing = True
         while keepGoing == True:
             keepGoing = self.dealer.play(None)

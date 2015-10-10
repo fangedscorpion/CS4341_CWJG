@@ -139,8 +139,6 @@ class Player(object):
 
             if (0 <= number < Player.stayThreshold) or (self.getHands()[hand].isBust()):
                 # stay
-                print "stay"
-
                 if (self.getHands()[hand].isBust()):
                     StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.BUSTED, Move.NOTSPLIT))
                 else:
@@ -148,18 +146,15 @@ class Player(object):
                 return False
             elif (Player.stayThreshold <= number < Player.hitThreshold):
                 # hit
-                print "hit"
                 StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
             elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit():
                 # split
-                print "split"
                 self.doSplit()
                 StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
             elif self.getHands()[hand].canDouble():
                 # double
-                print "double"
                 self.doDoubleDown()
                 return True
 
