@@ -25,14 +25,14 @@ class RolloutKey(object):
         return hash((str(self)))
 
     def __repr__(self):
-        return ("p" + str(self.playerScore) + \
-                "d" + str(self.dealerScore) + \
+        return ("p" + str(self.playerScore) +
+                "d" + str(self.dealerScore) +
                 "m" + str(self.moveName).upper())
 
     def __eq__(self, other):
         return int(self.playerScore) == int(other.getPlayerScore()) and \
-                int(self.dealerScore) == int(other.getDealerScore()) and \
-                str(self.moveName).lower() == str(other.getMoveName()).lower()
+            int(self.dealerScore) == int(other.getDealerScore()) and \
+            str(self.moveName).lower() == str(other.getMoveName()).lower()
 
 if __name__ == '__main__':
     from RolloutKey import RolloutKey
@@ -50,10 +50,10 @@ if __name__ == '__main__':
     assert not aKey1 == aKey2
     assert aKey3 == aKey5
 
-    dictRollout[aKey1] = (1,0,0)
-    dictRollout[aKey2] = (0,1,0)
-    dictRollout[aKey3] = (0,1,0)
+    dictRollout[aKey1] = (1, 0, 0)
+    dictRollout[aKey2] = (0, 1, 0)
+    dictRollout[aKey3] = (0, 1, 0)
     print dictRollout.has_key(aKey3), dictRollout.has_key(aKey5)
-    dictRollout[aKey3] = (0,1,0)
+    dictRollout[aKey3] = (0, 1, 0)
 
     print dictRollout

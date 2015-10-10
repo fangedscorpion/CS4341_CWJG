@@ -123,12 +123,13 @@ class Player(object):
     # Will is implementing this function later
     # does one single move
     def play(self, splitChance, doubleChance, hitChance):
-        randMoveCheck =[0,1,2]
+        randMoveCheck = [0, 1, 2]
         # shuffle(randMoveCheck)
 
         for i in randMoveCheck:
             if i == 0 and self.canSplit(0) and (random.random() <= splitChance):
-                StaticBJLogger.writePlayerMove(Move(self.getHands()[0].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.MAXHANDS))
+                StaticBJLogger.writePlayerMove(Move(
+                    self.getHands()[0].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.MAXHANDS))
                 newHand = Hand([self.getHands()[0].popCard()])
                 self.addHand(newHand)
 

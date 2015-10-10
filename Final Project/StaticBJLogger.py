@@ -8,19 +8,20 @@ class StaticBJLogger(object):
 
     @staticmethod
     def init(num):
-        StaticBJLogger.fileNameCurrent = StaticBJLogger.fileNamePrefix + str(num) + StaticBJLogger.fileNameSuffix
+        StaticBJLogger.fileNameCurrent = StaticBJLogger.fileNamePrefix + \
+            str(num) + StaticBJLogger.fileNameSuffix
         fileHandleCurrent = open(StaticBJLogger.fileNameCurrent, "w")
         fileHandleCurrent.close()
 
     @staticmethod
     def writePlayerMove(moveObj):
         fileHandleCurrent = open(StaticBJLogger.fileNameCurrent, "a")
-        fileHandleCurrent.write(str(moveObj)) # See the Move.py class
+        fileHandleCurrent.write(str(moveObj))  # See the Move.py class
         fileHandleCurrent.close()
 
-    @staticmethod # needs this identifier to be called from the class
+    @staticmethod  # needs this identifier to be called from the class
     def writeDealerMove(moveObj):
         fileHandleCurrent = open(StaticBJLogger.fileNameCurrent, "a")
-        fileHandleCurrent.write(str(moveObj)) # See the Move.py class
+        fileHandleCurrent.write(str(moveObj))  # See the Move.py class
         fileHandleCurrent.write("\n")
         fileHandleCurrent.close()
