@@ -47,9 +47,9 @@ class Hand(object):
         for card in self.getCardList():
             card.setIsVisible(True)
 
-# used when splitting
-# only works if the hand has 2 cards of the same value
-# returns one of the cards and removes it from the hand list
+    # used when splitting
+    # only works if the hand has 2 cards of the same value
+    # returns one of the cards and removes it from the hand list
     def popCard(self):
         if len(self.cardList) == 2:
             if self.cardList[0] == self.cardList[1]:
@@ -76,6 +76,23 @@ class Hand(object):
         else:
             return False
 
+    # returns a boolean
+    # true if the cards are of equal value and can be split
+    # false if the cards are of unequal value and cannot be split
+    def canSplit(self):
+        if len(self.getCardList()) != 2:
+            return False
+        elif (self.getCardList()[0] != self.getCardList()[1]):
+            return False
+        else:
+            return True
+
+    # returns a boolean
+    # true if the length is equal to 2
+    # false otherwise
+    def canDouble(self):
+        return len(self.getCardList()) == 2
+
 if __name__ == "__main__":
     emptyLine = "-"*20
     a = Card(Card.ACE, Card.S, True)
@@ -91,6 +108,7 @@ if __name__ == "__main__":
     lowAceHand = Hand([a,j,k])
     someHand = Hand([t,j])
     splitHand = Hand([s,s])
+    bigHand = Hand([s,s,s])
   
     print emptyLine
     print "Copy test"
@@ -121,6 +139,17 @@ if __name__ == "__main__":
     print str(someHand.getCardList()[0].getIsVisible())
     someHand.showHiddenCards()
     print str(someHand.getCardList()[0].getIsVisible())
+    print emptyLine
+
+    print "canSplit() test:"
+    print splitHand.canSplit(), True
+    print someHand.canSplit(), False
+    print bigHand.canSplit(), False
+    print emptyLine
+
+    print "canDouble() test"
+    print splitHand.canDouble(), True
+    print bigHand.canDouble(), False
     print emptyLine
 
     print "popCard() test:"
