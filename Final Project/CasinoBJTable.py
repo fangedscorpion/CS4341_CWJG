@@ -28,13 +28,25 @@ class CasinoBJTable(object):
 
     def playRound(self):
         for pl in self.playersList:
+            counter = -1
             for hn in pl.getHands():
+                counter += 1
+                print counter
                 keepGoing = True
                 while keepGoing == True:
-                    keepGoing = pl.play()
+                    keepGoing = pl.play(counter)
 
                     if keepGoing == True:
                         hn.addCard(self.deck.getTopCard())
+                    print pl
+        
+        print "Dealer"
+        keepGoing = True
+        while keepGoing == True:
+            keepGoing = self.dealer.play(None)
+
+            if keepGoing == True:
+                self.dealer.getHands()[0].addCard(self.deck.getTopCard())
 
     def initPlayers(self):
         for i in range(0, 2):
@@ -55,5 +67,8 @@ class CasinoBJTable(object):
         return (strPlayers)
 
 if __name__ == '__main__':
-    table = CasinoBJTable(6, 2)
-    print "Players: \n", table
+    from StaticBJLogger import StaticBJLogger
+    StaticBJLogger.init(1)
+    table = CasinoBJTable(6, 1)
+    table.initPlayers()
+    table.playRound()

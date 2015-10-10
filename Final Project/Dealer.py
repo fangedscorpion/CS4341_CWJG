@@ -1,4 +1,6 @@
 from Player import Player
+from StaticBJLogger import StaticBJLogger
+from DealerMove import DealerMove
 
 
 class Dealer(Player):
@@ -10,10 +12,12 @@ class Dealer(Player):
     def showHiddenCard(self):
         self.currentCards.showHiddenCard()
 
-    def play(self):
+    def play(self, num):
         if self.getHands()[0].isBust():
+            StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), True))
             return False
         elif self.getHands()[0].getHandValue() >= 17:
+            StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), False))
             return False
         else:
             return True
