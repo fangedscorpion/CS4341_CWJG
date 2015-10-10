@@ -27,8 +27,8 @@ class Move(object):
 
     # Simple code
     def __repr__(self):
-        return (str(self.playerCnt) +","+ str(self.moveStrName) + "," + \
-            str(self.bustedOrNot) + "," + str(self.split)+",")
+        return (str(self.playerCnt) + "," + str(self.moveStrName) + "," +
+                str(self.bustedOrNot) + "," + str(self.split) + ",")
 
 if __name__ == '__main__':
     from Move import Move
@@ -36,7 +36,8 @@ if __name__ == '__main__':
     aMove = Move(10, "Hit",     Move.BUSTED,        Move.NOTCOMPLETE)
     aMove2 = Move(19, "Stay",   Move.NOTBUSTED,     Move.NOTCOMPLETE)
     aMove3 = Move(18, "Hit",    Move.BUSTED,        Move.WON)
-    aMove4 = Move(18, "Split",  Move.NOTBUSTED,     Move.SPLITNUM) # Breaks into two hands being played
+    # Breaks into two hands being played
+    aMove4 = Move(18, "Split",  Move.NOTBUSTED,     Move.SPLITNUM)
 
     print aMove
     print aMove2
