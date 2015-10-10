@@ -1,6 +1,7 @@
 from Shoe import Shoe
 from Player import Player
 from Dealer import Dealer
+from Move import Move
 
 
 class CasinoBJTable(object):
@@ -37,6 +38,7 @@ class CasinoBJTable(object):
 
                     if keepGoing == True:
                         hn.addCard(self.deck.getTopCard())
+                        StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
         
         keepGoing = True
         while keepGoing == True:
