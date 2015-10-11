@@ -18,6 +18,7 @@ class Player(object):
         self.currentBet = 0
         self.numDecks = numDecks
         self.hasSplit = False
+        self.hasDouble = False
 
     def __eq__(self, other):
         return self.idName == other.getName()
@@ -107,6 +108,7 @@ class Player(object):
     # double down makes the player's bet double
     # Limits to the bank account balance
     def doDoubleDown(self):
+        self.hasDouble = True
         if(self.currentBet * 2 <= self.bankAccountBalance):
             self.currentBet *= 2
         else:
@@ -143,7 +145,7 @@ class Player(object):
         while not found:
             number = random.randint(0, 3)  # random move to do
 
-            if (number == 0) or (self.getHands()[hand].isBust()):
+            if (number == 0) or (self.getHands()[hand].isBust()) or (self.hasDouble):
                 # stay
                 if (Player.PlayerDebug):
                     print "STAY"

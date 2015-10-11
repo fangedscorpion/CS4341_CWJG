@@ -76,6 +76,8 @@ class CasinoBJTable(object):
     def resetPlayers(self):
         for pl in self.playersList:
             pl.setHand(Hand([]))
+            pl.hasDouble = False
+            pl.hasSplit = False
         self.dealer.setHand(Hand([]))
 
     def __repr__(self):
