@@ -21,6 +21,7 @@ class Player(object):
         self.cardCountList = [0] * 11
         self.currentBet = 0
         self.numDecks = numDecks
+        self.hasSplit = False
 
     def __eq__(self, other):
         return self.idName == other.getName()
@@ -128,6 +129,7 @@ class Player(object):
     # does a split move for the currect player
     # modifications to player's bet needs to be added
     def doSplit(self):
+        self.hasSplit = True
         self.addHand(Hand([self.getHands()[0].popCard()]))
 
     # This function does 1 move for the player
@@ -150,17 +152,31 @@ class Player(object):
                 if (Player.PlayerDebug):
                     print "STAY"
 
-                if (self.getHands()[hand].isBust()):
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.BUSTED, Move.NOTSPLIT))
+                if(self.hasSplit):
+                    if (self.getHands()[hand].isBust()):
+                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, hand+1))
+                    else:
+                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, hand+1))
                 else:
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.NOTSPLIT))
+                    if (self.getHands()[hand].isBust()):
+                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, Move.NOTSPLIT))
+                    else:
+                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, Move.NOTSPLIT))
+
+                #Reset the split variable if needed
+                if(self.hasSplit and hand == len(self.getHands())):
+                    self.hasSplit = False
+
                 return False
             elif (Player.stayThreshold <= number < Player.hitThreshold):
                 # hit
                 if (Player.PlayerDebug):
                     print "HIT"
 
-                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
+                if(self.hasSplit):                  
+                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, hand+1))
+                else:
+                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
             elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit():
                 # split
@@ -168,7 +184,7 @@ class Player(object):
                     print "SPLIT"
 
                 self.doSplit()
-                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.NOTSPLIT))
+                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.SPLITNUM))
                 return True
             elif self.getHands()[hand].canDouble():
                 # double
@@ -176,6 +192,7 @@ class Player(object):
                     print "DOUBLE"
 
                 self.doDoubleDown()
+                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
 
 if __name__ == '__main__':

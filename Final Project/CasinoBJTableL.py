@@ -3,7 +3,7 @@ from Player import Player
 from Dealer import Dealer
 from Move import Move
 from DealerMove import DealerMove
-
+from StaticBJLogger import StaticBJLogger
 
 class CasinoBJTable(object):
     DEBUG = True
