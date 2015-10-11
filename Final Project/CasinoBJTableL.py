@@ -31,11 +31,11 @@ class CasinoBJTable(object):
 
     def playRound(self):
         for pl in self.playersList:
-            # counter = -1
+            counter = 0
             moreHands = True
             while moreHands:
                 old = len(pl.getHands())
-                for counter in range(0, len(pl.getHands())):
+                while counter < len(pl.getHands()):
                     if CasinoBJTable.DEBUG:
                         print "counter:", counter
 
@@ -47,6 +47,9 @@ class CasinoBJTable(object):
                                 self.deck.getTopCard())
                             StaticBJLogger.writeDealerMove(DealerMove(
                                 self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
+                    counter += 1
+                if CasinoBJTable.DEBUG:
+                    print "OUT"
                 moreHands = (old != len(pl.getHands()))
 
         keepGoing = True
