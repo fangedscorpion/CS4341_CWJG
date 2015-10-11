@@ -6,10 +6,10 @@ from Move import Move
 
 class Player(object):
     startingBank = 500
-    stayThreshold = 0.25
-    hitThreshold = 0.50
-    splitThreshold = 0.75
-    doubleThreshold = 1.00
+    stayThreshold = 25
+    hitThreshold = 50
+    splitThreshold = 75
+    doubleThreshold = 100
 
     PlayerDebug = True
 
@@ -140,63 +140,72 @@ class Player(object):
 
         if (len(self.getHands()[hand].getCardList()) == 1):
             if (Player.PlayerDebug):
-                    print "BALANCE"
+                print "BALANCE"
 
             return True
 
         while not found:
-            number = random.random()  # random move to do
+            number = random.randint(0, 3)  # random move to do
 
-            if (0 <= number < Player.stayThreshold) or (self.getHands()[hand].isBust()):
+            if (number == 0) or (self.getHands()[hand].isBust()):
                 # stay
                 if (Player.PlayerDebug):
                     print "STAY"
 
                 if(self.hasSplit):
                     if (self.getHands()[hand].isBust()):
-                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, hand+1))
+                        StaticBJLogger.writePlayerMove(
+                            Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, hand + 1))
                     else:
-                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, hand+1))
+                        StaticBJLogger.writePlayerMove(
+                            Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, hand + 1))
                 else:
                     if (self.getHands()[hand].isBust()):
-                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, Move.NOTSPLIT))
+                        StaticBJLogger.writePlayerMove(Move(
+                            self.getHands()[hand].getHandValue(), Move.STAY, Move.BUSTED, Move.NOTSPLIT))
                     else:
-                        StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, Move.NOTSPLIT))
+                        StaticBJLogger.writePlayerMove(Move(
+                            self.getHands()[hand].getHandValue(), Move.STAY, Move.NOTBUSTED, Move.NOTSPLIT))
 
-                #Reset the split variable if needed
+                # Reset the split variable if needed
                 if(self.hasSplit and hand == len(self.getHands())):
                     self.hasSplit = False
 
                 return False
-            elif (Player.stayThreshold <= number < Player.hitThreshold):
-                # hit
-                if (Player.PlayerDebug):
-                    print "HIT"
-
-                if(self.hasSplit):                  
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, hand+1))
-                else:
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
-                return True
-            elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit() and (len(self.getHands()) == 1):
+            elif (number == 1) and self.getHands()[hand].canSplit() and (len(self.getHands()) == 1):
                 # split
                 if (Player.PlayerDebug):
                     print "SPLIT"
                 print "BEFORE SPLIT: ", self.getHands()[hand]
                 self.doSplit(hand)
                 print "POST SPLIT: ", self.getHands()[hand]
-                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.SPLITNUM))
+                StaticBJLogger.writePlayerMove(Move(
+                    self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.SPLITNUM))
                 return True
-            elif self.getHands()[hand].canDouble():
+            elif (number == 2) and (self.getHands()[hand].canDouble()):
                 # double
                 if (Player.PlayerDebug):
                     print "DOUBLE"
 
                 self.doDoubleDown()
                 if(self.hasSplit):
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, hand+1))
+                    StaticBJLogger.writePlayerMove(Move(
+                        self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, hand + 1))
                 else:
-                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, Move.NOTSPLIT))
+                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(
+                    ), Move.DOUBLE, Move.NOTBUSTED, Move.NOTSPLIT))
+                return True
+            else:
+                # hit
+                if (Player.PlayerDebug):
+                    print "HIT"
+
+                if(self.hasSplit):
+                    StaticBJLogger.writePlayerMove(
+                        Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, hand + 1))
+                else:
+                    StaticBJLogger.writePlayerMove(Move(
+                        self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
 
 if __name__ == '__main__':
