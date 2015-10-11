@@ -11,6 +11,8 @@ class Player(object):
     splitThreshold = 0.75
     doubleThreshold = 1.00
 
+    PlayerDebug = True
+
     def __init__(self, idName, bankAccountStart, numDecks):
         self.idName = idName
         self.bankAccountBalance = bankAccountStart
@@ -134,11 +136,17 @@ class Player(object):
     def play(self, hand):
         found = False  # flag if a move as been performed
 
+        if (len(self.getHands()[hand].getCardList()) == 1):
+            return True
+
         while not found:
             number = random.random()  # random move to do
 
             if (0 <= number < Player.stayThreshold) or (self.getHands()[hand].isBust()):
                 # stay
+                if (Player.PlayerDebug):
+                    print "STAY"
+
                 if (self.getHands()[hand].isBust()):
                     StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.BUSTED, Move.NOTSPLIT))
                 else:
@@ -146,37 +154,26 @@ class Player(object):
                 return False
             elif (Player.stayThreshold <= number < Player.hitThreshold):
                 # hit
+                if (Player.PlayerDebug):
+                    print "HIT"
+
                 StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
             elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit():
                 # split
+                if (Player.PlayerDebug):
+                    print "SPLIT"
+
                 self.doSplit()
                 StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
             elif self.getHands()[hand].canDouble():
                 # double
+                if (Player.PlayerDebug):
+                    print "DOUBLE"
+
                 self.doDoubleDown()
                 return True
-
-    # # Function header to allow CasinoBJTable to compile
-    # # does one single move
-    # def play(self, splitChance, doubleChance, hitChance):
-    #     randMoveCheck = [0, 1, 2]
-    #     # shuffle(randMoveCheck)
-
-    #     for i in randMoveCheck:
-    #         if i == 0 and self.canSplit(0) and (random.random() <= splitChance):
-    #             StaticBJLogger.writePlayerMove(Move(
-    #                 self.getHands()[0].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.MAXHANDS))
-    #             newHand = Hand([self.getHands()[0].popCard()])
-    #             self.addHand(newHand)
-
-    #         # if i == 1 and self.canDouble() and (random.random() <= doubleChance):
-    #         #     # self.
-    #         #     pass
-    #         # if i == 2 and self.canHit() and (random.random() <= hitChance):
-    #         #     # self.
-    #         #     pass
 
 if __name__ == '__main__':
     from Card import Card
@@ -228,7 +225,11 @@ if __name__ == '__main__':
 
     aPlayer2 = Player("Teo", 100, 6)  # 6 decks
     aPlayer2.getCard(aCard4, 0)
-    aPlayer2.getCard(aCard3, 0)
-    aPlayer2.getCard(aCard1, 0)
+    aPlayer2.getCard(aCard5, 0)
     print aPlayer2
     aPlayer2.play(0)
+    print aPlayer2
+    aPlayer2.play(0)
+    print aPlayer2
+    aPlayer2.play(0)
+    print aPlayer2

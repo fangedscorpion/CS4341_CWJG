@@ -2,9 +2,11 @@ from Shoe import Shoe
 from Player import Player
 from Dealer import Dealer
 from Move import Move
+from DealerMove import DealerMove
 
 
 class CasinoBJTable(object):
+    DEBUG = True
 
     def __init__(self, numDecks, numPlayers):
         self.deck = Shoe(numDecks)
@@ -32,14 +34,22 @@ class CasinoBJTable(object):
             counter = -1
             for hn in pl.getHands():
                 counter += 1
+                if CasinoBJTable.DEBUG:
+                    print counter, len(pl.getHands())
+
                 keepGoing = True
                 while keepGoing == True:
                     keepGoing = pl.play(counter)
 
+                    if CasinoBJTable.DEBUG:
+                        print len(pl.getHands())
+                        print pl
+
                     if keepGoing == True:
                         hn.addCard(self.deck.getTopCard())
-                        StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
-        
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+
         keepGoing = True
         while keepGoing == True:
             keepGoing = self.dealer.play(None)
@@ -67,7 +77,10 @@ class CasinoBJTable(object):
 
 if __name__ == '__main__':
     from StaticBJLogger import StaticBJLogger
+    from Card import Card
     StaticBJLogger.init(1)
     table = CasinoBJTable(6, 1)
     table.initPlayers()
+    table.playersList[0].hands[0].cardList = [
+        Card(7, Card.S, True), Card(7, Card.H, True)]
     table.playRound()
