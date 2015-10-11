@@ -6,10 +6,6 @@ from Move import Move
 
 class Player(object):
     startingBank = 500
-    stayThreshold = 25
-    hitThreshold = 50
-    splitThreshold = 75
-    doubleThreshold = 100
 
     PlayerDebug = True
 
