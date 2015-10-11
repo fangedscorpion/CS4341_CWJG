@@ -48,7 +48,7 @@ class CasinoBJTable(object):
                     if keepGoing == True:
                         hn.addCard(self.deck.getTopCard())
                         StaticBJLogger.writeDealerMove(DealerMove(
-                            self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+                            self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
 
         keepGoing = True
         while keepGoing == True:
