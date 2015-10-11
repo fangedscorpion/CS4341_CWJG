@@ -28,6 +28,17 @@ class Hand(object):
     def addCard(self, newCard):
         self.cardList.append(newCard)
 
+    # get total of hand without any aces
+    # input: -
+    # output: int
+    def getTotalNoAce(self):
+        total = 0
+        for cd in self.getCardList():
+            if not cd.isAce():
+                total += cd.getValue()
+
+        return total
+
     def getHandValue(self):
         handValue = 0
         for card in self.cardList:
@@ -94,6 +105,16 @@ class Hand(object):
     def canDouble(self):
         return len(self.getCardList()) == 2
 
+    # returns True if the hand contains +1 Ace
+    # a soft hand is a hand with an ace
+    # otherwise the hand is hard
+    def isSoft(self):
+        for cr in self.getCardList():
+            if (cr.isAce()):
+                return True
+
+        return False
+
 if __name__ == "__main__":
     emptyLine = "-" * 20
     a = Card(Card.ACE, Card.S, True)
@@ -127,6 +148,11 @@ if __name__ == "__main__":
     print someHand
     someHand.addCard(s)
     print someHand
+    print emptyLine
+
+    print "isSoft test:"
+    print bustHand.isSoft(), False
+    print perfectHand.isSoft(), True
     print emptyLine
 
     print "getHandValue() test:"
