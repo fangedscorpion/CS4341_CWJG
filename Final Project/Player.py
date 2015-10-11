@@ -116,14 +116,14 @@ class Player(object):
             self.currentBet = self.bankAccountBalance
 
     # Gets the visible cards in a Hand
-    def getVisibleHand(self):
-        hand = self.getHand()
+    def getVisibleHand(self, hand):
+        hand = self.getHands()[hand]
         visibleCards = []
         for aCard in hand.getCardList():
             if(aCard.getIsVisible()):
                 visibleCards.append(aCard)
 
-        return visibleCards
+        return Hand(list(visibleCards))
 
     # does a split move for the currect player
     # modifications to player's bet needs to be added
@@ -139,7 +139,7 @@ class Player(object):
         if (len(self.getHands()[hand].getCardList()) == 1):
             if (Player.PlayerDebug):
                     print "BALANCE"
-                    
+
             return True
 
         while not found:
