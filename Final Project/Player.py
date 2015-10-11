@@ -137,6 +137,9 @@ class Player(object):
         found = False  # flag if a move as been performed
 
         if (len(self.getHands()[hand].getCardList()) == 1):
+            if (Player.PlayerDebug):
+                    print "BALANCE"
+                    
             return True
 
         while not found:
