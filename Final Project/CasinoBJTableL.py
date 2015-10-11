@@ -63,7 +63,13 @@ class CasinoBJTable(object):
         for i in range(0, 2):
             for pl in self.playersList:
                 pl.getHands()[0].addCard(self.deck.getTopCard())
-            self.dealer.getHands()[0].addCard(self.deck.getTopCard())
+
+            if(i == 1): #Hide the dealers other card
+                topCard = self.deck.getTopCard()
+                topCard.setIsVisible(False)
+                self.dealer.getHands()[0].addCard(topCard)
+            else:
+                self.dealer.getHands()[0].addCard(self.deck.getTopCard())
 
     def resetPlayers(self):
         for pl in self.playersList:
