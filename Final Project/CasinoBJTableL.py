@@ -33,6 +33,8 @@ class CasinoBJTable(object):
         for pl in self.playersList:
             counter = 0
             moreHands = True
+            StaticBJLogger.writeDealerMove(DealerMove(
+                                "TEST" + str(pl.getHands()[0].getHandValue()), pl.getHands()[counter]))#Move.NOTCOMPLETE))
             while moreHands:
                 old = len(pl.getHands())
                 while counter < len(pl.getHands()):
