@@ -118,9 +118,9 @@ class Player(object):
 
     # Gets the visible cards in a Hand
     def getVisibleHand(self, hand):
-        hand = self.getHands()[hand]
+        handTmp = self.getHands()[hand]
         visibleCards = []
-        for aCard in hand.getCardList():
+        for aCard in handTmp.getCardList():
             if(aCard.getIsVisible()):
                 visibleCards.append(aCard)
 
@@ -128,9 +128,9 @@ class Player(object):
 
     # does a split move for the currect player
     # modifications to player's bet needs to be added
-    def doSplit(self):
+    def doSplit(self, hand):
         self.hasSplit = True
-        self.addHand(Hand([self.getHands()[0].popCard()]))
+        self.addHand(Hand([self.getHands()[hand].popCard()]))
 
     # This function does 1 move for the player
     # hand is an integer for the hand being played
@@ -178,12 +178,13 @@ class Player(object):
                 else:
                     StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.HIT, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
-            elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit():
+            elif (Player.hitThreshold <= number < Player.splitThreshold) and self.getHands()[hand].canSplit() and (len(self.getHands()) == 1):
                 # split
                 if (Player.PlayerDebug):
                     print "SPLIT"
-
-                self.doSplit()
+                print "BEFORE SPLIT: ", self.getHands()[hand]
+                self.doSplit(hand)
+                print "POST SPLIT: ", self.getHands()[hand]
                 StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.SPLITNUM))
                 return True
             elif self.getHands()[hand].canDouble():
@@ -192,7 +193,10 @@ class Player(object):
                     print "DOUBLE"
 
                 self.doDoubleDown()
-                StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, Move.NOTSPLIT))
+                if(self.hasSplit):
+                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, hand+1))
+                else:
+                    StaticBJLogger.writePlayerMove(Move(self.getHands()[hand].getHandValue(), Move.DOUBLE, Move.NOTBUSTED, Move.NOTSPLIT))
                 return True
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ if __name__ == "__main__":
     a = Card(Card.ACE, Card.S, True)
     t = Card(2, Card.D, False)
     s = Card(7, Card.H, True)
-    j = Card(Card.JACK, Card.S, True)
+    j = Card(Card.JACK, Card.S, False)
     q = Card(Card.QUEEN, Card.S, True)
     k = Card(Card.KING, Card.S, True)
 
@@ -41,4 +41,6 @@ if __name__ == "__main__":
     aDealer.getCard(s, 0)
     aDealer.getCard(j, 0)
 
-    print aDealer
+    print "*"*20
+    print "Dealer with hidden card: ", aDealer
+    print "Visible cards list: ", aDealer.getVisibleHand(0)

@@ -46,7 +46,7 @@ class CasinoBJTable(object):
                             pl.getHands()[counter].addCard(
                                 self.deck.getTopCard())
                             StaticBJLogger.writeDealerMove(DealerMove(
-                                self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
+                                self.dealer.getVisibleHand(0).getHandValue(), self.dealer.getVisibleHand(0)))#Move.NOTCOMPLETE))
                     counter += 1
                 if CasinoBJTable.DEBUG:
                     print "OUT"

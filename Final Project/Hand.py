@@ -92,9 +92,9 @@ class Hand(object):
     # true if the cards are of equal value and can be split
     # false if the cards are of unequal value and cannot be split
     def canSplit(self):
-        if len(self.getCardList()) != 2:
+        if not(len(self.getCardList()) == 2):
             return False
-        elif (self.getCardList()[0] != self.getCardList()[1]):
+        elif not (self.getCardList()[0] == self.getCardList()[1]):
             return False
         else:
             return True
@@ -123,6 +123,9 @@ if __name__ == "__main__":
     j = Card(Card.JACK, Card.S, True)
     q = Card(Card.QUEEN, Card.S, True)
     k = Card(Card.KING, Card.S, True)
+    d = Card(10, Card.S, True)
+    dd = Card(Card.KING, Card.H, True)
+    ddd = Card(7, Card.H, True)
 
     bustHand = Hand([j, q, k])
     perfectHand = Hand([a, j])
@@ -131,71 +134,75 @@ if __name__ == "__main__":
     splitHand = Hand([s, s])
     bigHand = Hand([s, s, s])
 
-    print emptyLine
-    print "Copy test"
-    copyHand = bustHand
-    print "original:"
-    print bustHand
-    print "copy:"
-    print copyHand
-    print emptyLine
+    trialSplitHand = Hand([d, ddd])
+    print trialSplitHand
+    print trialSplitHand.canSplit()
 
-    print "getCardList test:"
-    print someHand.getCardList()
-    print emptyLine
+    # print emptyLine
+    # print "Copy test"
+    # copyHand = bustHand
+    # print "original:"
+    # print bustHand
+    # print "copy:"
+    # print copyHand
+    # print emptyLine
 
-    print "addCard() test:"
-    print someHand
-    someHand.addCard(s)
-    print someHand
-    print emptyLine
+    # print "getCardList test:"
+    # print someHand.getCardList()
+    # print emptyLine
 
-    print "isSoft test:"
-    print bustHand.isSoft(), False
-    print perfectHand.isSoft(), True
-    print emptyLine
+    # print "addCard() test:"
+    # print someHand
+    # someHand.addCard(s)
+    # print someHand
+    # print emptyLine
 
-    print "getHandValue() test:"
-    print someHand.getHandValue()
-    print "getHandValue() on ace high:"
-    print perfectHand.getHandValue()
-    print emptyLine
+    # print "isSoft test:"
+    # print bustHand.isSoft(), False
+    # print perfectHand.isSoft(), True
+    # print emptyLine
 
-    print "showHiddenCards() test:"
-    print str(someHand.getCardList()[0].getIsVisible())
-    someHand.showHiddenCards()
-    print str(someHand.getCardList()[0].getIsVisible())
-    print emptyLine
+    # print "getHandValue() test:"
+    # print someHand.getHandValue()
+    # print "getHandValue() on ace high:"
+    # print perfectHand.getHandValue()
+    # print emptyLine
 
-    print "canSplit() test:"
-    print splitHand.canSplit(), True
-    print someHand.canSplit(), False
-    print bigHand.canSplit(), False
-    print emptyLine
+    # print "showHiddenCards() test:"
+    # print str(someHand.getCardList()[0].getIsVisible())
+    # someHand.showHiddenCards()
+    # print str(someHand.getCardList()[0].getIsVisible())
+    # print emptyLine
 
-    print "canDouble() test"
-    print splitHand.canDouble(), True
-    print bigHand.canDouble(), False
-    print emptyLine
+    # print "canSplit() test:"
+    # print splitHand.canSplit(), True
+    # print someHand.canSplit(), False
+    # print bigHand.canSplit(), False
+    # print emptyLine
 
-    print "popCard() test:"
-    print "hand:"
-    print splitHand
-    print "card thats popped:"
-    print splitHand.popCard()
-    print "card left in hand:"
-    print splitHand
-    print "hand with 3 cards:"
-    print bustHand.popCard()
-    print "hand that doesnt have pair:"
-    print perfectHand.popCard()
-    print emptyLine
+    # print "canDouble() test"
+    # print splitHand.canDouble(), True
+    # print bigHand.canDouble(), False
+    # print emptyLine
 
-    print "isbust() test:"
-    print "bust hand:"
-    print str(bustHand.isBust())
-    print "safe hand:"
-    print str(someHand.isBust())
-    print "hand that should be fixed to not be bust:"
-    print str(lowAceHand.isBust())
-    print emptyLine
+    # print "popCard() test:"
+    # print "hand:"
+    # print splitHand
+    # print "card thats popped:"
+    # print splitHand.popCard()
+    # print "card left in hand:"
+    # print splitHand
+    # print "hand with 3 cards:"
+    # print bustHand.popCard()
+    # print "hand that doesnt have pair:"
+    # print perfectHand.popCard()
+    # print emptyLine
+
+    # print "isbust() test:"
+    # print "bust hand:"
+    # print str(bustHand.isBust())
+    # print "safe hand:"
+    # print str(someHand.isBust())
+    # print "hand that should be fixed to not be bust:"
+    # print str(lowAceHand.isBust())
+    # print emptyLine
