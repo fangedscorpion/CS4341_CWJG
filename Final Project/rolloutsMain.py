@@ -9,7 +9,7 @@ StaticBJLogger.init(0)
 # Fill in (date, hour, minute)
 # date is the calendar date
 # hour is the hour in military time
-endTime = DateTimeCustom(10, 23, 25)
+endTime = DateTimeCustom(11, 1, 18)
 
 while not endTime.greaterEqualTo():
     # print endTime.greaterEqualTo()
