@@ -2,10 +2,14 @@
 class Move(object):
 
     BUSTED = 1
-    WON = 1
-    LOST = -1
-    NOTCOMPLETE = 0
     NOTBUSTED = 0
+
+    NOTCOMPLETE = -1
+    LOST = 0
+    WON_HAND_1 = 1
+    WON_HAND_2 = 2
+    WON_BOTH = 3
+
     SPLITNUM = -2
     NOTSPLIT = 0
 

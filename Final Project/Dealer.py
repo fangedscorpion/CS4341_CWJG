@@ -14,10 +14,8 @@ class Dealer(Player):
 
     def play(self, num):
         if self.getHands()[0].isBust():
-            StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), True))
             return False
         elif self.getHands()[0].getHandValue() >= 17:
-            StaticBJLogger.writeDealerMove(DealerMove(self.getHands()[0].getHandValue(), False))
             return False
         else:
             return True

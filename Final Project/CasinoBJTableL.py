@@ -33,8 +33,8 @@ class CasinoBJTable(object):
         for pl in self.playersList:
             counter = 0
             moreHands = True
-            StaticBJLogger.writeDealerMove(DealerMove(
-                                "TEST" + str(pl.getHands()[0].getHandValue()), pl.getHands()[counter]))#Move.NOTCOMPLETE))
+            # StaticBJLogger.writeDealerMove(DealerMove(
+            #                     "TEST" + str(pl.getHands()[0].getHandValue()), pl.getHands()[counter]))#Move.NOTCOMPLETE))
             while moreHands:
                 old = len(pl.getHands())
                 while counter < len(pl.getHands()):
@@ -48,7 +48,8 @@ class CasinoBJTable(object):
                             pl.getHands()[counter].addCard(
                                 self.deck.getTopCard())
                             StaticBJLogger.writeDealerMove(DealerMove(
-                                self.dealer.getVisibleHand(0).getHandValue(), pl.getHands()[counter]))#Move.NOTCOMPLETE))
+                                self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
+
                     counter += 1
                 if CasinoBJTable.DEBUG:
                     print "OUT"
@@ -60,6 +61,56 @@ class CasinoBJTable(object):
 
             if keepGoing == True:
                 self.dealer.getHands()[0].addCard(self.deck.getTopCard())
+
+        if(len(pl.getHands()) == 2):
+            if(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+            elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
+            elif(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
+            elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+            elif(not self.dealer.getHands()[0].isBust() and (pl.getHands()[0].isBust() and pl.getHands()[1].isBust())):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+            elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
+                if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))    
+                else:
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))    
+            elif(not self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
+                if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))    
+                else:
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))    
+            elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
+                if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
+                    if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
+                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                    else:
+                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
+                else:
+                    if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
+                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+                    else:
+                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
+
+        else:
+            #House rules: tie on a bust for dealer and player
+            if(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+            elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+            elif(not self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust()):
+                StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+            elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust()):
+                if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                else:
+                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+
+
+        
 
     def initPlayers(self):
         for i in range(0, 2):
