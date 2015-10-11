@@ -177,9 +177,9 @@ class Player(object):
 
                 StaticBJLogger.writePlayerMove(Move(
                     self.getHands()[hand].getHandValue(), Move.SPLIT, Move.NOTBUSTED, Move.SPLITNUM))
-                print "BEFORE SPLIT: ", self.getHands()[hand]
+                # print "BEFORE SPLIT: ", self.getHands()[hand]
                 self.doSplit(hand)
-                print "POST SPLIT: ", self.getHands()[hand]
+                # print "POST SPLIT: ", self.getHands()[hand]
 
                 return True
             elif (number == 2) and (self.getHands()[hand].canDouble()):
