@@ -7,7 +7,7 @@ from Move import Move
 class Player(object):
     startingBank = 500
 
-    PlayerDebug = True
+    PlayerDebug = False
 
     def __init__(self, idName, bankAccountStart, numDecks):
         self.idName = idName

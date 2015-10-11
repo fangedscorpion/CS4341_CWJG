@@ -6,7 +6,7 @@ from DealerMove import DealerMove
 from StaticBJLogger import StaticBJLogger
 
 class CasinoBJTable(object):
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self, numDecks, numPlayers):
         self.deck = Shoe(numDecks)
