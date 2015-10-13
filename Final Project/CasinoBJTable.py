@@ -66,8 +66,12 @@ class CasinoBJTable(object):
     def initPlayers(self):
         for i in range(0, 2):
             for pl in self.playersList:
-                pl.getHands()[0].addCard(self.deck.getTopCard())
-            self.dealer.getHands()[0].addCard(self.deck.getTopCard())
+                newCard = self.deck.getTopCard()
+                pl.getHands()[0].addCard(newCard)
+                self.updatePlayers(newCard)
+            newCard = self.deck.getTopCard()
+            self.dealer.getHands()[0].addCard(newCard)
+            self.updatePlayers(newCard)
 
     def resetPlayers(self):
         for pl in self.playersList:
