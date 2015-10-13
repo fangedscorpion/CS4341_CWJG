@@ -12,6 +12,10 @@ class CC(object):
         self.suitTotal = numDecks * CC.cardsPerSuit
         self.count = [0] * CC.categories
 
+    # this function resets the count after a shuffled deck
+    def reset(self):
+        self.count = [0] * CC.categories
+
     # updates the counted list for the new card value
     # the input is the card value
     def update(self, value):
