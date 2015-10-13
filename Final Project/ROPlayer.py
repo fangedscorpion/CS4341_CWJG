@@ -1,12 +1,15 @@
 from Player import Player
 from Card import Card
 from RolloutKey import RolloutKey
+from BJGetter import BJGetter
 
 class ROPlayer(Player):
 
     def __init__(self, idName, bankAccountStart, numDecks, fileName):
-        super(idName, bankAccountStart, numDecks)
-        self.myBJGetter = bjGetter(fileName)
+        super(ROPlayer, self).__init__(idName, bankAccountStart, numDecks)
+        self.myBJGetter = BJGetter(fileName)
+        self.
+
 
 
     def play(self, Hand, dealerShow):

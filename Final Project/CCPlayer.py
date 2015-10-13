@@ -6,7 +6,7 @@ from CC import CC
 class CCPlayer(Player):
 
     def __init__(self, idName, bankAccountStart, numDecks):
-        super(idName, bankAccountStart, numDecks)
+        super(CCPlayer, self).__init__(idName, bankAccountStart, numDecks)
         self.myCC = CC(numDecks)
 
     def reset(self):
