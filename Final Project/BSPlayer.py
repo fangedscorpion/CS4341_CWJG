@@ -164,3 +164,7 @@ class BSPlayer(Player):
             else:
                 # hit
                 return True
+
+
+if __name__ == '__main__':
+    aBSP = BSPlayer("Ted", 100, 6)
