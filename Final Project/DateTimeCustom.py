@@ -7,7 +7,7 @@ class DateTimeCustom(object):
 
     def __init__(self, _day, _hour, _minute):
         self.dt = datetime.now()
-        self.dt = self.dt.replace(day=_day, hour=_hour, minute=_minute)
+        self.dt = self.dt.replace(day=_day, hour=_hour, minute=_minute, second=0)
 
     # creates a DateTimeCustom object from the current time
     def makeObj(self):

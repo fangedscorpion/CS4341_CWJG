@@ -4,13 +4,16 @@ from Dealer import Dealer
 from Move import Move
 from DealerMove import DealerMove
 from StaticBJLogger import StaticBJLogger
+from DateTimeCustom import DateTimeCustom
+from Hand import Hand
 
 
 class CasinoBJTable(object):
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self, numDecks, numPlayers):
-        self.deck = Shoe(numDecks)
+        self.numDecks = numDecks
+        self.deck = Shoe(self.numDecks)
         self.dealer = Dealer(Dealer.bankStart, numDecks)
         self.playersList = []
         self.numPlayers = numPlayers
@@ -47,7 +50,9 @@ class CasinoBJTable(object):
                         print pl
 
                     if keepGoing == True:
-                        hn.addCard(self.deck.getTopCard())
+                        newCard = self.deck.getTopCard()
+                        hn.addCard(newCard)
+                        self.updatePlayers(newCard)
                         StaticBJLogger.writeDealerMove(DealerMove(
                             self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
 
@@ -75,6 +80,20 @@ class CasinoBJTable(object):
             strPlayers += str(self.playersList[i])
             strPlayers += "\n"
         return (strPlayers)
+
+    # plays blackjack till a specific time
+    # day, hour, minute is the ending time for the function
+    def play(self, day, hour, minute):
+        endTime = DateTimeCustom(day, hour, minute)
+
+        while not endTime.greaterEqualTo():
+            if self.deck.yellowCardPassed():
+                del self.deck
+                self.deck = Shoe(self.numDecks)
+
+            self.initPlayers()
+            self.playRound()
+            self.resetPlayers()
 
 if __name__ == '__main__':
     from StaticBJLogger import StaticBJLogger

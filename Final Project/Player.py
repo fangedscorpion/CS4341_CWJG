@@ -71,7 +71,7 @@ class Player(object):
 
     # Sets a player's hand
     def setHand(self, newHand):
-        self.hands = list(newHand)
+        self.hands = [newHand]
 
     # adds a hand to a player's list of hands
     def addHand(self, newHand):
