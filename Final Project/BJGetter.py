@@ -34,7 +34,7 @@ class BJGetter(object):
                         prevEntry[0], prevEntry[1] + 1, prevEntry[2])
                 else:
                     self.dictionary[keyVal] = (
-                        prevEntry[0], prevEntry[1], prevEntry[2] + 1)
+                        prevEntry[0]+1, prevEntry[1], prevEntry[2])
         else:
             if(wonData >= Move.WON_HAND_1):
                 self.dictionary[keyVal] = (1, 0, 0)
@@ -44,7 +44,7 @@ class BJGetter(object):
                 if(didBust == 1):
                     self.dictionary[keyVal] = (0, 1, 0)
                 else:
-                    self.dictionary[keyVal] = (0, 0, 1)
+                    self.dictionary[keyVal] = (1, 0, 0)
             
     def getDictionary(self):
         return self.dictionary
@@ -172,25 +172,30 @@ class BJGetter(object):
                     fileHandleCurrent.close()
                     return
 
-            if(str(line[1]).lower() == Move.SPLIT.lower() or str(line[1]).lower() == Move.SPLIT_SHORT.lower()):
-                keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4])
-                self.updateDictEntry(keyRollOut, int(line[2]), line[5])
+            # if(str(line[1]).lower() == Move.SPLIT.lower() or str(line[1]).lower() == Move.SPLIT_SHORT.lower()):
+            #     keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4])
+            #     self.updateDictEntry(keyRollOut, int(line[2]), line[5])
 
             elif(str(line[1]).lower() == Move.STAY.lower() or str(line[1]).lower() == Move.STAY_SHORT.lower()):
                 keyRollOut = RolloutKey(line[0], Move.STAY_SHORT, line[4])
                 self.updateDictEntry(keyRollOut, int(line[2]), line[5])
 
             elif(str(line[1]).lower() == Move.HIT.lower() or str(line[1]).lower() == Move.HIT_SHORT.lower()):
-                #Check if next line is a stay and use that is busted value
-                lineNextTmp = lines[i+1].rstrip()
-                lineNextTmp = lineNextTmp.split(",")
-                keyRollOut = RolloutKey(line[0], Move.HIT_SHORT, line[4])
+                #Check if next line is a stay and use that is busted valued
+                if (i+1 < len(lines)):
+                    lineNextTmp = lines[i+1].rstrip()
+                    lineNextTmp = lineNextTmp.split(",")
+                    keyRollOut = RolloutKey(line[0], Move.HIT_SHORT, line[4])
 
-                self.updateDictEntry(keyRollOut, int(lineNextTmp[2]), line[5])
+                    self.updateDictEntry(keyRollOut, int(lineNextTmp[2]), line[5])
 
             elif(str(line[1]).lower() == Move.DOUBLE.lower() or str(line[1]).lower() == Move.DOUBLE_SHORT.lower()):
-                keyRollOut = RolloutKey(line[0], Move.DOUBLE_SHORT, line[4])
-                self.updateDictEntry(keyRollOut, int(line[2]), line[5])
+                if (i+1 < len(lines)):
+                    lineNextTmp = lines[i+1].rstrip()
+                    lineNextTmp = lineNextTmp.split(",")
+                    keyRollOut = RolloutKey(line[0], Move.DOUBLE_SHORT, line[4])
+
+                    self.updateDictEntry(keyRollOut, int(lineNextTmp[2]), line[5])
 
             i += 1
 
@@ -214,6 +219,13 @@ if __name__ == '__main__':
 
     print "*" * 50
 
-    if(BJGetter.DEBUG == 1):
-        print parserObj.getDictionary()
+    #if(BJGetter.DEBUG == 1):
+    tmpFile = "SOTED_LISTING_" + str(fileNameOpen.split(".txt")[0]) + ".txt"
+    fileOpen = open(tmpFile, "w")
+    for xxx in sorted(parserObj.getDictionary().items(), key=lambda obj: (obj[0].getPlayerScore(), obj[0].getDealerScore())): 
+        #print xxx
+        fileOpen.write(str(xxx) + "\n")
+    fileOpen.close()
+
+    
     print time.ctime()
