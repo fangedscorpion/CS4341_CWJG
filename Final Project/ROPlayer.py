@@ -8,7 +8,7 @@ class ROPlayer(Player):
     def __init__(self, idName, bankAccountStart, numDecks, fileName):
         super(ROPlayer, self).__init__(idName, bankAccountStart, numDecks)
         self.myBJGetter = BJGetter(fileName)
-        self.
+        self.fileName = fileName
 
 
 
