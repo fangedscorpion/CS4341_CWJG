@@ -77,7 +77,6 @@ class ROPlayer(Player):
                     stayChance = 0.25
 
         chances = [hitChance, stayChance, ddChance, splitChance]
-        print chances
         moves = [Move.Move.HIT_SHORT, Move.Move.STAY_SHORT, Move.Move.DOUBLE_SHORT, Move.Move.SPLIT_SHORT]
         
         bestChance = 0
