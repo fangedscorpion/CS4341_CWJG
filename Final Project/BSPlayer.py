@@ -11,8 +11,9 @@ class BSPlayer(Player):
     # returns True if the dealer should deal a card
     # hand is an int for the hand number
     # dealerShow is an int for the card the dealer is showing
-    def playBS(self, hand, dealerShow):
-        if (len(self.getHands()[hand].getCardList())):
+    def play(self, hand, dealerShow):
+        # return False
+        if (len(self.getHands()[hand].getCardList()) == 1):
             return True
 
         # split cases
@@ -21,7 +22,7 @@ class BSPlayer(Player):
             if ((value == 2) or (value == 3)):
                 if ((dealerShow == 2) or (dealerShow == 3) or (dealerShow == 4) or (dealerShow == 5) or (dealerShow == 6) or (dealerShow == 7)):
                     # split
-                    self.doSplit()
+                    self.doSplit(hand)
                     return True
                 else:
                     # hit
@@ -29,7 +30,7 @@ class BSPlayer(Player):
             if (value == 4):
                 if ((dealerShow == 5) or (dealerShow == 6)):
                     # split
-                    self.doSplit()
+                    self.doSplit(hand)
                     return True
                 else:
                     # hit
@@ -45,7 +46,7 @@ class BSPlayer(Player):
             if (value == 6):
                 if ((dealerShow == 2) or (dealerShow == 3) or (dealerShow == 4) or (dealerShow == 5) or (dealerShow == 6)):
                     # split
-                    self.doSplit()
+                    self.doSplit(hand)
                     return True
                 else:
                     # hit
@@ -56,10 +57,10 @@ class BSPlayer(Player):
                     return True
                 else:
                     # split
-                    self.doSplit()
+                    self.doSplit(hand)
                     return True
             if (value == 8):
-                self.doSplit()
+                self.doSplit(hand)
                 return True
             if (value == 9):
                 if ((dealerShow == 7) or (dealerShow == 10) or (dealerShow == Card.ACE)):
@@ -67,14 +68,14 @@ class BSPlayer(Player):
                     return False
                 else:
                     # split
-                    self.doSplit()
+                    self.doSplit(hand)
                     return True
             if (value == 10):
                 # stay
                 return False
             if (value == Card.ACE):
                 # split
-                self.doSplit()
+                self.doSplit(hand)
                 return True
         # soft hand
         elif self.getHands()[hand].isSoft():

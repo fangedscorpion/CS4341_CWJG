@@ -81,6 +81,12 @@ class CC(object):
         norm = self.normalize(stat)
         return self.EV(norm)
 
+    def __repr__(self):
+        string = ""
+        for i in range(1, len(self.count)):
+            string += str(i) + ": " + str(self.count[i]) + "\n"
+        return string
+
 if __name__ == "__main__":
     inputs = [0.5] * 11
     inputs[0] = 0
