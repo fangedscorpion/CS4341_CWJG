@@ -164,7 +164,7 @@ class BSPlayer(Player):
                     return True
             else:
                 # hit
-                return True
+                return False
 
 
 if __name__ == '__main__':
