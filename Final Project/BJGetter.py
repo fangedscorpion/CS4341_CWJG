@@ -172,14 +172,17 @@ if __name__ == '__main__':
     from BJGetter import BJGetter
     import pickle
     import time
+    import sys
 
     print time.ctime()
 
-    parserObj = BJGetter("BJstats_302.txt")
+    fileNameOpen = sys.argv[1]
+
+    parserObj = BJGetter(fileNameOpen)
 
     parserObj.parseTheFile()
 
-    pickle.dump(parserObj.getDictionary(), open("dict.p", "wb"))
+    pickle.dump(parserObj.getDictionary(), open("dict_" + str(fileNameOpen.split(".txt")[0]) + ".p", "wb"))
 
     print "*" * 50
 
