@@ -4,7 +4,7 @@ from Card import Card
 class BSPlayer(Player):
 
     def __init__(self, idName, bankAccountStart, numDecks):
-        super(idName, bankAccountStart, numDecks)
+        super(BSPlayer, self).__init__(idName, bankAccountStart, numDecks)
 
     # follows basic strategy
     # https://www.blackjackinfo.com/blackjack-basic-strategy-engine/?numdecks=6&soft17=s17&dbl=all&das=yes&surr=ns&peek=yes
@@ -164,3 +164,7 @@ class BSPlayer(Player):
             else:
                 # hit
                 return True
+
+
+if __name__ == '__main__':
+    aBSP = BSPlayer("Ted", 100, 6)
