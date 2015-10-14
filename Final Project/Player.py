@@ -56,10 +56,6 @@ class Player(object):
             handVals.append(self.getHands()[i].getHandValue())
         return handVals
 
-    # Gets the listing of counted cards cheater
-    def getCardCounts(self):
-        return self.cardCountList
-
     def getProbCardList(self):
         emptyList = [0] * 11
         for i in range(1, len(self.cardCountList)):
