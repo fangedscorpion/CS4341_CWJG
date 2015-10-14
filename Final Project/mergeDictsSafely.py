@@ -38,9 +38,3 @@ if __name__ == '__main__':
 
     print firstDir
     pickle.dump(firstDir, open("MEGA_DICT.bin", "wb"))    
-
-
-
-
-        
-
