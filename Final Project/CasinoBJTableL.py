@@ -30,7 +30,7 @@ class CasinoBJTable(object):
                 self.playersList.append(playerPerson)
             else:
                 self.playersList.append(
-                    ROPlayer(i, Player.startingBank, numDecks, "dict_BJstats_1.5.p"))
+                    ROPlayer(i, Player.startingBank, numDecks, "MEGA_DICT.bin"))
                 self.playersList.append(
                     BSPlayer(i, Player.startingBank, numDecks))
                 self.playersList.append(
@@ -165,10 +165,10 @@ class CasinoBJTable(object):
                 for val in pl.getHandsVals():
                     if val > 21:
                         gm.incBust()
-                    elif val < self.dealer.getHands()[0].getHandValue():
-                        gm.incLoss()
-                    else:
+                    elif val > self.dealer.getHands()[0].getHandValue():
                         gm.incWon()
+                    else:
+                        gm.incLoss()
 
                 if isinstance(pl, BSPlayer):
                     if CasinoBJTable.DEBUG:
@@ -244,4 +244,4 @@ if __name__ == '__main__':
     table.initPlayers()
     # table.playersList[0].hands[0].cardList = [
     #     Card(7, Card.S, True), Card(7, Card.H, True)]
-    table.play(14, 4, 06)
+    table.play(14, 17, 10)
