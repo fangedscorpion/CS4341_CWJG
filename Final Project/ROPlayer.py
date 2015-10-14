@@ -36,10 +36,12 @@ class ROPlayer(Player):
         stayChance = 0
         ddChance = 0
         splitChance = 0
+        listOfKeys = []
 
         myHand = self.getHands()[Hand]
         if not myHand.isBust():
             myHitKey = RolloutKey(myHand.getHandValue(), "H", dealerShowVal)
+            listOfKeys.append(myHitKey)
             if myHitKey in self.dict.keys():
                 hitChance = self.getWinPerc(myHitKey, self.dict)
         else:
@@ -47,11 +49,13 @@ class ROPlayer(Player):
             return False
 
         myStayKey = RolloutKey(myHand.getHandValue(), "S", dealerShowVal)
+        listOfKeys.append(myStayKey)
         if myStayKey in self.dict.keys():
             stayChance = self.getWinPerc(myStayKey, self.dict) 
 
         if myHand.canDouble():
             myDDKey = RolloutKey(myHand.getHandValue(), "D", dealerShowVal)
+            listOfKeys.append(myDDKey)
             if myDDKey in self.dict.keys():
                 ddChance = self.getWinPerc(myDDKey, self.dict)
         else: 
@@ -59,10 +63,18 @@ class ROPlayer(Player):
 
         if myHand.canSplit():
             mySplitKey = RolloutKey(myHand.getHandValue(),"Y", dealerShowVal)
+            listOfKeys.append(mySplitKey)
             if mySplitKey in self.dict.keys():
                 splitChance = self.getWinPerc(mySplitKey, self.dict) 
         else:
             splitChance = 0
+
+        for key in listOfKeys:
+            if key not in self.dict.keys():
+                if key == myHitKey:
+                    hitChance = 0.25
+                if key == myStayKey:
+                    stayChance = 0.25
 
         chances = [hitChance, stayChance, ddChance, splitChance]
         moves = ["H", "S", "D", "Y"]
