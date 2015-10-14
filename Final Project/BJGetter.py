@@ -220,7 +220,7 @@ if __name__ == '__main__':
     print "*" * 50
 
     #if(BJGetter.DEBUG == 1):
-    tmpFile = "SOTED_LISTING_" + str(fileNameOpen.split(".txt")[0]) + ".txt"
+    tmpFile = "SORTED_LISTING_" + str(fileNameOpen.split(".txt")[0]) + ".txt"
     fileOpen = open(tmpFile, "w")
     for xxx in sorted(parserObj.getDictionary().items(), key=lambda obj: (obj[0].getPlayerScore(), obj[0].getDealerScore())): 
         #print xxx
