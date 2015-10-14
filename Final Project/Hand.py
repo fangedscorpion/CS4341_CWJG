@@ -31,7 +31,7 @@ class Hand(object):
     # get total of hand without any aces
     # input: -
     # output: int
-    def getTotalNoAce(self):
+    def getValueNoAce(self):
         total = 0
         for cd in self.getCardList():
             if not cd.isAce():

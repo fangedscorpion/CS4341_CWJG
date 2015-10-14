@@ -2,7 +2,7 @@ from Hand import Hand
 import random
 from StaticBJLogger import StaticBJLogger
 from Move import Move
-
+from CC import CC
 
 class Player(object):
     startingBank = 500
@@ -14,7 +14,7 @@ class Player(object):
         self.bankAccountBalance = bankAccountStart
         self.canHit = True
         self.hands = [Hand(([]))]
-        self.cardCountList = [0] * 11
+        self.myCC = CC(numDecks)
         self.currentBet = 0
         self.numDecks = numDecks
         self.hasSplit = False
@@ -39,11 +39,7 @@ class Player(object):
 
     # Counts a card the player has received
     def countCard(self, card):
-        # If the card is a face card
-        if(card.getValue() > 10):
-            self.cardCountList[10] += 1
-        else:
-            self.cardCountList[card.getValue()] += 1
+        self.myCC.update(card.getValue())
 
     # determines if a player can split his/her hand
     # returns a boolean

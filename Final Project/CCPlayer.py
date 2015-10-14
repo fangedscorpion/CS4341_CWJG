@@ -12,10 +12,11 @@ class CCPlayer(Player):
     def reset(self):
         myCC.reset()
 
-    def countCard(self, card):
-        self.myCC.update(card)
+    # def countCard(self, card):
+    #     self.myCC.update(card)
+    #     print self.myCC
 
-    def play(self):
+    def play(self, extra, extra_):
 
         if (self.getHands()[0].getHandValue() + self.myCC.getEV() > 21):
             #stay

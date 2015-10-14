@@ -10,12 +10,15 @@ from ROPlayer import ROPlayer
 from CCPlayer import CCPlayer
 from BSPlayer import BSPlayer
 from GameMove import GameMove
+from DateTimeCustom import DateTimeCustom
+from Hand import Hand
 
 class CasinoBJTable(object):
     DEBUG = False
     ROLLOUTS = False
 
     def __init__(self, numDecks, numPlayers):
+        self.numDecks = numDecks
         self.deck = Shoe(numDecks)
         self.dealer = Dealer(Dealer.bankStart, numDecks)
         self.playersList = []
@@ -25,9 +28,12 @@ class CasinoBJTable(object):
                 playerPerson = Player(i, Player.startingBank, numDecks)
                 self.playersList.append(playerPerson)
             else:
-                self.playersList.append(ROPlayer(i, Player.startingBank, numDecks, "d"))
-                self.playersList.append(BSPlayer(i, Player.startingBank, numDecks))
-                self.playersList.append(CCPlayer(i, Player.startingBank, numDecks))
+                self.playersList.append(
+                    ROPlayer(i, Player.startingBank, numDecks, "dict_BJstats_1.1.p"))
+                self.playersList.append(
+                    BSPlayer(i, Player.startingBank, numDecks))
+                self.playersList.append(
+                    CCPlayer(i, Player.startingBank, numDecks))
                 shuffle(self.playersList)
 
     def givePlayerCard(self, player):
@@ -46,83 +52,110 @@ class CasinoBJTable(object):
         for pl in self.playersList:
             counter = 0
             moreHands = True
-            # StaticBJLogger.writeDealerMove(DealerMove(
-            #                     "TEST" + str(pl.getHands()[0].getHandValue()), pl.getHands()[counter]))#Move.NOTCOMPLETE))
-        #     while moreHands:
-        #         old = len(pl.getHands())
-        #         while counter < len(pl.getHands()):
-        #             if CasinoBJTable.DEBUG:
-        #                 print "counter:", counter
 
-        #             keepGoing = True
-        #             while keepGoing == True:
-        #                 keepGoing = pl.play(counter)
-        #                 if keepGoing == True:
-        #                     pl.getHands()[counter].addCard(
-        #                         self.deck.getTopCard())
-        #                     if ROLLOUTS:
-        #                         StaticBJLogger.writeDealerMove(DealerMove(
-        #                             self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
+            if CasinoBJTable.DEBUG:
+                StaticBJLogger.writeDealerMove(DealerMove(
+                    "TEST" + str(pl.getHands()[0].getHandValue()), pl.getHands()[counter]))  # Move.NOTCOMPLETE))
+            while moreHands:
+                old = len(pl.getHands())
+                while counter < len(pl.getHands()):
+                    if CasinoBJTable.DEBUG:
+                        print "counter:", counter
 
-        #             counter += 1
-        #         if CasinoBJTable.DEBUG:
-        #             print "OUT"
-        #         moreHands = (old != len(pl.getHands()))
+                    keepGoing = True
+                    while keepGoing == True:
+                        if CasinoBJTable.DEBUG:
+                            keepGoing = pl.play(counter)
+                        else:
+                            keepGoing = pl.play(
+                                counter, self.dealer.getVisibleHand(0).getHandValue())
+                        if keepGoing == True:
+                            newCard = self.deck.getTopCard()
+                            pl.getHands()[counter].addCard(newCard)
+                            self.updatePlayers(newCard)
+                            if CasinoBJTable.ROLLOUTS:
+                                StaticBJLogger.writeDealerMove(DealerMove(
+                                    self.dealer.getVisibleHand(0).getHandValue(), Move.NOTCOMPLETE))
 
-        # keepGoing = True
-        # while keepGoing == True:
-        #     keepGoing = self.dealer.play(None)
+                    counter += 1
+                if CasinoBJTable.DEBUG:
+                    print "OUT"
+                moreHands = (old != len(pl.getHands()))
 
-        #     if keepGoing == True:
-        #         self.dealer.getHands()[0].addCard(self.deck.getTopCard())
+        keepGoing = True
+        while keepGoing == True:
+            keepGoing = self.dealer.play(None)
+
+            if keepGoing == True:
+                newCard = self.deck.getTopCard()
+                self.dealer.getHands()[0].addCard(newCard)
+                self.updatePlayers(newCard)
 
         if (CasinoBJTable.ROLLOUTS):
             if(len(pl.getHands()) == 2):
                 if(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
                 elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
                 elif(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
                 elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
                 elif(not self.dealer.getHands()[0].isBust() and (pl.getHands()[0].isBust() and pl.getHands()[1].isBust())):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.LOST))
                 elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and pl.getHands()[1].isBust()):
                     if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))    
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.LOST))
                     else:
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))    
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
                 elif(not self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
                     if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))    
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.LOST))
                     else:
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))    
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
                 elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust() and not pl.getHands()[1].isBust()):
                     if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
                         if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
-                            StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                            StaticBJLogger.writeDealerMove(DealerMove(
+                                self.dealer.getHands()[0].getHandValue(), Move.LOST))
                         else:
-                            StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
+                            StaticBJLogger.writeDealerMove(DealerMove(
+                                self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_2))
                     else:
                         if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[1].getHandValue()):
-                            StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+                            StaticBJLogger.writeDealerMove(DealerMove(
+                                self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
                         else:
-                            StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
+                            StaticBJLogger.writeDealerMove(DealerMove(
+                                self.dealer.getHands()[0].getHandValue(), Move.WON_BOTH))
 
             else:
-                #House rules: tie on a bust for dealer and player
+                # House rules: tie on a bust for dealer and player
                 if(self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.NOTCOMPLETE))
                 elif(self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
                 elif(not self.dealer.getHands()[0].isBust() and pl.getHands()[0].isBust()):
-                    StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                    StaticBJLogger.writeDealerMove(DealerMove(
+                        self.dealer.getHands()[0].getHandValue(), Move.LOST))
                 elif(not self.dealer.getHands()[0].isBust() and not pl.getHands()[0].isBust()):
                     if(self.dealer.getHands()[0].getHandValue() >= pl.getHands()[0].getHandValue()):
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.LOST))
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.LOST))
                     else:
-                        StaticBJLogger.writeDealerMove(DealerMove(self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
+                        StaticBJLogger.writeDealerMove(DealerMove(
+                            self.dealer.getHands()[0].getHandValue(), Move.WON_HAND_1))
         else:
             for pl in self.playersList:
                 gm = GameMove()
@@ -151,26 +184,28 @@ class CasinoBJTable(object):
                     if CasinoBJTable.DEBUG:
                         "wah wah"
 
-        
-
     def initPlayers(self):
         for i in range(0, 2):
             for pl in self.playersList:
-                pl.getHands()[0].addCard(self.deck.getTopCard())
+                newCard = self.deck.getTopCard()
+                pl.getHands()[0].addCard(newCard)
+                self.updatePlayers(newCard)
 
-            if(i == 1): #Hide the dealers other card
+            if(i == 1):  # Hide the dealers other card
                 topCard = self.deck.getTopCard()
                 topCard.setIsVisible(False)
                 self.dealer.getHands()[0].addCard(topCard)
             else:
-                self.dealer.getHands()[0].addCard(self.deck.getTopCard())
+                newCard = self.deck.getTopCard()
+                self.dealer.getHands()[0].addCard(newCard)
+                self.updatePlayers(newCard)
 
     def resetPlayers(self):
         for pl in self.playersList:
-            pl.setHand(Hand([]))
+            pl.setHand([Hand([])])
             pl.hasDouble = False
             pl.hasSplit = False
-        self.dealer.setHand(Hand([]))
+        self.dealer.setHand([Hand([])])
 
     def __repr__(self):
         strPlayers = ""
@@ -183,7 +218,7 @@ class CasinoBJTable(object):
     # day, hour, minute is the ending time for the function
     def play(self, day, hour, minute):
         endTime = DateTimeCustom(day, hour, minute)
-
+        self.resetPlayers()
         while not endTime.greaterEqualTo():
             if self.deck.yellowCardPassed():
                 del self.deck
@@ -195,10 +230,12 @@ class CasinoBJTable(object):
 
 if __name__ == '__main__':
     from StaticBJLogger import StaticBJLogger
+    from StaticBJGameLogger import StaticBJGameLogger
     from Card import Card
-    StaticBJLogger.init(1)
+    # StaticBJLogger.init(1)      # for rollouts
+    StaticBJGameLogger.init(0)  # for full game
     table = CasinoBJTable(6, 1)
     table.initPlayers()
     # table.playersList[0].hands[0].cardList = [
     #     Card(7, Card.S, True), Card(7, Card.H, True)]
-    table.playRound()
+    table.play(14, 1, 30)
