@@ -85,22 +85,30 @@ class BJGetter(object):
                 if(BJGetter.DEBUG == 1):
                     print "*"*50
                 keyRollOut = RolloutKey(line[0], Move.SPLIT_SHORT, line[4])
+
+                tmpSplit = keyRollOut
+
                 if(BJGetter.DEBUG == 1):
                     print keyRollOut
-                self.updateDictEntry(keyRollOut, int(line[2]), line[5])
+
+                
+                #self.updateDictEntry(keyRollOut, int(line[2]), line[5])
                 if(BJGetter.DEBUG == 1):
-                    print "BEFORE SPLIT", line
+                    print "THE SPLIT LINE ", line
                 
                 i += 1
                 line = lines[i].rstrip()
                 line = line.split(",")
                 if(BJGetter.DEBUG == 1):
-                    print "First line of a split: ", line 
+                    print "First line after a split: ", line 
+
                 tmpMove = None
                 tmpMove2 = None
+                
                 while (not int(line[3]) == Move.NOTSPLIT and not int(line[3]) == Move.SPLITNUM):
                     keyRollOut = RolloutKey(
                         line[0], self.getMoveLetter(line[1]), line[4])
+
                     if(BJGetter.DEBUG == 1):                        
                         print "SPLIT: ", keyRollOut
 
@@ -113,6 +121,7 @@ class BJGetter(object):
                         if(BJGetter.DEBUG == 1):
                             print "MV2: ", tmpMove2
                     else:
+
                         self.updateDictEntry(keyRollOut, int(line[2]), int(line[5]))
 
                     i += 1
@@ -127,15 +136,30 @@ class BJGetter(object):
                 if(tmpMove2[2] == Move.WON_BOTH):
                     self.updateDictEntry(tmpMove[0], tmpMove[1], Move.WON_BOTH)
                     self.updateDictEntry(tmpMove2[0], tmpMove2[1], Move.WON_BOTH)
+
+                    self.updateDictEntry(tmpSplit, 0, Move.WON_HAND_1)
+                    self.updateDictEntry(tmpSplit, 0, Move.WON_HAND_1)
+
                 elif(tmpMove2[2] == Move.WON_HAND_1):
                     self.updateDictEntry(tmpMove[0], tmpMove[1], Move.WON_HAND_1)
                     self.updateDictEntry(tmpMove2[0], tmpMove2[1], Move.LOST)
+
+                    self.updateDictEntry(tmpSplit, 0, Move.WON_HAND_1)
+                    self.updateDictEntry(tmpSplit, 0, Move.LOST)
+
                 elif(tmpMove2[2] == Move.WON_HAND_2):
                     self.updateDictEntry(tmpMove[0], tmpMove[1], Move.LOST)
                     self.updateDictEntry(tmpMove2[0], tmpMove2[1], Move.WON_HAND_2)
+
+                    self.updateDictEntry(tmpSplit, 0, Move.WON_HAND_1)
+                    self.updateDictEntry(tmpSplit, 0, Move.LOST)
+
                 else:
                     self.updateDictEntry(tmpMove[0], tmpMove[1], Move.LOST)
                     self.updateDictEntry(tmpMove2[0], tmpMove2[1], Move.LOST)
+
+                    self.updateDictEntry(tmpSplit, 0, Move.LOST)
+                    self.updateDictEntry(tmpSplit, 0, Move.LOST)
 
                 if(BJGetter.DEBUG == 1):
                     print "END OF SPLIT"
@@ -186,5 +210,6 @@ if __name__ == '__main__':
 
     print "*" * 50
 
-    #print parserObj.getDictionary()
+    if(BJGetter.DEBUG == 1):
+        print parserObj.getDictionary()
     print time.ctime()
