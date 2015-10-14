@@ -186,10 +186,7 @@ class BJGetter(object):
                 lineNextTmp = lineNextTmp.split(",")
                 keyRollOut = RolloutKey(line[0], Move.HIT_SHORT, line[4])
 
-                if(str(line[1]).lower() == Move.STAY.lower() or str(line[1]).lower() == Move.STAY_SHORT.lower()):
-                    self.updateDictEntry(keyRollOut, int(lineNextTmp[2]), line[5])
-                else:
-                    self.updateDictEntry(keyRollOut, int(line[2]), line[5])
+                self.updateDictEntry(keyRollOut, int(lineNextTmp[2]), line[5])
 
             elif(str(line[1]).lower() == Move.DOUBLE.lower() or str(line[1]).lower() == Move.DOUBLE_SHORT.lower()):
                 keyRollOut = RolloutKey(line[0], Move.DOUBLE_SHORT, line[4])
