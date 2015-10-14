@@ -54,6 +54,12 @@ class Player(object):
     def getHands(self):
         return self.hands
 
+    def getHandsVals(self):
+        handVals = []
+        for i in range(len(self.getHands())):
+            handVals.append(self.getHands[i])
+        return handVals
+
     # Gets the listing of counted cards cheater
     def getCardCounts(self):
         return self.cardCountList
