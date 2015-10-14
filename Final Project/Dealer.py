@@ -12,7 +12,7 @@ class Dealer(Player):
     def showHiddenCard(self):
         self.currentCards.showHiddenCard()
 
-    def play(self, num):
+    def play(self, num, extra):
         if self.getHands()[0].isBust():
             return False
         elif self.getHands()[0].getHandValue() >= 17:

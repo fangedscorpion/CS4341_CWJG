@@ -6,16 +6,19 @@ class StaticBJGameLogger(object):
     BSfileNamePrefix = "statsBS_"
     ROfileNamePrefix = "statsRO_"
     CCfileNamePrefix = "statsCC_"
+    DealerfileNamePrefix = "statsDealer_"
     fileNameSuffix = ".csv"
     BSfileName = BSfileNamePrefix + fileNameSuffix
     ROfileName = ROfileNamePrefix + fileNameSuffix
     CCfileName = CCfileNamePrefix + fileNameSuffix
+    DealerfileName = DealerfileNamePrefix  + fileNameSuffix
 
     @staticmethod
     def init(num):
         StaticBJGameLogger.BSfileName = StaticBJGameLogger.BSfileNamePrefix + str(num) + StaticBJGameLogger.fileNameSuffix
         StaticBJGameLogger.ROfileName = StaticBJGameLogger.ROfileNamePrefix + str(num) + StaticBJGameLogger.fileNameSuffix
         StaticBJGameLogger.CCfileName = StaticBJGameLogger.CCfileNamePrefix + str(num) + StaticBJGameLogger.fileNameSuffix
+        StaticBJGameLogger.DealerfileName = StaticBJGameLogger.DealerfileNamePrefix + str(num) + StaticBJGameLogger.fileNameSuffix
 
         fileHandleCurrent = open(StaticBJGameLogger.BSfileName, "w")
         fileHandleCurrent.write(GameMove.topics)
@@ -26,6 +29,10 @@ class StaticBJGameLogger(object):
         fileHandleCurrent.close()
 
         fileHandleCurrent = open(StaticBJGameLogger.CCfileName, "w")
+        fileHandleCurrent.write(GameMove.topics)
+        fileHandleCurrent.close()
+
+        fileHandleCurrent = open(StaticBJGameLogger.DealerfileName, "w")
         fileHandleCurrent.write(GameMove.topics)
         fileHandleCurrent.close()
 
@@ -44,6 +51,12 @@ class StaticBJGameLogger(object):
     @staticmethod
     def writeCCMove(moveObj):
         fileHandleCurrent = open(StaticBJGameLogger.CCfileName, "a")
+        fileHandleCurrent.write(str(moveObj))  # See the GameMove.py class
+        fileHandleCurrent.close()
+
+    @staticmethod
+    def writeDealerMove(moveObj):
+        fileHandleCurrent = open(StaticBJGameLogger.DealerfileName, "a")
         fileHandleCurrent.write(str(moveObj))  # See the GameMove.py class
         fileHandleCurrent.close()
 

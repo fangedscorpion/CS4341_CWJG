@@ -13,6 +13,7 @@ from GameMove import GameMove
 from DateTimeCustom import DateTimeCustom
 from Hand import Hand
 
+
 class CasinoBJTable(object):
     DEBUG = False
     ROLLOUTS = False
@@ -29,11 +30,12 @@ class CasinoBJTable(object):
                 self.playersList.append(playerPerson)
             else:
                 self.playersList.append(
-                    ROPlayer(i, Player.startingBank, numDecks, "dict_BJstats_1.1.p"))
+                    ROPlayer(i, Player.startingBank, numDecks, "dict_BJstats_1.5.p"))
                 self.playersList.append(
                     BSPlayer(i, Player.startingBank, numDecks))
                 self.playersList.append(
                     CCPlayer(i, Player.startingBank, numDecks))
+                # self.playersList.append(Dealer(Dealer.bankStart, numDecks))
                 shuffle(self.playersList)
 
     def givePlayerCard(self, player):
@@ -84,7 +86,7 @@ class CasinoBJTable(object):
 
         keepGoing = True
         while keepGoing == True:
-            keepGoing = self.dealer.play(None)
+            keepGoing = self.dealer.play(None, None)
 
             if keepGoing == True:
                 newCard = self.deck.getTopCard()
@@ -180,6 +182,10 @@ class CasinoBJTable(object):
                     if CasinoBJTable.DEBUG:
                         print "CC"
                     StaticBJGameLogger.writeCCMove(gm)
+                elif isinstance(pl, Dealer):
+                    if CasinoBJTable.DEBUG:
+                        print "Dealer"
+                    StaticBJGameLogger.writeDealerMove(gm)
                 else:
                     if CasinoBJTable.DEBUG:
                         "wah wah"
@@ -238,4 +244,4 @@ if __name__ == '__main__':
     table.initPlayers()
     # table.playersList[0].hands[0].cardList = [
     #     Card(7, Card.S, True), Card(7, Card.H, True)]
-    table.play(14, 1, 30)
+    table.play(14, 4, 06)

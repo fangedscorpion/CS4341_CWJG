@@ -4,6 +4,7 @@ from Hand import Hand
 from RolloutKey import RolloutKey
 from BJGetter import BJGetter
 import pickle
+import Move
 
 class ROPlayer(Player):
 
@@ -18,16 +19,15 @@ class ROPlayer(Player):
         return self.bestMove(Hand,dealerShowVal)
 
     def getWinPerc(self, aKey, aDict):
-
         wins = aDict[aKey][0]
         losses = aDict[aKey][1]
         unfinished = aDict[aKey][2]
 
-        totalPlayed = float(wins + losses)
+        totalPlayed = float(wins + losses + unfinished)
         if totalPlayed == 0:
             winRate = 0
         else:
-            winRate = (wins / totalPlayed)
+            winRate = float(float(wins + unfinished) / totalPlayed)
         return winRate
 
 
@@ -40,7 +40,7 @@ class ROPlayer(Player):
 
         myHand = self.getHands()[Hand]
         if not myHand.isBust():
-            myHitKey = RolloutKey(myHand.getHandValue(), "H", dealerShowVal)
+            myHitKey = RolloutKey(myHand.getHandValue(), Move.Move.HIT_SHORT, dealerShowVal)
             listOfKeys.append(myHitKey)
             if myHitKey in self.dict.keys():
                 hitChance = self.getWinPerc(myHitKey, self.dict)
@@ -48,13 +48,13 @@ class ROPlayer(Player):
             #if hand busted, return stay
             return False
 
-        myStayKey = RolloutKey(myHand.getHandValue(), "S", dealerShowVal)
+        myStayKey = RolloutKey(myHand.getHandValue(), Move.Move.STAY_SHORT, dealerShowVal)
         listOfKeys.append(myStayKey)
         if myStayKey in self.dict.keys():
             stayChance = self.getWinPerc(myStayKey, self.dict) 
 
         if myHand.canDouble():
-            myDDKey = RolloutKey(myHand.getHandValue(), "D", dealerShowVal)
+            myDDKey = RolloutKey(myHand.getHandValue(), Move.Move.DOUBLE_SHORT, dealerShowVal)
             listOfKeys.append(myDDKey)
             if myDDKey in self.dict.keys():
                 ddChance = self.getWinPerc(myDDKey, self.dict)
@@ -62,7 +62,7 @@ class ROPlayer(Player):
             ddChance = 0
 
         if myHand.canSplit():
-            mySplitKey = RolloutKey(myHand.getHandValue(),"Y", dealerShowVal)
+            mySplitKey = RolloutKey(myHand.getHandValue(),Move.Move.SPLIT_SHORT, dealerShowVal)
             listOfKeys.append(mySplitKey)
             if mySplitKey in self.dict.keys():
                 splitChance = self.getWinPerc(mySplitKey, self.dict) 
@@ -77,21 +77,23 @@ class ROPlayer(Player):
                     stayChance = 0.25
 
         chances = [hitChance, stayChance, ddChance, splitChance]
-        moves = ["H", "S", "D", "Y"]
+        print chances
+        moves = [Move.Move.HIT_SHORT, Move.Move.STAY_SHORT, Move.Move.DOUBLE_SHORT, Move.Move.SPLIT_SHORT]
         
         bestChance = 0
         bestMove = "S"
         for i in range(len(chances)):
             if chances[i] > bestChance:
                 bestMove = moves[i]
+                bestChance = chances[i]
 
         
-        if bestMove == "H":
+        if bestMove == Move.Move.HIT_SHORT:
             return True
-        elif bestMove == "D":
+        elif bestMove == Move.Move.DOUBLE_SHORT:
             self.doDoubleDown()
             return True
-        elif bestMove == "Y":
+        elif bestMove == Move.Move.SPLIT_SHORT:
             self.doSplit(Hand)
             return True
         else:
