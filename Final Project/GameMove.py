@@ -2,10 +2,19 @@
 class GameMove(object):
     topics = "won,loss,bust\n"
 
-    def __init__(self, won, loss, bust):
-        self.won = won
-        self.loss = loss
-        self.bust = bust
+    def __init__(self):
+    	self.won = 0
+    	self.loss = 0
+    	self.bust = 0
+
+    def incWon(self):
+    	self.won += 1
+
+    def incLoss(self):
+    	self.loss += 1
+
+    def incBust(self):
+    	self.bust += 1
 
     # Simple code
     def __repr__(self):

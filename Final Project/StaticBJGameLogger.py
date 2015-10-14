@@ -7,6 +7,9 @@ class StaticBJGameLogger(object):
     ROfileNamePrefix = "statsRO_"
     CCfileNamePrefix = "statsCC_"
     fileNameSuffix = ".csv"
+    BSfileName = BSfileNamePrefix + fileNameSuffix
+    ROfileName = ROfileNamePrefix + fileNameSuffix
+    CCfileName = CCfileNamePrefix + fileNameSuffix
 
     @staticmethod
     def init(num):
