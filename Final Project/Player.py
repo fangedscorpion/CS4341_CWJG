@@ -57,7 +57,7 @@ class Player(object):
     def getHandsVals(self):
         handVals = []
         for i in range(len(self.getHands())):
-            handVals.append(self.getHands[i])
+            handVals.append(self.getHands()[i].getHandValue())
         return handVals
 
     # Gets the listing of counted cards cheater
@@ -77,7 +77,7 @@ class Player(object):
 
     # Sets a player's hand
     def setHand(self, newHand):
-        self.hands = [newHand]
+        self.hands = newHand
 
     # adds a hand to a player's list of hands
     def addHand(self, newHand):
@@ -141,7 +141,7 @@ class Player(object):
     # hand is indexed from 0
     def play(self, hand):
         found = False  # flag if a move as been performed
-
+        print self.getHands()
         if (len(self.getHands()[hand].getCardList()) == 1):
             if (Player.PlayerDebug):
                 print "BALANCE"
