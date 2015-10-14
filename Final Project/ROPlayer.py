@@ -2,45 +2,49 @@ from Player import Player
 from Card import Card
 from RolloutKey import RolloutKey
 from BJGetter import BJGetter
+import pickle
 
 class ROPlayer(Player):
 
-    def __init__(self, idName, bankAccountStart, numDecks, fileName):
+    def __init__(self, idName, bankAccountStart, numDecks, pickleName):
         super(ROPlayer, self).__init__(idName, bankAccountStart, numDecks)
-        self.myBJGetter = BJGetter(fileName)
-        self.fileName = fileName
+        self.dict = pickle.load(open(pickleName, "rb"))
 
 
 
     def play(self, Hand, dealerShow):
-        # get the dictionary reference for my hand
-        myDict = self.myBJGetter.getDictionary()
-        
 
-        return self.bestMove(Hand,dealerShow, myDict)
+        return self.bestMove(Hand,dealerShow, self.dict)
 
+    def getWinPerc(aKey, aDict):
+        wins = aDict[aKey][0]
+        losses = aDict[aKey][1]
+        unfinished = aDict[aKey][2]
 
-    def bestMove(self, Hand,dealerShow):
-        aHand = self.getHands[Hand]
-        if not aHand.isBust():
+        totalPlayed = float(wins + losses)
+        return (wins / totalPlayed)
+
+    def bestMove(self, Hand, dealerShow):
+        myHand = self.getHands()[Hand]
+        if not myHand.isBust():
             myHitKey = RolloutKey(myHand, 'H', dealerShow)
-            hitChance = self.myBJGetter.getProbWinLost(myHitKey)[0]
+            hitChance = getWinPerc(myHitKey, self.dict)
         else:
             #if hand busted, return stay
             return False
 
         myStayKey = RolloutKey(myHand, 'S', dealerShow)
-        stayChance = self.myBJGetter.getProbWinLost(myStayKey)[0]
+        stayChance = getWinPerc(myStayKey, self.dict) 
 
         if aHand.canDouble():
             myDDKey = RolloutKey(myHand, 'D', dealerShow)
-            ddChance = self.myBJGetter.getProbWinLost(myDDKey)[0]
+            ddChance = getWinPerc(myDDKey, self.dict)
         else: 
             ddChance = 0
 
         if aHand.canSplit():
             mySplitKey = RolloutKey(myHand,'Y', dealerShow)
-            splitChance = slef.myBJGetter.getProbWinLost(mySplitKey)[0]
+            splitChance = getWinPerc(mySplitKey, self.dict) 
         else:
             splitChance = 0
 
@@ -67,7 +71,7 @@ class ROPlayer(Player):
             return False
 
 if __name__ == '__main__':
-    aROP = ROPlayer("Ted", 100, 6, "BJStats_302.txt")
+    # aROP = ROPlayer("Ted", 100, 6, "BJStats_302.txt")
 
 
 
