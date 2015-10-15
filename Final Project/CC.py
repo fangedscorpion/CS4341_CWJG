@@ -29,7 +29,12 @@ class CC(object):
         mod = [0] * len(self.count)
 
         for j in range(1, len(self.count)):
-            mod[j] = 1 - self.count[j]
+            if j == CC.groupValue:
+                mod[j] = (CC.cardsPerSuit * self.numDecks *
+                          CC.groupSize) - self.count[j]
+
+            else:
+                mod[j] = (CC.cardsPerSuit * self.numDecks) - self.count[j]
 
         return mod
 
@@ -88,8 +93,10 @@ class CC(object):
         return string
 
 if __name__ == "__main__":
-    inputs = [0.5] * 11
+    inputs = [2] * 11
     inputs[0] = 0
+    inputs[4] = 10
     alpha = CC(6)
-    alpha.normalize(inputs)
-    print alpha.EV([0, 0.68, 0.5])
+    alpha.count = inputs
+    print alpha.oneMinus()
+    # print alpha.EV([0, 0.68, 0.5])
